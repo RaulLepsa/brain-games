@@ -8,5 +8,7 @@
     , "ejs": ">= 0.0.1"
     , "pg": "2.x"
     , "uuid": "~1.4.1"
+    , "passport": "x.x"
+    , "passport-google": "x.x"
   }
 }
