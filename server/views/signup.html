@@ -30,12 +30,12 @@
 
     <div class="container">
 
-      <form class="form-signin" role="form">
+      <form class="form-signin" role="form" method="POST" action="/register">
         <h2 class="form-signin-heading">Create account</h2>
-        <input type="text" class="form-control" placeholder="First name" required autofocus>
-        <input type="text" class="form-control" placeholder="Last name" required>
-        <input type="email" class="form-control" placeholder="Email address" required>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input name="firstname" type="text" class="form-control" placeholder="First name" required autofocus>
+        <input name="lastname" type="text" class="form-control" placeholder="Last name" required>
+        <input name="email" type="email" class="form-control" placeholder="Email address" required>
+        <input name="password" type="password" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       </form>
 
