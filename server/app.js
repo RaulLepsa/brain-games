@@ -1,10 +1,6 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express'),
     path = require('path'),
-    config = require('./server/commons/config');
+    config = require('./commons/config');
 
 // Make app available to other modules as well
 app = module.exports = express.createServer();
@@ -38,7 +34,7 @@ express.compiler.compilers.less.compile = function(str, fn){
 }
 
 // Routes
-require('./server/routes');
+require('./routes');
 
 app.listen(config.web.port, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

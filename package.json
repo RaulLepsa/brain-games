@@ -10,5 +10,6 @@
     , "uuid": "~1.4.1"
     , "passport": "x.x"
     , "passport-google": "x.x"
+    , "passport-local": "x.x"
   }
 }

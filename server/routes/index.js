@@ -1,26 +1,34 @@
 var path = require('path'),
-    passport = require('passport'),
-    GoogleStrategy = require('passport-google').Strategy,
-    db = require('../commons/db-connection').db;
+    passport = require('passport');
+    //GoogleStrategy = require('passport-google').Strategy,
 
-passport.use(new GoogleStrategy({
-        returnURL: 'http://localhost:3000/',                        // Redirect URL
-        realm: 'http://localhost:3000/'                             // Part of the website for which authentication is valid
-    },
-    function (identifier, profile, done) {
-        User.findOrCreate({ openId: identifier }, function (err, user) {
-            done(err, user);
-        });
-    }
-));
+// passport.use(new GoogleStrategy({
+//         returnURL: 'http://localhost:3000/',                        // Redirect URL
+//         realm: 'http://localhost:3000/'                             // Part of the website for which authentication is valid
+//     },
+//     function (identifier, profile, done) {
+//         User.findOrCreate({ openId: identifier }, function (err, user) {
+//             done(err, user);
+//         });
+//     }
+// ));
 
-// Redirect the user to Google for authentication. When complete, Google will redirect the user back to the application at /auth/google/return
-app.get('/auth/google', passport.authenticate('google'));
+// // Redirect the user to Google for authentication. When complete, Google will redirect the user back to the application at /auth/google/return
+// app.get('/auth/google', passport.authenticate('google'));
 
-// Google will redirect the user to this URL after authentication. Finish the process by verifying the assertion. 
-// If valid, the user will be logged in.  Otherwise, authentication has failed.
-app.get('/auth/google/return', 
-    passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' })
+// // Google will redirect the user to this URL after authentication. Finish the process by verifying the assertion. 
+// // If valid, the user will be logged in.  Otherwise, authentication has failed.
+// app.get('/auth/google/return', 
+//     passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' })
+// );
+
+require('../auth')(app, passport);
+
+app.post( '/login', 
+    passport.authenticate( 'local'
+      , { successRedirect: '/auth/success',
+          failureRedirect: '/auth/failure'  }
+      )
 );
 
 // Home page
