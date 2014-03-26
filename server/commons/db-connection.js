@@ -12,4 +12,4 @@ try {
 }
 
 // Export the connection to use it from other modules
-module.exports.db = client;
+module.exports = client;
