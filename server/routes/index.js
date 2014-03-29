@@ -47,8 +47,11 @@ app.get('/signup', function (req, res) {
 // Register request
 app.post('/register', function (req, res) {
     var RegistrationController = require('../controllers/registration-controller');
-    RegistrationController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function(err, response) {
-        //TODO: treat response
+    RegistrationController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function (err, response) {
+        if (response.status === 200) {
+            // authenticate
+        }
+        res.redirect('/register?' + JSON.stringify(response));
     });
 });
 
