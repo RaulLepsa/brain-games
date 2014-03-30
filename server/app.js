@@ -1,19 +1,22 @@
 var express = require('express'),
     path = require('path'),
-    config = require('./commons/config'),
-    SECRET_KEY = 'Gee, Brain, what do you want to do tonight?';
-    
+    config = require('./commons/config');                          
+
 // Create server and make variable available to other modules
-app = module.exports = express.createServer();
+app = module.exports = express();
 
 // Make passport available to other modules
 passport = require('passport');
+
+// Manage environment variables 
+var env = require('habitat').load(path.resolve(__dirname, 'brain-games.env'));
 
 // Configuration
 app.configure(function() {
   app.use(express.cookieParser());
   app.use(express.bodyParser());
-  app.use(express.session({ secret: SECRET_KEY }));                 // Session support
+  app.use(express.cookieSession( 
+    {key: 'brain-games.sid', secret: env.get('SESSION_SECRET')} )); // Session support
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session
   app.use(app.router);                                              // Serve routes
@@ -30,16 +33,7 @@ require('./auth')(app, passport);
 // Routes
 require('./routes');
 
-// Now less files with @import 'whatever.less' will work(https://github.com/senchalabs/connect/pull/174)
-var TWITTER_BOOTSTRAP_PATH = '../vendor/twitter/bootstrap/less';
-express.compiler.compilers.less.compile = function(str, fn) {
-  try {
-    var less = require('less');var parser = new less.Parser({paths: [TWITTER_BOOTSTRAP_PATH]});
-    parser.parse(str, function(err, root){fn(err, root.toCSS());});
-  } catch (err) {fn(err);}
-}
-
 // Start server
 app.listen(config.web.port, function() {
-  console.log("Brain Games server listening on port %d in %s mode", app.address().port, app.settings.env);
+  console.log("Brain Games server listening on port %d in %s mode", config.web.port, app.settings.env);
 });
