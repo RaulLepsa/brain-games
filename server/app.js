@@ -17,7 +17,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.session({ key: 'brain-games.sid', 
                             secret: env.get('SESSION_SECRET'), 
-                            cookie: {httpOnly: true, maxAge: config.web.sessionMaxAge} 
+                            cookie: {httpOnly: true, maxAge: 0} 
   }));                                                              // Session support
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session

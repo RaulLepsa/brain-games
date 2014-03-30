@@ -1,2 +1,4 @@
 .DS_Store
 /server/secret.env
+*.sublime-project
+*.sublime-workspace
