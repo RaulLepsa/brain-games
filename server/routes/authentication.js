@@ -2,6 +2,11 @@ var path = require('path');
 
 // Home page
 app.get('/', function (req, res) {
+    if (req.isAuthenticated()) {
+        console.log('Autheticated!: ' + req.session.passport.user.firstname);
+    }
+    console.log(req.session);
+    console.log(req.cookies);
 	res.sendfile('/views/index.html', {root:  path.resolve(__dirname, '..')} );
 });
 
@@ -12,8 +17,17 @@ app.get('/signin', function (req, res) {
 
 // Authenticate request
 app.post('/auth/local', 
-    passport.authenticate('local', { successRedirect: '/auth/success', failureRedirect: '/auth/failure' })
+    passport.authenticate('local', { failureRedirect: '/auth/failure' }),
+    function (req, res) {
+        res.redirect('/');
+    }
 );
+
+// Logout
+app.get('/logout', function (req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 // Resgister page
 app.get('/signup', function (req, res) {

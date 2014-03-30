@@ -27,9 +27,6 @@ module.exports = function(app, passport) {
         if (user.password !== password) { return done(null, false); }
 
         // If everything is ok, return the user
-        console.log(user.email);
-        console.log(user.firstname);
-        console.log(user.lastname);
         return done(null, user);
       });
     }

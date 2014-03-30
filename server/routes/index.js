@@ -1,5 +1,18 @@
 var path = require('path');
 
+/* Checks if user is authenticated. If not, it redirects to the login page */
+function checkAuthentication(req, res, next) {
+    if (req.isAuthenticated()) {
+    	next();
+    } else { 
+    	res.redirect('/signin'); 			
+    	//TODO: return error to frontend
+	}
+};
+
+// Intercept all routes under /secure and check if the user is authenticated
+app.all('/secure/*', checkAuthentication);
+
 // Include authentication-related routes
 require('./authentication');
 

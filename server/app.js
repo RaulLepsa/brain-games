@@ -15,8 +15,10 @@ var env = require('habitat').load(path.resolve(__dirname, 'brain-games.env'));
 app.configure(function() {
   app.use(express.cookieParser());
   app.use(express.bodyParser());
-  app.use(express.cookieSession( 
-    {key: 'brain-games.sid', secret: env.get('SESSION_SECRET')} )); // Session support
+  app.use(express.session({ key: 'brain-games.sid', 
+                            secret: env.get('SESSION_SECRET'), 
+                            cookie: {httpOnly: true, maxAge: config.web.sessionMaxAge} 
+  }));                                                              // Session support
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session
   app.use(app.router);                                              // Serve routes
