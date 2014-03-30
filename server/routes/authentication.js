@@ -1,7 +1,4 @@
-var path = require('path'),
-    passport = require('passport');
-
-require('../auth')(app, passport);
+var path = require('path');
 
 // Home page
 app.get('/', function (req, res) {
