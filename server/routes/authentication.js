@@ -1,5 +1,6 @@
 var path = require('path'),
     config = require('../commons/config'),
+    RegistrationController = require('../controllers/registration-controller'),
     User = require('../model/user-model');
 
 // Home page
@@ -14,9 +15,18 @@ app.get('/', function (req, res) {
 
 // Login page
 app.get('/signin', function (req, res) {
-    console.log(req.session);
-    console.log(req.cookies);
-    res.render('signin', { error: req.flash('error') } );      // Display an error message if it's the case (e.g. redirected from invalid login)
+    res.render('signin', { error: req.flash('error') } ); 
+});
+
+// Logout
+app.get('/signout', function (req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+// Resgister page
+app.get('/signup', function (req, res) {
+    res.render('signup', { error: req.flash('error') });
 });
 
 // Authenticate request
@@ -39,23 +49,11 @@ app.post('/auth/local',
     }
 );
 
-// Logout
-app.get('/logout', function (req, res){
-  req.logout();
-  res.redirect('/');
-});
-
-// Resgister page
-app.get('/signup', function (req, res) {
-    console.log(req.flash());
-	res.render('signup', { error: req.flash('info') });
-});
-
 // Register request
 app.post('/register', function (req, res) {
-    var RegistrationController = require('../controllers/registration-controller');
     RegistrationController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function (err, response) {
-        // If registered successfully, login 
+        
+        // If registered successfully, login. Else, display error message
         if (response.status === 200) {
             User.getByEmail(req.body.email, function (err, user) {
                 req.login(user, function (err) {
@@ -63,7 +61,7 @@ app.post('/register', function (req, res) {
                 });
             });
         } else {
-            req.flash('info', 'aa');
+            req.flash('error', response.errors);
             res.redirect('/signup');
         }
     });

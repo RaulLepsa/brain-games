@@ -18,11 +18,11 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.session({ key: 'brain-games.sid', 
                             secret: env.get('SESSION_SECRET'), 
-                            cookie: {httpOnly: true, maxAge: 0} 
+                            cookie: {httpOnly: true, maxAge: null} 
   }));                                                              // Session support
+  app.use(flash());
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session
-  app.use(flash());
   app.use(app.router);                                              // Serve routes
   app.use(express.static(path.resolve(__dirname,'../public')));     // Set path to static public files such as scripts and stylesheets
   app.use(express.csrf());                                          // Ensure that page requests are coming from own site                             
