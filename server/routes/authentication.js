@@ -14,6 +14,8 @@ app.get('/', function (req, res) {
 
 // Login page
 app.get('/signin', function (req, res) {
+    console.log(req.session);
+    console.log(req.cookies);
     res.render('signin', { error: req.flash('error') } );      // Display an error message if it's the case (e.g. redirected from invalid login)
 });
 
@@ -45,7 +47,8 @@ app.get('/logout', function (req, res){
 
 // Resgister page
 app.get('/signup', function (req, res) {
-	res.sendfile('/views/signup.html', {root: path.resolve(__dirname, '..')} );
+    console.log(req.flash());
+	res.render('signup', { error: req.flash('info') });
 });
 
 // Register request
@@ -60,7 +63,8 @@ app.post('/register', function (req, res) {
                 });
             });
         } else {
-            res.redirect('/register?' + JSON.stringify(response));
+            req.flash('info', 'aa');
+            res.redirect('/signup');
         }
     });
 });

@@ -33,36 +33,28 @@
 
     <div class="container">
 
-      <form class="form-signin" role="form" method="POST" action="/register" target="register-frame">
+      <form class="form-signin" role="form" action="/register" method="POST">
         <h2 class="form-signin-heading">Create account</h2>
         <input name="firstname" type="text" class="form-control" placeholder="First name" required autofocus>
         <input name="lastname" type="text" class="form-control" placeholder="Last name" required>
         <input name="email" type="email" class="form-control" placeholder="Email address" required>
         <input name="password" type="password" class="form-control" placeholder="Password" required>
-        <div id="register-error" class="alert alert-danger display-none"></div>
+        <div id="register-error" class="alert alert-danger display-none"><%= error %></div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       </form>
 
     </div> 
 
-    <!-- frame to treat register result in -->
-    <iframe id="register-frame" name="register-frame" class="display-none"></iframe>
-
-
     <!-- Scripts -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/brain-games.js"></script>
     <script type="text/javascript">
-      var frame = $('#register-frame');
-      frame.load(function(response){
-        var iframe_url = frame[0].contentWindow.location.href;
-        var response = JSON.parse(decodeURIComponent(iframe_url.split('?')[1]));
-        if (response.status === 200) {
-          window.location = '/';
-        } else {
-          utils.displayAlert($('#register-error'), response.errors);
+      $(document).ready(function() {
+        var error = $('#register-error').html();
+        if (error && error !== '') {
+          utils.displayAlert($('#register-error'), error);
         }
-      });  
+      });
     </script>
   </body>
 </html>
