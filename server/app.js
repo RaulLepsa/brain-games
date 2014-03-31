@@ -1,5 +1,6 @@
 var express = require('express'),
     path = require('path'),
+    flash = require('connect-flash'),
     config = require('./commons/config');                          
 
 // Create server and make variable available to other modules
@@ -21,6 +22,7 @@ app.configure(function() {
   }));                                                              // Session support
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session
+  app.use(flash());
   app.use(app.router);                                              // Serve routes
   app.use(express.static(path.resolve(__dirname,'../public')));     // Set path to static public files such as scripts and stylesheets
   app.use(express.csrf());                                          // Ensure that page requests are coming from own site                             

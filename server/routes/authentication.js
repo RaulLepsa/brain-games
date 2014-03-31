@@ -13,24 +13,25 @@ app.get('/', function (req, res) {
 
 // Login page
 app.get('/signin', function (req, res) {
-	res.sendfile('/views/signin.html', {root: path.resolve(__dirname, '..')} );
+    res.render('signin', { error: req.flash('error'); } );      // Display an error message if it's the case (e.g. redirected from invalid login)
 });
 
 // Authenticate request
 app.post('/auth/local',
-    passport.authenticate('local', { failureRedirect: '/signin' }), //TODO: return error to frontend
+    passport.authenticate('local', 
+        { failureRedirect: '/signin', failureFlash: 'Invalid username or password' }
+    ),
     
     // Called if authentication is successful
     function (req, res) {
         if (req.body.remember) {
             // If remember-me was checked, set a max age for the session
-            console.log('Remember me!');
             req.session.cookie.maxAge = config.web.sessionMaxAge;
         } else {
             // Else, session expires when closing the browser
             req.session.cookie.maxAge = null;
         }
-
+        
         res.redirect('/');
     }
 );

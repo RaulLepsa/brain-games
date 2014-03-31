@@ -13,6 +13,9 @@
     <!-- Bootstrap core CSS -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
+	<!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link href="/stylesheets/signin.css" rel="stylesheet">
 
@@ -37,14 +40,23 @@
         <label class="checkbox">
           <input name="remember" type="checkbox" value="remember-me"> Remember me
         </label>
+        <div id="signin-error" class="alert alert-danger display-none"><%= error %></div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
     </div> <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Scripts -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/brain-games.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    		var error = $('#signin-error').html();
+    		if (error && error !== '') {
+    			utils.displayAlert($('#signin-error'), error);
+    		}
+    	});
+    </script>
   </body>
 </html>
