@@ -18,9 +18,9 @@ module.exports = function(app, passport) {
       usernameField: 'email', 
       passwordField: 'password'
     }
-    ,function (username, password, done) {
+    ,function (email, password, done) {
       // Get user by email
-      User.getByEmail(username, function (err, user) {
+      User.getByEmail(email, function (err, user) {
         // Validate the response
         if (err) { return done(err); }
         if (!user) { return done(null, false); }

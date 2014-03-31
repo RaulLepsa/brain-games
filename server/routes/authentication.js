@@ -1,5 +1,6 @@
 var path = require('path'),
-    config = require('../commons/config');
+    config = require('../commons/config'),
+    User = require('../model/user-model');
 
 // Home page
 app.get('/', function (req, res) {
@@ -13,7 +14,7 @@ app.get('/', function (req, res) {
 
 // Login page
 app.get('/signin', function (req, res) {
-    res.render('signin', { error: req.flash('error'); } );      // Display an error message if it's the case (e.g. redirected from invalid login)
+    res.render('signin', { error: req.flash('error') } );      // Display an error message if it's the case (e.g. redirected from invalid login)
 });
 
 // Authenticate request
@@ -51,10 +52,16 @@ app.get('/signup', function (req, res) {
 app.post('/register', function (req, res) {
     var RegistrationController = require('../controllers/registration-controller');
     RegistrationController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function (err, response) {
+        // If registered successfully, login 
         if (response.status === 200) {
-            //TODO: authenticate
+            User.getByEmail(req.body.email, function (err, user) {
+                req.login(user, function (err) {
+                    res.redirect('/');
+                });
+            });
+        } else {
+            res.redirect('/register?' + JSON.stringify(response));
         }
-        res.redirect('/register?' + JSON.stringify(response));
     });
 });
 
