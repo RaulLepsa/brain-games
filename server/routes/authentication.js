@@ -3,16 +3,6 @@ var path = require('path'),
     RegistrationController = require('../controllers/registration-controller'),
     User = require('../model/user-model');
 
-// Home page
-app.get('/', function (req, res) {
-    if (req.isAuthenticated()) {
-        console.log('Autheticated!: ' + req.session.passport.user.firstname);
-    }
-    console.log(req.session);
-    console.log(req.cookies);
-	res.sendfile('/views/index.html', {root:  path.resolve(__dirname, '..')} );
-});
-
 // Login page
 app.get('/signin', function (req, res) {
     res.render('signin', { error: req.flash('error') } ); 

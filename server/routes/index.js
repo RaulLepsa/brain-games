@@ -1,13 +1,7 @@
-var path = require('path');
+/**
+ * Routes Index
+**/
 
-/* Checks if user is authenticated. If not, it redirects to the login page */
-function checkAuthentication(req, res, next) {
-    if (req.isAuthenticated()) {
-    	next();
-    } else { 
-    	res.render('signin', { error: '' });
-	}
-};
 
 // Intercept all routes under /secure and check if the user is authenticated
 app.all('/secure/*', checkAuthentication);
@@ -17,10 +11,19 @@ require('./authentication');
 
 // Home page
 app.get('/', function (req, res) {
-	res.sendfile('/views/index.html', {root:  path.resolve(__dirname, '..')} );
+    if (req.isAuthenticated()) {
+        console.log('Authenticated!: ' + req.session.passport.user.firstname);
+    }
+    console.log(req.session);
+    console.log(req.cookies);
+    res.render('index');
 });
 
-// Express default page
-app.get('/express', function (req, res) {
-	res.render('index', { title: 'Express' });
-});
+/* Checks if user is authenticated. If not, it redirects to the login page */
+function checkAuthentication(req, res, next) {
+    if (req.isAuthenticated()) {
+    	next();
+    } else { 
+    	res.render('signin', { error: '' });
+	}
+};
