@@ -20,7 +20,7 @@ app.configure(function() {
                             secret: env.get('SESSION_SECRET'), 
                             cookie: {httpOnly: true, maxAge: null} 
   }));                                                              // Session support
-  app.use(flash());
+  app.use(flash());                                                 // Use flash messages
   app.use(passport.initialize());                                   // Initialize passport.js
   app.use(passport.session());                                      // Passport Session
   app.use(app.router);                                              // Serve routes

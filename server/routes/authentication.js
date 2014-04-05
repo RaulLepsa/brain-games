@@ -66,8 +66,3 @@ app.post('/register', function (req, res) {
         }
     });
 });
-
-// Express default page
-app.get('/express', function (req, res) {
-	res.render('index', { title: 'Express' });
-});
