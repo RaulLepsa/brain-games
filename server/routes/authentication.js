@@ -8,7 +8,7 @@ var config = require('../commons/config'),
 
 // Login page
 app.get('/signin', function (req, res) {
-    res.render('signin', { error: req.flash('error') } ); 
+    res.render('signin', { error: req.flash('error'), nextUrl: '' } ); 
 });
 
 // Logout
@@ -38,7 +38,11 @@ app.post('/auth/local',
             req.session.cookie.maxAge = null;
         }
         
-        res.redirect('/');
+        if (req.body['next-url']) {
+            res.redirect(req.body['next-url']);
+        } else {
+            res.redirect('/home');
+        }
     }
 );
 
