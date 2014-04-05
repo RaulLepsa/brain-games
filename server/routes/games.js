@@ -2,8 +2,14 @@
  * Game-related Routes
 **/
 
+var Games = require('../model/game-model');
+
 // Games page
 app.get('/secure/games', function (req, res) {
 	var title = req.user.firstname + ' ' + req.user.lastname;
-    res.render('games', {title: title} );
+	
+	Games.getCategories(function (err, categories) {
+	    res.render('games', {title: title, categories: categories} );
+	});
+
 });

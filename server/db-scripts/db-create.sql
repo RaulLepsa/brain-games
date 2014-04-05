@@ -7,3 +7,9 @@ CREATE TABLE users (
 	firstname VARCHAR,
 	lastname VARCHAR
 );
+
+CREATE TABLE games (
+	id BIGSERIAL,
+	name VARCHAR,
+	category VARCHAR
+);
