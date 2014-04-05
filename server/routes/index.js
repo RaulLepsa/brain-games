@@ -9,13 +9,14 @@ app.all('/secure/*', checkAuthentication);
 // Include authentication-related routes
 require('./authentication');
 
-// Home page
+// Include home-related routes
+require('./home');
+
+// Default page
 app.get('/', function (req, res) {
     if (req.isAuthenticated()) {
         console.log('Authenticated!: ' + req.session.passport.user.firstname);
     }
-    console.log(req.session);
-    console.log(req.cookies);
     res.render('index');
 });
 
@@ -25,5 +26,6 @@ function checkAuthentication(req, res, next) {
     	next();
     } else { 
     	res.render('signin', { error: '' });
+    	//TODO: After signing in from an intercepted /secure page, it should take the user to that page
 	}
 };

@@ -1,5 +1,8 @@
-var path = require('path'),
-    config = require('../commons/config'),
+/**
+ * Authentication-related Routes
+**/
+
+var config = require('../commons/config'),
     RegistrationController = require('../controllers/registration-controller'),
     User = require('../model/user-model');
 
