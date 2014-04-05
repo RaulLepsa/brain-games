@@ -41,7 +41,7 @@ app.post('/auth/local',
         if (req.body['next-url']) {
             res.redirect(req.body['next-url']);
         } else {
-            res.redirect('/home');
+            res.redirect('/secure/home');
         }
     }
 );
