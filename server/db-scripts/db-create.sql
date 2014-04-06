@@ -11,5 +11,6 @@ CREATE TABLE users (
 CREATE TABLE games (
 	id BIGSERIAL,
 	name VARCHAR,
-	category VARCHAR
+	category VARCHAR,
+	description TEXT
 );

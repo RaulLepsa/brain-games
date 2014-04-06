@@ -79,21 +79,21 @@
         
         <!-- Game list -->
         <div class="row col-xs-12 col-sm-9 padding-left35">
-          <div class="col-6">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div><!--/span-->
-          <div class="col-6">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div><!--/span-->
-          <div class="col-6">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-          </div><!--/span-->
+
+          <% for(var i = 0; i < games.length; i++) { %>
+            <div class="row">
+              <div class="col-sm-7">
+                <h2><%= games[i].name %></h2>
+                <p><%= games[i].description %></p>
+                <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+              </div>
+              <div class="col-sm-5">
+                <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
+              </div>
+            </div><!--/row-->
+            <hr>
+          <% } %>
+
         </div><!--/row game list-->
 
       </div><!--/row-offcanvas-->

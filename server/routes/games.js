@@ -9,7 +9,16 @@ app.get('/secure/games', function (req, res) {
 	var title = req.user.firstname + ' ' + req.user.lastname;
 	
 	Games.getCategories(function (err, categories) {
-	    res.render('games', {title: title, categories: categories} );
+		if (categories) {
+			Games.getList(null, function (err, games) {
+				if (games) {
+		    		res.render('games', {title: title, categories: categories, games: games} );
+				} else {
+					res.end();
+				}
+			});
+		} else {
+			res.end();
+		}
 	});
-
 });
