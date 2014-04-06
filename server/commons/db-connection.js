@@ -2,14 +2,15 @@ var pg = require('pg'),
 	db = require('./config').db;
 
 // Connect to the PG instance
-var client = new pg.Client('postgres://' + db.user + ':' + db.password + '@' + db.server + ':' + db.port + '/' + db.database);
+var url = 'postgres://' + db.user + ':' + db.password + '@' + db.server + ':' + db.port;
+var client = new pg.Client(url + '/' + db.database);
 
-try {
-	client.connect();
-} catch(err) {
-	console.error('Error connecting to PostgreSQL server:\n\t' + err);
-	throw err;
-}
+client.connect(function (err) {
+	if (err) {
+		console.error('Error connecting to PostgreSQL server: ' + url + '\n' + err);
+		throw err;
+	}
+});
 
 // Export the connection to use it from other modules
 module.exports = client;
