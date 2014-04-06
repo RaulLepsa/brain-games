@@ -11,8 +11,12 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
     <!-- Global CSS for application -->
     <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- Offcanvas CSS -->
+    <link href="/stylesheets/offcanvas.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -55,31 +59,13 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
     <div class="container">
 
-      <!-- Game list -->
-      <div class="col-xs-12 col-sm-9">
-          <!-- Game categories -->
-          <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">See categories</button>
-          </p>
-          
-          <div class="row">
-            <div class="col-6">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6">
-              <h2>Heading</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-            </div><!--/span-->
-          </div><!--/row-->
-        </div><!--/span-->
+      <!-- Wrap everything in a row-offcanvas class to resize content by hiding the secondary navigation -->
+      <div class="row row-offcanvas row-offcanvas-left">
+        
+        <!-- Game categories -->
+        <p class="pull-left visible-xs">
+          <button type="button" class="btn btn-primary" data-toggle="offcanvas">See categories</button>
+        </p>
 
         <!-- Secondary navigation -->
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -90,16 +76,43 @@
             <% } %>
           </div>
         </div><!--/secondary navigation-->
-      </div><!--/div game list-->
+        
+        <!-- Game list -->
+        <div class="row col-xs-12 col-sm-9 padding-left35">
+          <div class="col-6">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div><!--/span-->
+          <div class="col-6">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div><!--/span-->
+          <div class="col-6">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+          </div><!--/span-->
+        </div><!--/row game list-->
 
-      <!-- FOOTER -->
-      <% include footer %>
+      </div><!--/row-offcanvas-->
 
-    </div><!-- /.container -->
+    </div><!--/container -->
+
+    <!-- FOOTER -->
+    <% include footer %>
 
     <!-- SCRIPTS -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/docs.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+          $('.row-offcanvas').toggleClass('active')
+        });
+      });
+    </script> 
   </body>
 </html>
