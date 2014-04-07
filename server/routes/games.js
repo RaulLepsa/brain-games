@@ -22,3 +22,17 @@ app.get('/secure/games', function (req, res) {
 		}
 	});
 });
+
+// Get list of games by their category
+app.get('/secure/games/category/:category', function (req, res) {
+	var category = req.params.category;
+	if (category === 'null') { category = null; }
+	
+	Games.getList(category, function (err, games) {
+		if (games) {
+			res.render('sub-views/game-list', {games: games});
+		} else {
+			res.end();
+		}
+	});
+});
