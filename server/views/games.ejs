@@ -92,19 +92,22 @@
     <!-- SCRIPTS -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/brain-games.js"></script>
+    <script src="/js/docs.min.js"></script>
+
     <script type="text/javascript">
       $(document).ready(function () {
-        $('[data-toggle=offcanvas]').click(function () {
-          $('.row-offcanvas').toggleClass('active')
-        });
-
-
         $('#category-list a').click(event, function() {
-          event.preventDefault();
+          // Prevent default click
+          event.preventDefault();   
+
+          // Get category and set it on the window location href
           var selected = $(this);
           var category = selected.attr('href').split('#')[1];
+          window.location.href = utils.getBaseLocation() + '#' + category;
           if (category === '') { category = null; }
 
+          // Get all the games by category
           $.ajax({
             type: 'GET',
             url: '/secure/games/category/' + category,
@@ -112,7 +115,8 @@
               $('#category-list a').removeClass('active');
               $('#game-list').html(response);
               selected.addClass('active');  
-            }
+            },
+            error: handlers.errorHandler
           });
         });
       });

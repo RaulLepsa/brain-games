@@ -1,6 +1,6 @@
 /*! Brain Games */
 
-/* Name says it all: util functions */
+/** Name says it all: util functions **/
 var utils = {
 
 	/* Displays an alert in the DOM element 'elem', having the text 'message' */
@@ -17,5 +17,19 @@ var utils = {
 	/* Removes all alers from a page */
 	removeAlertsFromPage: function() {
 		$('.alert').hide().html('');
+	},
+
+	/* Retrieve the current location, without any parameters */
+	getBaseLocation: function() {
+		return location.protocol + '//' + location.host + location.pathname;
+	}
+};
+
+/** Different handlers **/
+var handlers = {
+
+	/* Generic error handler */
+	errorHandler: function() {
+		alert('An error occurred while processing your request')
 	}
 };
