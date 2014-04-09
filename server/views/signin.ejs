@@ -49,12 +49,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/brain-games.js"></script>
     <script type="text/javascript">
-    	$(document).ready(function() {
-    		var error = $('#signin-error').html();
-    		if (error && error !== '') {
-    			utils.displayAlert($('#signin-error'), error);
-    		}
-    	});
+      authentication.pageReady($('#signin-error'));  
     </script>
   </body>
 </html>

@@ -1,5 +1,45 @@
 /*! Brain Games */
 
+/** Functions for authentication-related pages **/
+var authentication = {
+
+	/* On Signin/Signup page ready - displays an error (if any); 'element' is a jQuery element that contains the error */
+	pageReady: function(element) {
+		var error = element.html();
+		if (error && error !== '') {
+			utils.displayAlert(element, error);
+		}
+	}
+};
+
+/** Functions for page that lists games **/
+var games = {
+
+	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
+	gamesPageReady: function() {
+		$('#category-list a').click(event, function() {
+			// Get category and set it on the window location href
+			var selected = $(this);
+			var category = selected.attr('href').split('#')[1];
+			if (category === '') {
+				category = null;
+			}
+
+			// Get all the games by category
+			$.ajax({
+				type: 'GET',
+				url: '/secure/games/category/' + category,
+				success: function(response) {
+					$('#category-list a').removeClass('active');
+					$('#game-list').html(response);
+					selected.addClass('active');
+				},
+				error: handlers.errorHandler
+			});
+		});
+	}
+};
+
 /** Name says it all: util functions **/
 var utils = {
 
@@ -17,11 +57,6 @@ var utils = {
 	/* Removes all alers from a page */
 	removeAlertsFromPage: function() {
 		$('.alert').hide().html('');
-	},
-
-	/* Retrieve the current location, without any parameters */
-	getBaseLocation: function() {
-		return location.protocol + '//' + location.host + location.pathname;
 	}
 };
 

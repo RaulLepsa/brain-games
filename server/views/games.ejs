@@ -96,30 +96,7 @@
     <script src="/js/docs.min.js"></script>
 
     <script type="text/javascript">
-      $(document).ready(function () {
-        $('#category-list a').click(event, function() {
-          // Prevent default click
-          event.preventDefault();   
-
-          // Get category and set it on the window location href
-          var selected = $(this);
-          var category = selected.attr('href').split('#')[1];
-          window.location.href = utils.getBaseLocation() + '#' + category;
-          if (category === '') { category = null; }
-
-          // Get all the games by category
-          $.ajax({
-            type: 'GET',
-            url: '/secure/games/category/' + category,
-            success: function(response) {
-              $('#category-list a').removeClass('active');
-              $('#game-list').html(response);
-              selected.addClass('active');  
-            },
-            error: handlers.errorHandler
-          });
-        });
-      });
+      games.gamesPageReady();
     </script> 
   </body>
 </html>

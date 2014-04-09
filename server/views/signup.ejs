@@ -36,7 +36,7 @@
         <input name="lastname" type="text" class="form-control" placeholder="Last name" required>
         <input name="email" type="email" class="form-control" placeholder="Email address" required>
         <input name="password" type="password" class="form-control" placeholder="Password" required>
-        <div id="register-error" class="alert alert-danger display-none"><%= error %></div>
+        <div id="signup-error" class="alert alert-danger display-none"><%= error %></div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       </form>
 
@@ -46,12 +46,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/brain-games.js"></script>
     <script type="text/javascript">
-      $(document).ready(function() {
-        var error = $('#register-error').html();
-        if (error && error !== '') {
-          utils.displayAlert($('#register-error'), error);
-        }
-      });
+      authentication.pageReady($('#signup-error'));  
     </script>
   </body>
 </html>
