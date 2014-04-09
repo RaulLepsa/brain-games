@@ -17,7 +17,7 @@ var games = {
 
 	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
 	gamesPageReady: function() {
-		$('#category-list a').click(event, function() {
+		$('#category-list a').click(function() {
 			// Get category and set it on the window location href
 			var selected = $(this);
 			var category = selected.attr('href').split('#')[1];

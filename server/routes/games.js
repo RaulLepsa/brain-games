@@ -36,3 +36,8 @@ app.get('/secure/games/category/:category', function (req, res) {
 		}
 	});
 });
+
+// Color Match Game page
+app.get('/secure/game/color-match', function (req, res) {
+	res.render('color-match');
+});

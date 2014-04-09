@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Color Match</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Brain Games</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/secure/home">HOME</a></li>
+                <li><a href="#stats">STATS</a></li>
+                <li class="active"><a href="#">GAMES</a></li>
+                <li><a href="#profile">PROFILE</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <div class="container">
+
+    	<div class="color-match-div">
+    		<div id="left"></div>
+    	</div>
+    	<div class="color-match-div">
+    		<div id="right"></div>
+    	</div>
+
+    </div><!--/container -->
+
+    <!-- FOOTER -->
+    <% include footer %>
+
+    <!-- SCRIPTS -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/brain-games.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/games/color-match.js"></script>
+
+    <script type="text/javascript">
+		colorMatch.initialize($('#left'), $('#right'));
+    </script> 
+  </body>
+</html>
+
+
