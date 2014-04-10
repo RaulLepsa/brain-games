@@ -54,27 +54,40 @@
     </div>
 
     <!-- Wrap the rest of the page in another container to center all the content. -->
-    <div class="container center">
+    <div class="container">
+      <div class="game">
+        <span>Correct:</span><span id="correct">0</span>
+        <span>Wrong:</span><span id="wrong">0</span>
+        <br><br>
 
-      <span>Correct:</span><span id="correct">0</span>
-      <span>Wrong:</span><span id="wrong">0</span>
-      <br><br>
+        <blockquote class="hint hint-left">
+          <p>The text in this tile ...</p>
+        </blockquote>
 
-      <!-- The 2 DIVs that will hold the tiles for the game -->
-    	<div class="color-match-div">
-    		<div id="left"></div>
-    	</div>
-    	<div class="color-match-div">
-    		<div id="right"></div>
-    	</div>
+        <blockquote class="hint hint-right">
+          <p>... must match the color of the text in this one</p>
+        </blockquote>
 
-      <div class="clear margin-top">
-        <span class="glyphicon glyphicon-circle-arrow-left"></span>
-        <span class="glyphicon glyphicon-circle-arrow-right"></span>
-      </div>
+        <!-- The 2 DIVs that will hold the tiles for the game -->
+      	<div class="color-match-div">
+      		<div id="left"></div>
+      	</div>
+      	<div class="color-match-div">
+      		<div id="right"></div>
+      	</div>
 
-      <!-- <div class="hint">If you consider the condition correct, </div> -->
+        <div class="clear margin-top">
+          <div class="glyphicon-holder">
+            <span class="glyphicon glyphicon-circle-arrow-left"></span>
+            <span class="glyphicon-text">false</span>
+          </div>
+          <div class="glyphicon-holder">
+            <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            <span class="glyphicon-text">true</span>
+          </div>
+        </div>
 
+      </div><!--/game -->
     </div><!--/container -->
 
     <!-- FOOTER -->

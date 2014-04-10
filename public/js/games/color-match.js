@@ -7,6 +7,7 @@ var colorMatch = {
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
+    /* Keep correct and wrong answers count */
     correct: 0,
     wrong: 0,
 
@@ -21,6 +22,7 @@ var colorMatch = {
 
     /* Populate the 2 elements with random text having a random color */
     populateElements: function() {
+
         // Get random text and color and put them in the text div (first)
         var indexText = Math.floor(Math.random() * 4);
         var indexColor = Math.floor(Math.random() * 4);
@@ -34,7 +36,7 @@ var colorMatch = {
         colorMatch.colorElement.addClass(colorMatch.colors[indexColor]);
     },
 
-    /* Start the game */
+    /* Start the game. Add listeners and call the 'answer' function depending on the event triggered. */
     start: function() {
 
         $(document).on("swipeleft", function (e) {
@@ -54,9 +56,10 @@ var colorMatch = {
 
     /* 
      * Detects whether the answer is correct or incorrect, and prepares the elements for the next "round".
-     * 'left' is a boolean that indicates whether the left key/swipe event has taken place. If false, it means that it was the right one
+     * 'left' is a boolean that indicates whether the left key/swipe event has taken place. If false, it means that it was the right one.
      */
     answer: function(left) {
+
         // Check matching condition: text from first div must match color in second
         var match = colorMatch.textElement.html() === colorMatch.colorElement.attr('class');
         var right = !left;
