@@ -24,7 +24,7 @@ footer {
 }
 
 .blue {
-  color: blue;
+  color: #428bca;
 }
 
 .green {
@@ -39,12 +39,36 @@ footer {
   position: absolute;
 }
 
+.clear {
+  clear: both;
+}
+
 .no-background {
   background-color: transparent !important;
 }
 
+.center {
+  text-align: center;
+}
+
+.glyphicon {
+  font-size: 2.0em;
+  color: #428bca;
+  margin: 5px;
+}
+
+.glyphicon:hover {
+  cursor: pointer;
+  font-size: 2.0em;
+  color: #F0F0F0;
+}
+
 .padding-left35 {
   padding-left: 35px;
+}
+
+.margin-top {
+  margin-top: 20px;
 }
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -175,16 +199,22 @@ footer {
 }
 
 
-/* Games
+
+/* GAMES
+-------------------------------------------------- */
+
+/* Color-Match
 ------------------------- */
 .color-match-div {
-  border: 1px solid;
+  border: 1px solid #C0C0C0;
   border-radius: 6px;
   width: 200px;
-  float: left;
-  text-align: center;
+  display: inline-block;
   line-height: 3;
   font-weight: 500;
+  letter-spacing: 2px;
+  font-size: 18px;
+  background-color: #F0F0F0; 
 }
 
 /* RESPONSIVE CSS

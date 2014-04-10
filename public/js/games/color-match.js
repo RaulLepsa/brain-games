@@ -7,6 +7,9 @@ var colorMatch = {
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
+    correct: 0,
+    wrong: 0,
+
     /* Initialize the game using the 2 DOM elements that will further hold the values */
     initialize: function(textElem, colorElem) {
         colorMatch.textElement = textElem;
@@ -64,9 +67,9 @@ var colorMatch = {
 
         // Check user's input. If left key was pressed and it was not a match - correct. If right key and not a match - also correct
         if ((left && !match) || (right && match)) {
-            alert('Correct');
-        } else if (left || right) {
-            alert('Wrong');
+            $('#correct').html(++colorMatch.correct);
+        } else {
+            $('#wrong').html(++colorMatch.wrong);
         }
         
         // Populate with new values
