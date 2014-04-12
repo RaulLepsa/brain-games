@@ -3,9 +3,11 @@ var colorMatch = {
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
-    /* Keep correct and wrong answers count */
+    /* Keep correct, wrong and consecutive correct answers count, as well as the score */
     correct: 0,
     wrong: 0,
+    consecutive: 0,
+    score: 0,
 
     /* Game duration (in seconds) */
     duration: 50,
@@ -36,13 +38,13 @@ var colorMatch = {
         var indexText = Math.floor(Math.random() * 4);
         var indexColor = Math.floor(Math.random() * 4);
         colorMatch.textElement.html(colorMatch.colors[indexText]);
-        colorMatch.textElement.addClass(colorMatch.colors[indexColor]);
+        colorMatch.textElement.attr('class', colorMatch.colors[indexColor]);
 
         // Get random text and color and put them in the color div (second)
         indexText = Math.floor(Math.random() * 4);
         indexColor = Math.floor(Math.random() * 4);
         colorMatch.colorElement.html(colorMatch.colors[indexText]);
-        colorMatch.colorElement.addClass(colorMatch.colors[indexColor]);
+        colorMatch.colorElement.attr('class', colorMatch.colors[indexColor]);
     },
 
     /** Display the hints before the game starts */
@@ -125,16 +127,38 @@ var colorMatch = {
         var match = colorMatch.textElement.html() === colorMatch.colorElement.attr('class');
         var right = !left;
 
-        // Remove existing classes
-        colorMatch.textElement.removeAttr('class');
-        colorMatch.colorElement.removeAttr('class');
+        var notificationElement;
 
         // Check user's input. If left key was pressed and it was not a match - correct. If right key and not a match - also correct
         if ((left && !match) || (right && match)) {
-            ++colorMatch.correct;
+            // Increase correct and consecutive answers count
+            colorMatch.correct++;
+            colorMatch.consecutive++;
+
+            // Each correct answer increases the score by 10
+            colorMatch.score += 10;
+            
+            // For combos of 3 or more, increase the score with the amount of the combo
+            if (colorMatch.consecutive >= 3) {
+                colorMatch.score += colorMatch.consecutive;
+            }
+
+            notificationElement = $('#answer-correct');
+
         } else {
-            ++colorMatch.wrong;
+            // Increase the incorrect count and set the consecutive answers one to 0
+            colorMatch.wrong++;
+            colorMatch.consecutive = 0;
+
+            notificationElement = $('#answer-incorrect');
         }
+
+        // Display answer correct notification
+        notificationElement.show();
+        setTimeout(function() { notificationElement.fadeOut() }, 300);
+
+        // Update score
+        $('#game-score').html(colorMatch.score);
         
         // Populate with new values
         colorMatch.populateElements();

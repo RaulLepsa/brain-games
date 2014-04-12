@@ -57,16 +57,18 @@
     <div class="container">
       <div class="game">
 
-        <!-- Stats - score and time left -->
+        <!-- Stats - score, time left, correct/incorrect, combo count -->
         <div class="stats">
-          <div>
+          <p>
             <span>Time: </span><span id="game-timeleft">00:50</span> | 
             <span>Score: </span><span id="game-score">0</span>
-          </div>
+            <span id="answer-correct" class="glyphicon glyphicon-ok green margin-left display-none"></span>
+            <span id="answer-incorrect" class="glyphicon glyphicon-remove red margin-left display-none"></span>
+          </p>
         </div><!--/stats -->
 
         <!-- The 2 DIVs that will hold the tiles for the game -->
-        <div class="wide margin-top">
+        <div class="wide margin-top30">
           <div class="color-match-div">
             <div id="left">&nbsp</div>
           </div>
@@ -77,11 +79,11 @@
 
         <div class="clear margin-top">
           <div class="glyphicon-holder">
-            <span class="glyphicon glyphicon-circle-arrow-left"></span>
+            <span class="glyphicon glyphicon-game glyphicon-circle-arrow-left"></span>
             <span class="glyphicon-text">false</span>
           </div>
           <div class="glyphicon-holder">
-            <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            <span class="glyphicon glyphicon-game glyphicon-circle-arrow-right"></span>
             <span class="glyphicon-text">true</span>
           </div>
         </div>
