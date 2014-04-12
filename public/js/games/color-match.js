@@ -97,15 +97,17 @@ var colorMatch = {
     start: function() {
 
         // Countdown time starting from now, for a 'duration' period
-        $('#game-timeleft').countdown(new Date(new Date().getTime() + colorMatch.duration * 1000), function(event) {
-            $(this).html(event.strftime('%M:%S'));
-        });
+        $('#game-timeleft').countdown(new Date(new Date().getTime() + colorMatch.duration * 1000),
+            function(event) {
+                $(this).html(event.strftime('%M:%S'));
+            }
+        ).on('finish.countdown', colorMatch.stop);
 
         // Add event listeners for swipe left/right and arrow key left/right
-        $(document).on("swipeleft", function (e) {
+        $(document).on('swipeleft', function (e) {
             colorMatch.answer(true);
         });
-        $(document).on("swiperight", function (e) {
+        $(document).on('swiperight', function (e) {
             colorMatch.answer(false);
         });
         $(document).keydown(function (e) {
@@ -116,6 +118,13 @@ var colorMatch = {
             }
         });        
     },
+
+    /* Stop the game */
+    stop: function() {
+        $(document).off('swipeleft');
+        $(document).off('swiperight');
+        $(document).off('keydown');
+    },  
 
     /* 
      * Detects whether the answer is correct or incorrect, and prepares the elements for the next "round".
@@ -137,7 +146,7 @@ var colorMatch = {
 
             // Each correct answer increases the score by 10
             colorMatch.score += 10;
-            
+
             // For combos of 3 or more, increase the score with the amount of the combo
             if (colorMatch.consecutive >= 3) {
                 colorMatch.score += colorMatch.consecutive;
