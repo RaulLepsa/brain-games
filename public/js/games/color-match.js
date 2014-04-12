@@ -1,15 +1,18 @@
 var colorMatch = {
 
-    /* Variables that refer hold the text (first) and color (second) DOM elements */
-    textElement: null,
-    colorElement: null,
-
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
     /* Keep correct and wrong answers count */
     correct: 0,
     wrong: 0,
+
+    /* Game duration (in seconds) */
+    duration: 40,
+
+    /* Variables that refer hold the text (first) and color (second) DOM elements */
+    textElement: null,
+    colorElement: null,
 
     /* Initialize the game using the 2 DOM elements that will further hold the values */
     initialize: function(textElem, colorElem) {
@@ -91,6 +94,12 @@ var colorMatch = {
     /* Start the game. Add listeners and call the 'answer' function depending on the event triggered. */
     start: function() {
 
+        // Countdown time starting from now, for a 'duration' period
+        $('#game-timeleft').countdown(new Date(new Date().getTime() + colorMatch.duration * 1000), function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        });
+
+        // Add event listeners for swipe left/right and arrow key left/right
         $(document).on("swipeleft", function (e) {
             colorMatch.answer(true);
         });
