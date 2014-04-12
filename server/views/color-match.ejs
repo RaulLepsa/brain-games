@@ -56,25 +56,24 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
     <div class="container">
       <div class="game">
-        <span>Correct:</span><span id="correct">0</span>
-        <span>Wrong:</span><span id="wrong">0</span>
-        <br><br>
 
-        <blockquote class="hint hint-left">
-          <p>The text in this tile ...</p>
-        </blockquote>
-
-        <blockquote class="hint hint-right">
-          <p>... must match the color of the text in this one</p>
-        </blockquote>
+        <!-- Stats - score and time left -->
+        <div class="stats">
+          <div>
+            <span>Time: </span><span id="game-timeleft">0.50</span> | 
+            <span>Score: </span><span id="game-score">0</span>
+          </div>
+        </div><!--/stats -->
 
         <!-- The 2 DIVs that will hold the tiles for the game -->
-      	<div class="color-match-div">
-      		<div id="left"></div>
-      	</div>
-      	<div class="color-match-div">
-      		<div id="right"></div>
-      	</div>
+        <div class="wide margin-top">
+          <div class="color-match-div">
+            <div id="left">&nbsp</div>
+          </div>
+          <div class="color-match-div">
+            <div id="right">&nbsp</div>
+          </div>
+        </div>
 
         <div class="clear margin-top">
           <div class="glyphicon-holder">
@@ -87,8 +86,47 @@
           </div>
         </div>
 
+        <div class="hint-indicator margin-top">
+          <p style="color: gray; font-style: italic">Left arrow key (or swipe left) to indicate that the condition IS NOT fulfilled.</p>
+          <p style="color: gray; font-style: italic">Right arrow key (or swipe right) to indicate that the condition IS fulfilled.</p>
+        </div>
+        
+        <input id="start" type="button" class="btn btn-success margin-top" value="Start"/>
       </div><!--/game -->
     </div><!--/container -->
+
+
+    <!-- Modal that explains the game -->
+    <div id="hints" class="modal fade out center">
+      <blockquote class="hint hint-top">
+        <p>The text in the first tile ...</p>
+      </blockquote>
+
+      <div class="wide">
+        <div class="color-match-div">
+          <div id="hint-left"></div>
+        </div>
+        <div class="color-match-div">
+          <div id="hint-right"></div>
+        </div>
+      </div>
+
+      <blockquote class="hint hint-bottom">
+        <p>... must match the color of the text in the second one</p>
+      </blockquote>
+
+      <div class="wide">
+        <blockquote class="hint">
+          <p id="hint-condition"></p>
+        </blockquote>
+      </div>
+
+    <p id="next-hint" class="hint-text"><span class="glyphicon glyphicon-circle-arrow-right"></span> Next hint</p>
+    <p id="prev-hint" class="hint-text"><span class="glyphicon glyphicon-circle-arrow-left"></span> Previous hint</p>
+    <p id="close-hints" class="hint-text"><span class="glyphicon glyphicon-remove-circle"></span> Got it</p>
+
+    </div><!--modal -->
+
 
     <!-- FOOTER -->
     <% include footer %>

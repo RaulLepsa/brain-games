@@ -1,6 +1,6 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
-/* Padding below the footer and lighter body text */
+/* Main Containers */
 body {
   padding-bottom: 40px;
   color: #5a5a5a;
@@ -15,6 +15,7 @@ footer {
 	text-align: center;
 }
 
+/* Colors */
 .black {
   color: black;
 }
@@ -31,6 +32,11 @@ footer {
   color: green;
 }
 
+.orange {
+  color: #f0ad4e;
+}
+
+/* Positioning styles */
 .display-none {
   display: none;
 }
@@ -54,6 +60,15 @@ footer {
 .margin-top {
   margin-top: 20px;
 }
+
+.wide {
+  width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
@@ -208,12 +223,27 @@ footer {
   clear: both;
 }
 
+/* Stats = score and time */
+.game .stats {
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%;
+  color: #f0ad4e;
+  display: inline;
+  text-align: right;
+}
+
+/* Hints */
+.hint-text {
+  color: #FFF;
+  cursor: pointer;
+  font-size: 18px;
+}
+
 .hint {
-  width: 48%;
   display: inline-block;
   position: relative;
   padding: 30px;
-  margin: 1em 0 3em;
   border: 5px solid #428bca;
   text-align: center;
   color: #333;
@@ -223,28 +253,42 @@ footer {
   border-radius: 20px;
 }
 
-.hint-left:after {
+.hint-top {
+  margin: 1em 0 3em;
+}
+
+.hint-top:after {
   content: "";
   position: absolute;
   bottom: -50px;
-  right: 50px;
-  border-width: 0 0 50px 30px;
+  left: 20%;
+  border-width: 0 30px 50px 0px;
   border-style: solid;
   border-color: transparent #428bca;
   display: block;
   width: 0;
 }
 
-.hint-right:after {
+.hint-bottom {
+  margin: 3em 0 1em;
+}
+
+.hint-bottom:before {
   content: "";
   position: absolute;
-  bottom: -50px;
-  left: 50px;
-  border-width: 0 30px 50px 0px;
+  top: -50px;
+  right: 20%;
+  border-width: 0 0 50px 30px;
   border-style: solid;
-  border-color: transparent #428bca;
+  border-color: #428bca transparent;
   display: block;
   width: 0;
+}
+
+.hint-indicator p {
+  color: gray;
+  font-style: italic;
+  margin-bottom: 0;
 }
 
 /* Color-Match Game

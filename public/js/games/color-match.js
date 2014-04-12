@@ -17,7 +17,13 @@ var colorMatch = {
         colorMatch.colorElement = colorElem;
 
         colorMatch.populateElements();
-        colorMatch.start();
+        //colorMatch.hints();
+
+        var startButton = $('#start');
+        startButton.click(function() {
+            startButton.hide();
+            colorMatch.start();
+        });
     },
 
     /* Populate the 2 elements with random text having a random color */
@@ -34,6 +40,52 @@ var colorMatch = {
         indexColor = Math.floor(Math.random() * 4);
         colorMatch.colorElement.html(colorMatch.colors[indexText]);
         colorMatch.colorElement.addClass(colorMatch.colors[indexColor]);
+    },
+
+    /** Display the hints before the game starts */
+    hints: function() {
+        var hints = $('#hints');
+        var hintLeft = $('#hint-left');
+        var hintRight = $('#hint-right');
+        var nextHint = $('#next-hint');
+        var prevHint = $('#prev-hint');
+        var closeHints = $('#close-hints');
+        var hintCondition = $('#hint-condition');
+
+        // Display hints
+        hints.modal('show');
+
+        // Display an example
+        hintLeft.html('blue');
+        hintLeft.attr('class', 'red');
+        hintRight.html('black');
+        hintRight.attr('class', 'blue');
+        hintCondition.html('<span class="glyphicon glyphicon-ok green"></span> The condition is fulfilled');
+        nextHint.show();
+        prevHint.hide();
+        closeHints.hide();
+
+        // Displays prev example
+        prevHint.click(function() {
+            colorMatch.hints();
+        });
+
+        // Displays next example
+        nextHint.click(function() {
+            hintLeft.html('red');
+            hintLeft.attr('class', 'red');
+            hintRight.html('black');
+            hintRight.attr('class', 'black');
+            hintCondition.html('<span class="glyphicon glyphicon-remove red"></span> The condition is NOT fulfilled');
+            nextHint.hide();
+            prevHint.show();
+            closeHints.show();
+        });
+
+        // Close the Hints modal
+        closeHints.click(function() {
+            hints.modal('hide');
+        });
     },
 
     /* Start the game. Add listeners and call the 'answer' function depending on the event triggered. */
@@ -70,9 +122,9 @@ var colorMatch = {
 
         // Check user's input. If left key was pressed and it was not a match - correct. If right key and not a match - also correct
         if ((left && !match) || (right && match)) {
-            $('#correct').html(++colorMatch.correct);
+            ++colorMatch.correct;
         } else {
-            $('#wrong').html(++colorMatch.wrong);
+            ++colorMatch.wrong;
         }
         
         // Populate with new values
