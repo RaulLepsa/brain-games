@@ -8,7 +8,7 @@ var colorMatch = {
     wrong: 0,
 
     /* Game duration (in seconds) */
-    duration: 40,
+    duration: 50,
 
     /* Variables that refer hold the text (first) and color (second) DOM elements */
     textElement: null,
@@ -20,7 +20,7 @@ var colorMatch = {
         colorMatch.colorElement = colorElem;
 
         colorMatch.populateElements();
-        //colorMatch.hints();
+        colorMatch.hints();
 
         var startButton = $('#start');
         startButton.click(function() {
