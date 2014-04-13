@@ -3,11 +3,12 @@ var colorMatch = {
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
-    /* Keep correct, wrong and consecutive correct answers count, as well as the score */
-    correct: 0,
-    wrong: 0,
-    consecutive: 0,
-    score: 0,
+    /* Variables that store answer-related data */
+    correct: 0,         // # of correct answers
+    wrong: 0,           // # of wrong answers
+    consecutive: 0,     // # of consecutive correct answers
+    combo_count: 0,     // how many times the user managed combos (consecutive of 3 or more)
+    score: 0,           // total score
 
     /* Game duration (in seconds) */
     duration: 50,
@@ -124,6 +125,10 @@ var colorMatch = {
         $(document).off('swipeleft');
         $(document).off('swiperight');
         $(document).off('keydown');
+
+        // Trigger a game finished event, as dealing with data after the game has ended is no longer related to this particular game,
+        // but should be dealt with by the application incorporating the game
+        $(document).trigger('game-finished');
     },  
 
     /* 
@@ -150,6 +155,10 @@ var colorMatch = {
             // For combos of 3 or more, increase the score with the amount of the combo
             if (colorMatch.consecutive >= 3) {
                 colorMatch.score += colorMatch.consecutive;
+            }
+            // Remember number of total combos
+            if (colorMatch.consecutive === 3) {
+                colorMatch.combo_count++;
             }
 
             notificationElement = $('#answer-correct');

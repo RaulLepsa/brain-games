@@ -14,3 +14,13 @@ CREATE TABLE games (
 	category VARCHAR,
 	description TEXT
 );
+
+CREATE TABLE scores (
+	id BIGSERIAL,
+	user_id BIGINT,
+	user_fullname VARCHAR,
+	game_id BIGINT,
+	game_name VARCHAR,
+	date DATE,
+	score JSON 
+);

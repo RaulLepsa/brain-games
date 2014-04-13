@@ -17,6 +17,8 @@ var games = {
 
 	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
 	gamesPageReady: function() {
+
+		// Clicking on a Category
 		$('#category-list a').click(function() {
 			// Get category and set it on the window location href
 			var selected = $(this);
@@ -35,6 +37,36 @@ var games = {
 					selected.addClass('active');
 				},
 				error: handlers.errorHandler
+			});
+		});
+
+		// Clicking on a "Go to game" button
+		$('#game-list').find('input[type="button"]').click(function() {
+			var button = $(this);
+
+			// Store game id
+			localStorage.setItem('game-id', button.attr('id'));
+			localStorage.setItem('game-name', $(this).parent().find('h2').html());
+
+			// Go to game
+			window.location = button.attr('href');
+		});
+	},
+
+	colorMatchPageReady: function() {
+		$(document).on('game-finished', function() {
+			var gameId = localStorage.getItem('game-id');
+			var gameName = localStorage.getItem('game-name');
+
+			$.ajax({
+				type: 'POST',
+				url: '/secure/game-score/color-match',
+				data: { gameId: gameId, gameName: gameName, points: colorMatch.score, correct: colorMatch.correct, 
+					wrong: colorMatch.wrong, combos: colorMatch.combo_count, consecutive: colorMatch.consecutive },
+				success: function(response) {
+					alert('success');
+				},
+				error: handlers.saveScoreErrorHandler
 			});
 		});
 	}
@@ -65,6 +97,11 @@ var handlers = {
 
 	/* Generic error handler */
 	errorHandler: function() {
-		alert('An error occurred while processing your request')
+		alert('An error occurred while processing your request');
+	},
+
+	/* Save score error handler */
+	saveScoreErrorHandler: function() {
+		alert('An error occurred while saving your score');
 	}
 };
