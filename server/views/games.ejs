@@ -28,33 +28,8 @@
 <!-- NAVBAR
 ================================================== -->
   <body>
-    <div class="navbar-wrapper">
-      <div class="container">
-
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">Brain Games</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="/secure/home">HOME</a></li>
-                <li><a href="#stats">STATS</a></li>
-                <li class="active"><a href="#">GAMES</a></li>
-                <li><a href="#profile">PROFILE</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
+    <!-- NAVBAR -->
+    <% include /sub-views/navbar %>
 
     <!-- Wrap the rest of the page in another container to center all the content. -->
     <div class="container">
@@ -87,7 +62,7 @@
     </div><!--/container -->
 
     <!-- FOOTER -->
-    <% include footer %>
+    <% include /sub-views/footer %>
 
     <!-- SCRIPTS -->
     <script src="/js/jquery.min.js"></script>
@@ -96,7 +71,7 @@
     <script src="/js/docs.min.js"></script>
 
     <script type="text/javascript">
-      games.gamesPageReady();
+      games.pageReady();
     </script> 
   </body>
 </html>

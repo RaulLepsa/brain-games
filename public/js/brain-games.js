@@ -12,11 +12,22 @@ var authentication = {
 	}
 };
 
+/** Functions for the Home page **/
+var home = {
+
+	/* Home page ready function */
+	pageReady: function() {
+		$('#nav-home').addClass('active');
+	}
+};
+
 /** Functions for page that lists games **/
 var games = {
 
 	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
-	gamesPageReady: function() {
+	pageReady: function() {
+
+		$('#nav-games').addClass('active');
 
 		// Clicking on a Category
 		$('#category-list a').click(function() {
@@ -39,8 +50,11 @@ var games = {
 				error: handlers.errorHandler
 			});
 		});
+	},
 
-		// Clicking on a "Go to game" button
+	/* When the List of Games on the Game page is (re)populated, (re)bind the click function on the elements */
+	gameListReady: function() {
+
 		$('#game-list').find('input[type="button"]').click(function() {
 			var button = $(this);
 

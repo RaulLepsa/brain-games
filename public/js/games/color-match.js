@@ -1,3 +1,5 @@
+/*! Color Match Game */
+
 var colorMatch = {
 
     /* Array of possible colors */
