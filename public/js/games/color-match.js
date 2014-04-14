@@ -5,6 +5,10 @@ var colorMatch = {
     /* Array of possible colors */
     colors: ['black', 'red', 'blue', 'green'],
 
+    /* Keys for wrong and correct answer */
+    keyCodeCorrect: 39,
+    keyCodeWrong: 37,
+
     /* Variables that store answer-related data */
     correct: 0,         // # of correct answers
     wrong: 0,           // # of wrong answers
@@ -114,9 +118,9 @@ var colorMatch = {
             colorMatch.answer(false);
         });
         $(document).keydown(function (e) {
-            if (e.keyCode === 37) {
+            if (e.keyCode === colorMatch.keyCodeWrong) {
                 colorMatch.answer(true);
-            } else if (e.keyCode === 39) {
+            } else if (e.keyCode === colorMatch.keyCodeCorrect) {
                 colorMatch.answer(false);
             }
         });        
@@ -135,18 +139,19 @@ var colorMatch = {
 
     /* 
      * Detects whether the answer is correct or incorrect, and prepares the elements for the next "round".
-     * 'left' is a boolean that indicates whether the left key/swipe event has taken place. If false, it means that it was the right one.
+     * 'wrong' is a boolean that indicates whether the key/swipe event indicating the user selected 'wrong' has taken place. 
+     * If false, it means that it was the event triggered signals the user chose 'correct'.
      */
-    answer: function(left) {
+    answer: function(wrong) {
 
         // Check matching condition: text from first div must match color in second
         var match = ('cm-' + colorMatch.textElement.html()) === colorMatch.colorElement.attr('class');
-        var right = !left;
+        var correct = !wrong;
 
         var notificationElement;
 
-        // Check user's input. If left key was pressed and it was not a match - correct. If right key and not a match - also correct
-        if ((left && !match) || (right && match)) {
+        // Check user's input. If wrong key was pressed and it was not a match - correct. If correct key and not a match - also correct
+        if ((wrong && !match) || (correct && match)) {
             // Increase correct and consecutive answers count
             colorMatch.correct++;
             colorMatch.consecutive++;
