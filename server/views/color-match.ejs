@@ -15,6 +15,8 @@
     <!-- Global CSS for application -->
     <link href="/stylesheets/brain-games.css" rel="stylesheet">
 
+    <link href="/stylesheets/bootstrap-callouts.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -41,35 +43,44 @@
           </p>
         </div><!--/stats -->
 
-        <!-- The 2 DIVs that will hold the tiles for the game -->
-        <div class="wide margin-top30">
-          <div class="color-match-div">
-            <div id="left">&nbsp</div>
+        <div id="game-content">
+          <!-- The 2 DIVs that will hold the tiles for the game -->
+          <div class="wide margin-top30">
+            <div class="color-match-div">
+              <div id="left">&nbsp</div>
+            </div>
+            <div class="color-match-div">
+              <div id="right">&nbsp</div>
+            </div>
           </div>
-          <div class="color-match-div">
-            <div id="right">&nbsp</div>
-          </div>
-        </div>
 
-        <div class="clear margin-top">
-          <div class="glyphicon-holder">
-            <span class="glyphicon glyphicon-game glyphicon-circle-arrow-left"></span>
-            <span class="glyphicon-text">false</span>
+          <div class="clear margin-top">
+            <div class="glyphicon-holder">
+              <span class="glyphicon glyphicon-game glyphicon-circle-arrow-left"></span>
+              <span class="glyphicon-text">false</span>
+            </div>
+            <div class="glyphicon-holder">
+              <span class="glyphicon glyphicon-game glyphicon-circle-arrow-right"></span>
+              <span class="glyphicon-text">true</span>
+            </div>
           </div>
-          <div class="glyphicon-holder">
-            <span class="glyphicon glyphicon-game glyphicon-circle-arrow-right"></span>
-            <span class="glyphicon-text">true</span>
-          </div>
-        </div>
 
-        <div class="hint-indicator margin-top">
-          <p style="color: gray; font-style: italic">Left arrow key (or swipe left) to indicate that the condition IS NOT fulfilled.</p>
-          <p style="color: gray; font-style: italic">Right arrow key (or swipe right) to indicate that the condition IS fulfilled.</p>
-        </div>
+          <div class="hint-indicator margin-top">
+            <p style="color: gray; font-style: italic">Left arrow key (or swipe left) to indicate that the condition IS NOT fulfilled.</p>
+            <p style="color: gray; font-style: italic">Right arrow key (or swipe right) to indicate that the condition IS fulfilled.</p>
+          </div>
+          
+          <input id="start" type="button" class="btn btn-success margin-top" value="Start"/>
+        </div><!--/game-content -->
         
-        <input id="start" type="button" class="btn btn-success margin-top" value="Start"/>
       </div><!--/game -->
       
+      <!-- Gameover DIV to be displayed on game end -->
+      <div id="gameover" class="bs-callout display-none">
+        <h4>Congrats!</h4>  
+        <p></p>
+      </div><!--/gameover -->
+
     </div><!--/container -->
 
 
@@ -104,6 +115,7 @@
 
     </div><!--modal -->
 
+    </div>
     <!-- FOOTER -->
     <% include /sub-views/footer %>
 

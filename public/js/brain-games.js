@@ -67,10 +67,15 @@ var games = {
 		});
 	},
 
+	/* When the Color Match page is ready, listen for the game-finished event. When triggered, handle it accordingly */
 	colorMatchPageReady: function() {
 		$(document).on('game-finished', function() {
 			var gameId = localStorage.getItem('game-id');
 			var gameName = localStorage.getItem('game-name');
+
+			$('#game-content').hide();
+
+			//TODO: check colorMatch.score to match score from DIV
 
 			$.ajax({
 				type: 'POST',
@@ -78,12 +83,48 @@ var games = {
 				data: { gameId: gameId, gameName: gameName, points: colorMatch.score, correct: colorMatch.correct, 
 					wrong: colorMatch.wrong, combos: colorMatch.combo_count, consecutive: colorMatch.consecutive },
 				success: function(response) {
-					alert('success');
+
+					// At this moment the game is over
+					var previousBest = 200;
+					var score = colorMatch.score;
+
+					var calloutClass;
+					var calloutHeader;
+					var calloutText;
+
+					// Set the notification text depending on the score and previous best
+					if (score > previousBest) {
+						calloutClass = 'bs-callout-success';
+						calloutHeader = 'Congrats!';
+						calloutText = 'You\'ve set a new high score of <strong>' + score + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>';
+					} else if (previousBest - score < 150) {
+						calloutClass = 'bs-callout-info';
+						calloutHeader = 'So close!';
+
+						if (score === previousBest) {
+							calloutText = 'You\'ve just equalized your previous best score of <strong>' + score + '</strong>';
+						} else {
+							calloutText = 'You needed just <strong>' + (previousBest - score) + '</strong> more points to equalize your ' +
+											'previous best of <strong>' + previousBest + '</strong>';
+						}
+					} else {
+						calloutClass = 'bs-callout-danger';
+						calloutHeader = 'Not enough!';
+						calloutText = 'Your score of <strong>' + score + '</strong> is pretty far away from your personal best of ' + 
+										'<strong>' + previousBest + '</strong>. You can do better!';
+					}
+
+					// Display it
+					var gameoverDiv = $('#gameover');
+					gameoverDiv.addClass(calloutClass);
+					gameoverDiv.find('h4').html(calloutHeader);
+					gameoverDiv.find('p').html(calloutText);
+					gameoverDiv.fadeIn();
 				},
 				error: handlers.saveScoreErrorHandler
 			});
 		});
-	}
+	},
 };
 
 /** Name says it all: util functions **/
