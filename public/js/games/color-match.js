@@ -41,13 +41,13 @@ var colorMatch = {
         var indexText = Math.floor(Math.random() * 4);
         var indexColor = Math.floor(Math.random() * 4);
         colorMatch.textElement.html(colorMatch.colors[indexText]);
-        colorMatch.textElement.attr('class', colorMatch.colors[indexColor]);
+        colorMatch.textElement.attr('class', 'cm-' + colorMatch.colors[indexColor]);
 
         // Get random text and color and put them in the color div (second)
         indexText = Math.floor(Math.random() * 4);
         indexColor = Math.floor(Math.random() * 4);
         colorMatch.colorElement.html(colorMatch.colors[indexText]);
-        colorMatch.colorElement.attr('class', colorMatch.colors[indexColor]);
+        colorMatch.colorElement.attr('class', 'cm-' + colorMatch.colors[indexColor]);
     },
 
     /** Display the hints before the game starts */
@@ -65,9 +65,9 @@ var colorMatch = {
 
         // Display an example
         hintLeft.html('blue');
-        hintLeft.attr('class', 'red');
+        hintLeft.attr('class', 'cm-red');
         hintRight.html('black');
-        hintRight.attr('class', 'blue');
+        hintRight.attr('class', 'cm-blue');
         hintCondition.html('<span class="glyphicon glyphicon-ok green"></span> The condition is fulfilled');
         nextHint.show();
         prevHint.hide();
@@ -81,9 +81,9 @@ var colorMatch = {
         // Displays next example
         nextHint.click(function() {
             hintLeft.html('red');
-            hintLeft.attr('class', 'red');
+            hintLeft.attr('class', 'cm-red');
             hintRight.html('black');
-            hintRight.attr('class', 'black');
+            hintRight.attr('class', 'cm-black');
             hintCondition.html('<span class="glyphicon glyphicon-remove red"></span> The condition is NOT fulfilled');
             nextHint.hide();
             prevHint.show();
@@ -140,7 +140,7 @@ var colorMatch = {
     answer: function(left) {
 
         // Check matching condition: text from first div must match color in second
-        var match = colorMatch.textElement.html() === colorMatch.colorElement.attr('class');
+        var match = ('cm-' + colorMatch.textElement.html()) === colorMatch.colorElement.attr('class');
         var right = !left;
 
         var notificationElement;

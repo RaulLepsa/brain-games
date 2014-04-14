@@ -96,7 +96,7 @@ var games = {
 					if (score > previousBest) {
 						calloutClass = 'bs-callout-success';
 						calloutHeader = 'Congrats!';
-						calloutText = 'You\'ve set a new high score of <strong>' + score + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>';
+						calloutText = 'You\'ve set a new high score of <strong>' + score + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>.';
 					} else if (previousBest - score < 150) {
 						calloutClass = 'bs-callout-info';
 						calloutHeader = 'So close!';
