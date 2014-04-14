@@ -107,10 +107,10 @@ var colorMatch = {
         ).on('finish.countdown', colorMatch.stop);
 
         // Add event listeners for swipe left/right and arrow key left/right
-        $(document).on('swipeleft', function (e) {
+        $('body').on('swipeleft', function (e) {
             colorMatch.answer(true);
         });
-        $(document).on('swiperight', function (e) {
+        $('body').on('swiperight', function (e) {
             colorMatch.answer(false);
         });
         $(document).keydown(function (e) {
@@ -124,8 +124,8 @@ var colorMatch = {
 
     /* Stop the game */
     stop: function() {
-        $(document).off('swipeleft');
-        $(document).off('swiperight');
+        $('body').off('swipeleft');
+        $('body').off('swiperight');
         $(document).off('keydown');
 
         // Trigger a game finished event, as dealing with data after the game has ended is no longer related to this particular game,
