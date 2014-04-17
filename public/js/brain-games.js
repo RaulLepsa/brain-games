@@ -76,11 +76,18 @@ var games = {
 			return;
 		}
 
+		// Game finished event listener
 		$(document).on('game-finished', function() {
 			$('#game-content').hide();
 
-			//TODO: check colorMatch.score to match score from DIV
+			// Detect invalid score
+			if (colorMatch.score != $('#game-score').html()) {
+				alert('Invalid score');
+				window.location = '/secure/games';
+				return;
+			}
 
+			// Save game score
 			$.ajax({
 				type: 'POST',
 				url: '/secure/game-score',
