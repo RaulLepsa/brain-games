@@ -69,23 +69,29 @@ var games = {
 
 	/* When the Color Match page is ready, listen for the game-finished event. When triggered, handle it accordingly */
 	colorMatchPageReady: function() {
-		$(document).on('game-finished', function() {
-			var gameId = localStorage.getItem('game-id');
-			var gameName = localStorage.getItem('game-name');
+		var gameId = localStorage.getItem('game-id');
+		var gameName = localStorage.getItem('game-name');
+		if (!gameId) {
+			window.location = '/secure/games';
+			return;
+		}
 
+		$(document).on('game-finished', function() {
 			$('#game-content').hide();
 
 			//TODO: check colorMatch.score to match score from DIV
 
 			$.ajax({
 				type: 'POST',
-				url: '/secure/game-score/color-match',
+				url: '/secure/game-score',
 				data: { gameId: gameId, gameName: gameName, points: colorMatch.score, correct: colorMatch.correct, 
 					wrong: colorMatch.wrong, combos: colorMatch.combo_count, consecutive: colorMatch.consecutive },
 				success: function(response) {
 
 					// At this moment the game is over
-					var previousBest = 200;
+					var previousBest = parseInt(localStorage.getItem('previous-best'));
+					if (isNaN(previousBest)) { previousBest = null; }
+					
 					var score = colorMatch.score;
 
 					var calloutClass;
@@ -93,7 +99,11 @@ var games = {
 					var calloutText;
 
 					// Set the notification text depending on the score and previous best
-					if (score > previousBest) {
+					if (previousBest == null) {
+						calloutClass = 'bs-callout-success';
+						calloutHeader = 'First one!';
+						calloutText = 'This is your first game and you set a score of <strong>' + score + '</strong>!';
+					} else if (score > previousBest) {
 						calloutClass = 'bs-callout-success';
 						calloutHeader = 'Congrats!';
 						calloutText = 'You\'ve set a new high score of <strong>' + score + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>.';
@@ -120,9 +130,27 @@ var games = {
 					gameoverDiv.find('h4').html(calloutHeader);
 					gameoverDiv.find('p').html(calloutText);
 					gameoverDiv.fadeIn();
+
+					$('#game-finished-btn').show();
+
+					// Remove localStorage items
+					localStorage.removeItem('previous-best');
+					localStorage.removeItem('game-id');
+					localStorage.removeItem('game-name');
 				},
 				error: handlers.saveScoreErrorHandler
 			});
+		});
+	
+		// Get previous best score for current user
+		$.ajax({
+			type: 'GET',
+			url: '/secure/game-score/top',
+			data: {gameId: gameId},
+			success: function(response) {
+				localStorage.setItem('previous-best', response.score);
+			},
+			error: handlers.errorHandler
 		});
 	},
 };

@@ -20,6 +20,11 @@ app.get('/secure/game/color-match', function (req, res) {
 });
 
 // Save a Score for a Game
-app.post('/secure/game-score/color-match', function (req, res) {
+app.post('/secure/game-score', function (req, res) {
 	GameController.saveScore(req, res);
+});
+
+// Get top score for a Game
+app.get('/secure/game-score/top', function (req, res) {
+	GameController.getTopScore(req, res);
 });

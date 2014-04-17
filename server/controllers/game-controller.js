@@ -64,6 +64,21 @@ var GameController = {
 			}
 			res.end();
 		});
+	},
+
+	/* Get the top score for a user for a certain game */
+	getTopScore: function(req, res) {
+		var userId = req.user.id;
+		var gameId = req.param('gameId');
+
+		Score.getTopScore(userId, gameId, function (err, score) {
+			if (err) {
+				res.statusCode = 500;
+				res.end();
+			} else {
+				res.json(200, {score: score});
+			}
+		});
 	}
 };
 
