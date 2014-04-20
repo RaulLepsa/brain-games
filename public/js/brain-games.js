@@ -46,6 +46,7 @@ var games = {
 					$('#category-list a').removeClass('active');
 					$('#game-list').html(response);
 					selected.addClass('active');
+					games.gameListReady();
 				},
 				error: handlers.errorHandler
 			});
