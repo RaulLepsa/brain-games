@@ -51,6 +51,11 @@ var games = {
 				error: handlers.errorHandler
 			});
 		});
+
+		// Bind the data-toggle for the Secondary Navigation
+		$('[data-toggle=offcanvas]').click(function () {
+		  $('.row-offcanvas').toggleClass('active')
+		});
 	},
 
 	/* When the List of Games on the Game page is (re)populated, (re)bind the click function on the elements */
