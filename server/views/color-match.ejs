@@ -39,11 +39,12 @@
 
         <!-- Stats - score, time left, correct/incorrect, combo count -->
         <div class="stats">
-            <p>
-                <span>Time: </span><span id="game-timeleft">00:50</span> |
-                <span>Score: </span><span id="game-score">0</span>
-                <span id="answer-correct" class="glyphicon glyphicon-ok green margin-left display-none"></span>
-                <span id="answer-incorrect" class="glyphicon glyphicon-remove red margin-left display-none"></span>
+            <div class="timeleft-container"><span id="game-timeleft">00:50</span></div>
+            <div class="score-container"><span id="game-score">0</span></div>
+
+            <p class="center" style="height: 25px">
+                <span id="answer-correct" class="glyphicon glyphicon-ok green display-none"></span>
+                <span id="answer-incorrect" class="glyphicon glyphicon-remove red display-none"></span>
             </p>
         </div>
         <!--/stats -->
@@ -92,7 +93,7 @@
         <p></p>
     </div>
     <!--/gameover -->
-    <a id="game-finished-btn" href="/secure/games" class="btn btn-primary display-none" role="button">Go to Games List»</a>
+    <a id="game-finished-btn" href="/secure/games" class="btn btn-primary display-none" role="button">Go to Games List »</a>
 
 </div>
 <!--/container -->
@@ -104,7 +105,7 @@
         <p>The text in the first tile ...</p>
     </blockquote>
 
-    <div class="wide">
+    <div class="wide margin-top">
         <div class="color-match-div">
             <div id="hint-left"></div>
         </div>

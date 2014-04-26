@@ -231,15 +231,73 @@ footer {
   clear: both;
 }
 
+.game .game-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
 /* Stats = score and time */
 .game .stats {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
   width: 100%;
   color: #f0ad4e;
   display: inline;
   text-align: left;
 }
+
+.score-container, .timeleft-container{
+    position: relative;
+    display: inline-block;
+    background: #f0ad4e;
+    padding: 15px 25px;
+    font-size: 25px;
+    height: 55px;
+    width: 110px;
+    line-height: 45px;
+    font-weight: 700;
+    border-radius: 3px;
+    color: #fff;
+    text-align: center;
+}
+
+.score-container:after, .timeleft-container:after {
+    position: absolute;
+    width: 100%;
+    top: 10px;
+    left: 0;
+    text-transform: uppercase;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    color: #fff;
+}
+
+.score-container .score-addition, .timeleft-container.score-addition {
+    position: absolute;
+    right: 30px;
+    color: red;
+    font-size: 25px;
+    line-height: 25px;
+    font-weight: bold;
+    color: rgba(119, 110, 101, 0.9);
+    z-index: 100;
+    -webkit-animation: move-up 600ms ease-in;
+    -moz-animation: move-up 600ms ease-in;
+    animation: move-up 600ms ease-in;
+    -webkit-animation-fill-mode: both;
+    -moz-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.score-container:after {
+    content: "Score";
+}
+
+.timeleft-container:after {
+    content: "Time left";
+}
+
 
 /* Hints */
 .hint-text {
@@ -262,7 +320,7 @@ footer {
 }
 
 .hint-top {
-  margin: 1em 0 3em;
+  margin: 3em 0;
 }
 
 .hint-top:after {
@@ -297,20 +355,6 @@ footer {
   color: gray;
   font-style: italic;
   margin-bottom: 0;
-}
-
-/* Color-Match Game
-------------------------- */
-.color-match-div {
-  border: 1px solid #C0C0C0;
-  border-radius: 6px;
-  width: 200px;
-  display: inline-block;
-  line-height: 3;
-  font-weight: 500;
-  letter-spacing: 2px;
-  font-size: 18px;
-  background-color: #F0F0F0; 
 }
 
 /* RESPONSIVE CSS
