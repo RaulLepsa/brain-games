@@ -87,7 +87,7 @@ var games = {
 			$('#game-content').hide();
 
 			// Detect invalid score
-			if (colorMatch.score != $('#game-score').html()) {
+			if (colorMatch._score != $('#game-score').html()) {
 				alert('Invalid score');
 				window.location = '/secure/games';
 				return;
@@ -97,15 +97,15 @@ var games = {
 			$.ajax({
 				type: 'POST',
 				url: '/secure/game-score',
-				data: { gameId: gameId, gameName: gameName, points: colorMatch.score, correct: colorMatch.correct, 
-					wrong: colorMatch.wrong, combos: colorMatch.combo_count, consecutive: colorMatch.consecutive },
-				success: function(response) {
+				data: { gameId: gameId, gameName: gameName, points: colorMatch._score, correct: colorMatch._correct,
+					wrong: colorMatch._wrong, combos: colorMatch._comboCount, consecutive: colorMatch._consecutive },
+				success: function() {
 
 					// At this moment the game is over
 					var previousBest = parseInt(localStorage.getItem('previous-best'));
 					if (isNaN(previousBest)) { previousBest = null; }
 					
-					var score = colorMatch.score;
+					var score = colorMatch._score;
 
 					var calloutClass;
 					var calloutHeader;
@@ -165,7 +165,7 @@ var games = {
 			},
 			error: handlers.errorHandler
 		});
-	},
+	}
 };
 
 /** Name says it all: util functions **/

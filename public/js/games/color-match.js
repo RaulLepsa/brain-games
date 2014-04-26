@@ -3,33 +3,33 @@
 var colorMatch = {
 
     /* Array of possible colors */
-    colors: ['black', 'red', 'blue', 'green'],
+    _colors: ['black', 'red', 'blue', 'green'],
 
     /* Keys for wrong and correct answer */
-    keyCodeCorrect: 39,
-    keyCodeWrong: 37,
+    _keyCodeCorrect: 39,
+    _keyCodeWrong: 37,
 
     /* Variables that store answer-related data */
-    correct: 0,         // # of correct answers
-    wrong: 0,           // # of wrong answers
-    consecutive: 0,     // # of consecutive correct answers
-    combo_count: 0,     // how many times the user managed combos (consecutive of 3 or more)
-    score: 0,           // total score
+    _correct: 0,         // # of correct answers
+    _wrong: 0,           // # of wrong answers
+    _consecutive: 0,     // # of consecutive correct answers
+    _comboCount: 0,     // how many times the user managed combos (consecutive of 3 or more)
+    _score: 0,           // total score
 
     /* Game duration (in seconds) */
-    duration: 50,
+    _duration: 50,
 
     /* Variables that refer hold the text (first) and color (second) DOM elements */
-    textElement: null,
-    colorElement: null,
+    _textElement: null,
+    _colorElement: null,
 
     /* Reference to the last setTimeout function on the notification element */
     _notificationTimeout: undefined,
 
     /* Initialize the game using the 2 DOM elements that will further hold the values */
     initialize: function(textElem, colorElem) {
-        colorMatch.textElement = textElem;
-        colorMatch.colorElement = colorElem;
+        colorMatch._textElement = textElem;
+        colorMatch._colorElement = colorElem;
 
         colorMatch.populateElements();
         colorMatch.hints();
@@ -47,14 +47,14 @@ var colorMatch = {
         // Get random text and color and put them in the text div (first)
         var indexText = Math.floor(Math.random() * 4);
         var indexColor = Math.floor(Math.random() * 4);
-        colorMatch.textElement.html(colorMatch.colors[indexText]);
-        colorMatch.textElement.attr('class', 'cm-' + colorMatch.colors[indexColor]);
+        colorMatch._textElement.html(colorMatch._colors[indexText]);
+        colorMatch._textElement.attr('class', 'cm-' + colorMatch._colors[indexColor]);
 
         // Get random text and color and put them in the color div (second)
         indexText = Math.floor(Math.random() * 4);
         indexColor = Math.floor(Math.random() * 4);
-        colorMatch.colorElement.html(colorMatch.colors[indexText]);
-        colorMatch.colorElement.attr('class', 'cm-' + colorMatch.colors[indexColor]);
+        colorMatch._colorElement.html(colorMatch._colors[indexText]);
+        colorMatch._colorElement.attr('class', 'cm-' + colorMatch._colors[indexColor]);
     },
 
     /** Display the hints before the game starts */
@@ -107,7 +107,7 @@ var colorMatch = {
     start: function() {
 
         // Countdown time starting from now, for a 'duration' period
-        $('#game-timeleft').countdown(new Date(new Date().getTime() + colorMatch.duration * 1000),
+        $('#game-timeleft').countdown(new Date(new Date().getTime() + colorMatch._duration * 1000),
             function(event) {
                 $(this).html(event.strftime('%M:%S'));
             }
@@ -121,9 +121,9 @@ var colorMatch = {
             colorMatch.answer(false);
         });
         $(document).keydown(function (e) {
-            if (e.keyCode === colorMatch.keyCodeWrong) {
+            if (e.keyCode === colorMatch._keyCodeWrong) {
                 colorMatch.answer(true);
-            } else if (e.keyCode === colorMatch.keyCodeCorrect) {
+            } else if (e.keyCode === colorMatch._keyCodeCorrect) {
                 colorMatch.answer(false);
             }
         });        
@@ -148,7 +148,7 @@ var colorMatch = {
     answer: function(wrong) {
 
         // Check matching condition: text from first div must match color in second
-        var match = ('cm-' + colorMatch.textElement.html()) === colorMatch.colorElement.attr('class');
+        var match = ('cm-' + colorMatch._textElement.html()) === colorMatch._colorElement.attr('class');
         var correct = !wrong;
 
         // Stop animation on notification element
@@ -160,19 +160,19 @@ var colorMatch = {
         // Check user's input. If wrong key was pressed and it was not a match - correct. If correct key and not a match - also correct
         if ((wrong && !match) || (correct && match)) {
             // Increase correct and consecutive answers count
-            colorMatch.correct++;
-            colorMatch.consecutive++;
+            colorMatch._correct++;
+            colorMatch._consecutive++;
 
             // Each correct answer increases the score by 10
-            colorMatch.score += 10;
+            colorMatch._score += 10;
 
             // For combos of 3 or more, increase the score with the amount of the combo
-            if (colorMatch.consecutive >= 3) {
-                colorMatch.score += colorMatch.consecutive;
+            if (colorMatch._consecutive >= 3) {
+                colorMatch._score += colorMatch._consecutive;
             }
             // Remember number of total combos
-            if (colorMatch.consecutive === 3) {
-                colorMatch.combo_count++;
+            if (colorMatch._consecutive === 3) {
+                colorMatch._comboCount++;
             }
 
             // Set appropriate notification
@@ -181,8 +181,8 @@ var colorMatch = {
 
         } else {
             // Increase the incorrect count and set the consecutive answers one to 0
-            colorMatch.wrong++;
-            colorMatch.consecutive = 0;
+            colorMatch._wrong++;
+            colorMatch._consecutive = 0;
 
             // Set appropriate notification
             notificationElement.addClass('red glyphicon-remove');
@@ -195,7 +195,7 @@ var colorMatch = {
         colorMatch._notificationTimeout = setTimeout(function() { notificationElement.fadeOut() }, 300);
 
         // Update score
-        $('#game-score').html(colorMatch.score);
+        $('#game-score').html(colorMatch._score);
         
         // Populate with new values
         colorMatch.populateElements();
