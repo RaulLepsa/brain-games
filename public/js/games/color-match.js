@@ -23,6 +23,9 @@ var colorMatch = {
     textElement: null,
     colorElement: null,
 
+    /* Reference to the last setTimeout function on the notification element */
+    _notificationTimeout: undefined,
+
     /* Initialize the game using the 2 DOM elements that will further hold the values */
     initialize: function(textElem, colorElem) {
         colorMatch.textElement = textElem;
@@ -148,7 +151,11 @@ var colorMatch = {
         var match = ('cm-' + colorMatch.textElement.html()) === colorMatch.colorElement.attr('class');
         var correct = !wrong;
 
-        var notificationElement;
+        // Stop animation on notification element
+        var notificationElement = $('.answer-notification');
+        if (notificationElement.is(':animated')) {
+            notificationElement.stop().animate({opacity: '100'});
+        }
 
         // Check user's input. If wrong key was pressed and it was not a match - correct. If correct key and not a match - also correct
         if ((wrong && !match) || (correct && match)) {
@@ -168,19 +175,24 @@ var colorMatch = {
                 colorMatch.combo_count++;
             }
 
-            notificationElement = $('#answer-correct');
+            // Set appropriate notification
+            notificationElement.addClass('green glyphicon-ok');
+            notificationElement.removeClass('red glyphicon-remove');
 
         } else {
             // Increase the incorrect count and set the consecutive answers one to 0
             colorMatch.wrong++;
             colorMatch.consecutive = 0;
 
-            notificationElement = $('#answer-incorrect');
+            // Set appropriate notification
+            notificationElement.addClass('red glyphicon-remove');
+            notificationElement.removeClass('green glyphicon-ok');
         }
 
-        // Display answer correct notification
+        // Show notification and set timeout for it
         notificationElement.show();
-        setTimeout(function() { notificationElement.fadeOut() }, 300);
+        clearTimeout(colorMatch._notificationTimeout);
+        colorMatch._notificationTimeout = setTimeout(function() { notificationElement.fadeOut() }, 300);
 
         // Update score
         $('#game-score').html(colorMatch.score);
@@ -188,5 +200,5 @@ var colorMatch = {
         // Populate with new values
         colorMatch.populateElements();
     }    
-}
+};
 
