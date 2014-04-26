@@ -2,3 +2,4 @@
 /server/secret.env
 *.sublime-project
 *.sublime-workspace
+/.idea
