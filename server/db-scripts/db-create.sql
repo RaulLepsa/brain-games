@@ -12,7 +12,8 @@ CREATE TABLE games (
 	id BIGSERIAL,
 	name VARCHAR,
 	category VARCHAR,
-	description TEXT
+	description TEXT,
+	link VARCHAR(20)
 );
 
 CREATE TABLE scores (

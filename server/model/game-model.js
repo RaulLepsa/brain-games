@@ -4,7 +4,7 @@ function Game() { }
 
 /* Create a new Game object */
 Game.new = function() {
-    return { 'id': null, 'name': null, 'category': null, 'description': null };
+    return { 'id': null, 'name': null, 'category': null, 'description': null, 'link': null };
 };
 
 /* Get a list of games by a category. If category is null, all the games are retrieved */
@@ -18,7 +18,7 @@ Game.getList = function (category, callback) {
         params.push(category);
     } 
 
-    var query = client.query( sql, params,
+    client.query( sql, params,
         
         function (err, result) {
             if (err) {
@@ -36,6 +36,7 @@ Game.getList = function (category, callback) {
                     game.category = result.rows[i].category;
                     game.name = result.rows[i].name;
                     game.description = result.rows[i].description;
+                    game.link = result.rows[i].link;
 
                     list.push(game);
                 }

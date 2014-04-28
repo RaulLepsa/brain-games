@@ -5,11 +5,11 @@
     <div class="col-sm-7">
       <h2><%= games[i].name %></h2>
       <p><%= games[i].description %></p>
-      <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-default" href="/secure/game/<%= games[i].name.toLowerCase().replace(/ /g, '-') %>" role="button">
+      <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-default" href="/secure/game/<%= games[i].link %>" role="button">
     </div>
 
     <div class="col-sm-5">
-      <img src="/images/<%= games[i].name.toLowerCase().replace(/ /g, '-') %>.png" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
+      <img src="/images/<%= games[i].link %>.png" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
     </div>
 
   </div><!--/row-->
