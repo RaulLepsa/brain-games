@@ -250,7 +250,7 @@ h1.title {
 .game-heading {
     width: 500px;
     margin: 0 auto;
-    height: 105px;
+    min-height: 105px;
 }
 
 .game-heading:after {
