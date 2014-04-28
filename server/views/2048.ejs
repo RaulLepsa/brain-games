@@ -11,23 +11,40 @@
 
     <title>2048</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
     <!-- 2048 Game CSS -->
     <link href="/stylesheets/2048.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
+
+<!-- NAVBAR -->
+<% include /sub-views/navbar %>
+
 <div class="container">
-    <div class="heading">
+    <div class="game">
+    <div class="heading container">
         <h1 class="title">2048</h1>
 
         <div class="scores-container">
             <div class="score-container">0</div>
             <div class="best-container">0</div>
         </div>
+
+            <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
     </div>
 
-    <div class="above-game">
-        <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
-    </div>
+
 
     <div class="game-container">
         <div class="game-message">
@@ -66,7 +83,11 @@
         </div>
     </div>
 
-</div>
+    </div>
+</div><!-- container -->
+
+<!-- FOOTER -->
+<% include /sub-views/footer %>
 
 <script src="/js/games/2048/bind_polyfill.js"></script>
 <script src="/js/games/2048/classlist_polyfill.js"></script>

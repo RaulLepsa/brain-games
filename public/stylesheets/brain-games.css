@@ -1,80 +1,82 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Main Containers */
+
 body {
-  padding-bottom: 40px;
-  color: #5a5a5a;
+    padding-bottom: 40px;
+    color: #5a5a5a;
+    background-color: #faf8ef;
 }
 
 /* CUSTOMIZE CONTAINER */
 .container {
-  max-width: 800px;
+    max-width: 800px;
 }
 
 footer {
-	text-align: center;
+    text-align: center;
 }
 
 /* Colors */
 .black {
-  color: black;
+    color: black;
 }
 
 .red {
-  color: #d43f3a;
+    color: #d43f3a;
 }
 
 .blue {
-  color: #428bca;
+    color: #428bca;
 }
 
 .green {
-  color: #398439;
+    color: #398439;
 }
 
 .orange {
-  color: #f0ad4e;
+    color: #f0ad4e;
 }
 
 /* Positioning styles */
 .display-none {
-  display: none;
+    display: none;
 }
 
 .absolute {
-  position: absolute;
+    position: absolute;
 }
 
 .clear {
-  clear: both;
+    clear: both;
 }
 
 .no-background {
-  background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 .padding-left35 {
-  padding-left: 35px;
+    padding-left: 35px;
 }
 
 .margin-top {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .margin-left {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 .margin-top30 {
-  margin-top: 30px;
+    margin-top: 30px;
 }
 
 .wide {
-  width: 100%;
+    width: 100%;
 }
 
 .center {
-  text-align: center;
+    text-align: center;
 }
 
 /* CUSTOMIZE THE NAVBAR
@@ -82,130 +84,128 @@ footer {
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 20;
-  padding-top: 20px;
-  margin-bottom: 20px;
-  background-color: #D0D0D0;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 20;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    background-color: #C0D0E0;
 }
 
 /* Flip around the padding for proper display in narrow viewports */
 .navbar-wrapper .container {
-  padding-right: 0;
-  padding-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
+
 .navbar-wrapper .navbar {
-  padding-right: 15px;
-  padding-left: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .navbar-nav {
-  float: right;
+    float: right;
 }
 
 .navbar-inverse {
-  background-color: transparent;
-  border-color: transparent;
+    background-color: transparent;
+    border-color: transparent;
 }
 
 .navbar-inverse .navbar-brand {
-  color: #428BCA;
-  font-weight: 500;
+    color: #428BCA;
+    font-weight: 500;
 }
 
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
-  background-color: #428bca;
+    background-color: #428bca;
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-  border-color: #FFF;
+    border-color: #FFF;
 }
 
-.navbar-inverse .navbar-nav>li>a {
-  color: #428bca;
+.navbar-inverse .navbar-nav > li > a {
+    color: #428bca;
 }
 
-.navbar-inverse .navbar-nav>.active>a {
-  background-color: #428bca;
-  border-color: #357ebd;
-  color: #FFF;
-  border-radius: 6px;
+.navbar-inverse .navbar-nav > .active > a {
+    background-color: #428bca;
+    border-color: #357ebd;
+    color: #FFF;
+    border-radius: 6px;
 }
 
-.navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
-  background-color: #3276b1;
+.navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: #3276b1;
 }
-
-
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
 /* Carousel base class */
 .carousel {
-  height: 500px;
-  margin-bottom: 60px;
+    height: 500px;
+    margin-bottom: 60px;
 }
+
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
-  z-index: 10;
+    z-index: 10;
 }
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  height: 500px;
-  background-color: #D0D0D0;
+    height: 500px;
+    background-color: #D0D0D0;
 }
+
 .carousel-inner > .item > img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 500px;
 }
-
-
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
 
 /* Pad the edges of the mobile views a bit */
 .marketing {
-  padding-right: 15px;
-  padding-left: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
-  margin-bottom: 20px;
-  text-align: center;
-}
-.marketing h2 {
-  font-weight: normal;
-}
-.marketing .col-lg-4 p {
-  margin-right: 10px;
-  margin-left: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
+.marketing h2 {
+    font-weight: normal;
+}
+
+.marketing .col-lg-4 p {
+    margin-right: 10px;
+    margin-left: 10px;
+}
 
 /* Featurettes
 ------------------------- */
 
 .featurette-divider {
-  margin: 40px 0; /* Space out the Bootstrap <hr> more */
+    margin: 40px 0; /* Space out the Bootstrap <hr> more */
 }
 
 /* Thin out the marketing headings */
 .featurette-heading {
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -1px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -1px;
 }
-
-
 
 /* GAMES
 -------------------------------------------------- */
@@ -213,22 +213,22 @@ footer {
 /* General Games CSS 
 ------------------------- */
 .game {
-  text-align: center;
+    text-align: center;
 }
 
 .game .glyphicon-game {
-  font-size: 2.0em;
-  color: #428bca;
-  margin: 5px;
+    font-size: 2.0em;
+    color: #428bca;
+    margin: 5px;
 }
 
 .game .glyphicon-holder {
-  display: inline-block;
-  width: 50px;
+    display: inline-block;
+    width: 50px;
 }
 
 .game .glyphicon-text {
-  clear: both;
+    clear: both;
 }
 
 .game .game-title {
@@ -236,17 +236,17 @@ footer {
     font-weight: 700;
 }
 
-/* Stats = score and time */
+/* Stats - Score / Time left containers */
 .game .stats {
-  font-size: 24px;
-  font-weight: 500;
-  width: 100%;
-  color: #f0ad4e;
-  display: inline;
-  text-align: left;
+    font-size: 24px;
+    font-weight: 500;
+    width: 100%;
+    color: #f0ad4e;
+    display: inline;
+    text-align: left;
 }
 
-.score-container, .timeleft-container{
+.score-container, .timeleft-container, .best-container {
     position: relative;
     display: inline-block;
     background: #f0ad4e;
@@ -261,7 +261,7 @@ footer {
     text-align: center;
 }
 
-.score-container:after, .timeleft-container:after {
+.score-container:after, .timeleft-container:after, .best-container:after {
     position: absolute;
     width: 100%;
     top: 10px;
@@ -273,7 +273,7 @@ footer {
     color: #fff;
 }
 
-.score-container .score-addition, .timeleft-container.score-addition {
+.score-container .score-addition, .timeleft-container.score-addition, .best-container.score-addition {
     position: absolute;
     right: 30px;
     color: red;
@@ -298,68 +298,81 @@ footer {
     content: "Time left";
 }
 
+.best-container:after {
+    content: "Best";
+}
+
+@media screen and (max-width: 520px) {
+    .score-container, .best-container {
+        margin-top: 0;
+        padding: 15px 10px;
+        width: 90px;
+    }
+}
+
 .answer-notification-container {
     text-align: center;
     width: 100%;
     height: 25px;
 }
 
+
 /* Hints */
 .hint-text {
-  color: #FFF;
-  cursor: pointer;
-  font-size: 18px;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 18px;
 }
 
 .hint {
-  display: inline-block;
-  position: relative;
-  padding: 30px;
-  border: 5px solid #428bca;
-  text-align: center;
-  color: #333;
-  background: #fff;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+    display: inline-block;
+    position: relative;
+    padding: 30px;
+    border: 5px solid #428bca;
+    text-align: center;
+    color: #333;
+    background: #fff;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }
 
 .hint-top {
-  margin: 3em 0;
+    margin: 3em 0;
 }
 
 .hint-top:after {
-  content: "";
-  position: absolute;
-  bottom: -50px;
-  left: 20%;
-  border-width: 0 30px 50px 0px;
-  border-style: solid;
-  border-color: transparent #428bca;
-  display: block;
-  width: 0;
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    left: 20%;
+    border-width: 0 30px 50px 0px;
+    border-style: solid;
+    border-color: transparent #428bca;
+    display: block;
+    width: 0;
 }
 
 .hint-bottom {
-  margin: 3em 0 1em;
+    margin: 3em 0 1em;
 }
 
 .hint-bottom:before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  right: 20%;
-  border-width: 0 0 50px 30px;
-  border-style: solid;
-  border-color: #428bca transparent;
-  display: block;
-  width: 0;
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: 20%;
+    border-width: 0 0 50px 30px;
+    border-style: solid;
+    border-color: #428bca transparent;
+    display: block;
+    width: 0;
 }
 
 .hint-indicator p {
-  color: gray;
-  font-style: italic;
-  margin-bottom: 0;
+    color: gray;
+    font-style: italic;
+    margin-bottom: 0;
 }
 
 /* RESPONSIVE CSS
@@ -367,40 +380,41 @@ footer {
 
 @media (min-width: 768px) {
 
-  /* Remove the edge padding needed for mobile */
-  .marketing {
-    padding-right: 0;
-    padding-left: 0;
-  }
+    /* Remove the edge padding needed for mobile */
+    .marketing {
+        padding-right: 0;
+        padding-left: 0;
+    }
 
-  .navbar-wrapper .container {
-    padding-right: 15px;
-    padding-left:  15px;
-  }
-  .navbar-wrapper .navbar {
-    padding-right: 0;
-    padding-left:  0;
-  }
+    .navbar-wrapper .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
 
-  /* The navbar becomes detached from the top, so we round the corners */
-  .navbar-wrapper .navbar {
-    border-radius: 4px;
-  }
+    .navbar-wrapper .navbar {
+        padding-right: 0;
+        padding-left: 0;
+    }
 
-  /* Bump up size of carousel content */
-  .carousel-caption p {
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: 1.4;
-  }
+    /* The navbar becomes detached from the top, so we round the corners */
+    .navbar-wrapper .navbar {
+        border-radius: 4px;
+    }
 
-  .featurette-heading {
-    font-size: 50px;
-  }
+    /* Bump up size of carousel content */
+    .carousel-caption p {
+        margin-bottom: 20px;
+        font-size: 21px;
+        line-height: 1.4;
+    }
+
+    .featurette-heading {
+        font-size: 50px;
+    }
 }
 
 @media (min-width: 992px) {
-  .featurette-heading {
-    margin-top: 120px;
-  }
+    .featurette-heading {
+        margin-top: 120px;
+    }
 }
