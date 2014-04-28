@@ -7,7 +7,8 @@
 
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport"
+          content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
 
     <title>2048</title>
 
@@ -33,62 +34,63 @@
 
 <div class="container">
     <div class="game">
-    <div class="heading container">
-        <h1 class="title">2048</h1>
+        <div class="game-heading">
+            <h1 class="title">2048</h1>
 
-        <div class="scores-container">
-            <div class="score-container">0</div>
-            <div class="best-container">0</div>
-        </div>
+            <div class="scores-container">
+                <div class="score-container">0</div>
+                <div class="best-container">0</div>
+            </div>
 
             <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
-    </div>
-
-
-
-    <div class="game-container">
-        <div class="game-message">
-            <p></p>
         </div>
 
-        <div class="grid-container">
-            <div class="grid-row">
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
+
+        <div class="game-container">
+            <div class="game-message">
+                <p></p>
             </div>
-            <div class="grid-row">
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
+
+            <div class="grid-container">
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
             </div>
-            <div class="grid-row">
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-            </div>
-            <div class="grid-row">
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
-                <div class="grid-cell"></div>
+
+            <div class="tile-container">
+
             </div>
         </div>
 
-        <div class="tile-container">
-
-        </div>
     </div>
-
-    </div>
-</div><!-- container -->
+</div>
+<!-- container -->
 
 <!-- FOOTER -->
 <% include /sub-views/footer %>
 
+<script src="/js/jquery.min.js"></script>
 <script src="/js/games/2048/bind_polyfill.js"></script>
 <script src="/js/games/2048/classlist_polyfill.js"></script>
 <script src="/js/games/2048/animframe_polyfill.js"></script>
@@ -98,6 +100,12 @@
 <script src="/js/games/2048/tile.js"></script>
 <script src="/js/games/2048/local_storage_manager.js"></script>
 <script src="/js/games/2048/game_manager.js"></script>
-<script src="/js/games/2048/application.js"></script>
+
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/brain-games.js"></script>
+
+<script>
+    games.pageReady2048();
+</script>
 </body>
 </html>

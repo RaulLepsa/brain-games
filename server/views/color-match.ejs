@@ -37,14 +37,17 @@
 
     <div class="game">
 
-        <!-- Stats - score, time left, correct/incorrect, combo count -->
-        <div class="stats">
-            <div class="timeleft-container"><span id="game-timeleft">00:50</span></div>
-            <div class="score-container"><span id="game-score">0</span></div>
+        <div class="game-heading">
+            <h1 class="title">Color Match</h1>
 
-            <p class="answer-notification-container"><span class="answer-notification glyphicon"></span></p>
+            <!-- Stats - score, time left, correct/incorrect, combo count -->
+            <div class="scores-container">
+                <div class="timeleft-container"><span id="game-timeleft">00:50</span></div>
+                <div class="score-container"><span id="game-score">0</span></div>
+            </div><!--/stats -->
+
+            <p class="answer-notification-container"><span class="answer-notification glyphicon glyphicon-game"></span></p>
         </div>
-        <!--/stats -->
 
         <div id="game-content">
             <!-- The 2 DIVs that will hold the tiles for the game -->
@@ -59,21 +62,21 @@
 
             <div class="clear margin-top">
                 <div class="glyphicon-holder">
-                    <span class="glyphicon glyphicon-game glyphicon-circle-arrow-left"></span>
+                    <span class="glyphicon glyphicon-game glyphicon-circle-arrow-left blue"></span>
                     <span class="glyphicon-text">false</span>
                 </div>
                 <div class="glyphicon-holder">
-                    <span class="glyphicon glyphicon-game glyphicon-circle-arrow-right"></span>
+                    <span class="glyphicon glyphicon-game glyphicon-circle-arrow-right blue"></span>
                     <span class="glyphicon-text">true</span>
                 </div>
             </div>
 
             <div class="hint-indicator margin-top">
-                <p style="color: gray; font-style: italic">Left arrow key (or swipe left) to indicate that the condition
-                    IS NOT fulfilled.</p>
+                <p>Left arrow key (or swipe left) to indicate that the condition
+                    <strong>IS NOT</strong> fulfilled.</p>
 
-                <p style="color: gray; font-style: italic">Right arrow key (or swipe right) to indicate that the
-                    condition IS fulfilled.</p>
+                <p>Right arrow key (or swipe right) to indicate that the
+                    condition <strong>IS</strong> fulfilled.</p>
             </div>
 
             <input id="start" type="button" class="btn btn-success margin-top" value="Start"/>
@@ -102,7 +105,7 @@
         <p>The text in the first tile ...</p>
     </blockquote>
 
-    <div class="wide margin-top">
+    <div class="wide margin-top10">
         <div class="color-match-div">
             <div id="hint-left"></div>
         </div>
@@ -145,7 +148,7 @@
 
 <script type="text/javascript">
     colorMatch.initialize($('#left'), $('#right'));
-    games.colorMatchPageReady();
+    games.pageReadyColorMatch();
 </script>
 </body>
 </html>

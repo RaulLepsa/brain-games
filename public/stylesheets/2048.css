@@ -2,24 +2,11 @@
 
 .game .container {
     font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-    width: 500px;
 }
-
-.heading {
-    margin: 0 auto;
-}
-
-.heading:after {
-  content: "";
-  display: block;
-  clear: both; }
 
 h1.title {
-  font-size: 70px;
-  font-weight: bold;
-  margin: 0;
-  display: block;
-  float: left; }
+    font-size: 70px;
+}
 
 @-webkit-keyframes move-up {
   0% {
@@ -45,9 +32,6 @@ h1.title {
   100% {
     top: -50px;
     opacity: 0; } }
-.scores-container {
-  float: right;
-  text-align: right; }
 
 p {
   margin-top: 0;
@@ -447,14 +431,10 @@ hr {
 
   h1.title {
     font-size: 27px;
-    margin-top: 15px; }
+  }
 
   .game .container {
-    width: 320px;
     margin: 0 auto; }
-
-  .heading {
-    margin-bottom: 10px; }
 
   .restart-button {
     width: 42%;

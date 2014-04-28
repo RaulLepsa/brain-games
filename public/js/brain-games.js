@@ -74,13 +74,24 @@ var games = {
 	},
 
 	/* When the Color Match page is ready, listen for the game-finished event. When triggered, handle it accordingly */
-	colorMatchPageReady: function() {
+	pageReadyColorMatch: function() {
 		var gameId = localStorage.getItem('game-id');
 		var gameName = localStorage.getItem('game-name');
 		if (!gameId) {
 			window.location = '/secure/games';
 			return;
 		}
+
+        // Get previous best score for current user
+        $.ajax({
+            type: 'GET',
+            url: '/secure/game-score/top',
+            data: {gameId: gameId},
+            success: function(response) {
+                localStorage.setItem('previous-best', response.score);
+            },
+            error: handlers.errorHandler
+        });
 
 		// Game finished event listener
 		$(document).on('game-finished', function() {
@@ -148,24 +159,50 @@ var games = {
 
 					// Remove localStorage items
 					localStorage.removeItem('previous-best');
-					localStorage.removeItem('game-id');
-					localStorage.removeItem('game-name');
 				},
 				error: handlers.saveScoreErrorHandler
 			});
 		});
-	
-		// Get previous best score for current user
-		$.ajax({
-			type: 'GET',
-			url: '/secure/game-score/top',
-			data: {gameId: gameId},
-			success: function(response) {
-				localStorage.setItem('previous-best', response.score);
-			},
-			error: handlers.errorHandler
-		});
-	}
+
+        localStorage.removeItem('game-id');
+        localStorage.removeItem('game-name');
+	},
+
+    pageReady2048: function() {
+        var gameManager = new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
+
+        var gameId = localStorage.getItem('game-id');
+        var gameName = localStorage.getItem('game-name');
+        if (!gameId) {
+            window.location = '/secure/games';
+            return;
+        }
+
+        // Get previous best score for current user
+        $.ajax({
+            type: 'GET',
+            url: '/secure/game-score/top',
+            data: {gameId: gameId},
+            success: function(response) {
+                localStorage.setItem(new LocalStorageManager().bestScoreKey, response.score);
+            },
+            error: handlers.errorHandler
+        });
+
+        // Game finished event listener
+        $(document).on('game-finished', function() {
+
+            // Save game score
+            $.ajax({
+                type: 'POST',
+                url: '/secure/game-score',
+                data: { gameId: gameId, gameName: gameName, points: gameManager.score},
+                success: function () {
+                    alert('ok');
+                }
+            });
+        });
+    }
 };
 
 /** Name says it all: util functions **/

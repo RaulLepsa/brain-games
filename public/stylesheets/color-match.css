@@ -1,5 +1,6 @@
 /* Color-Match Game
 ------------------------- */
+@import url(../fonts/clear-sans.css);
 
 .cm-red {
     color: red;
@@ -27,4 +28,14 @@
     letter-spacing: 2px;
     font-size: 18px;
     background-color: #F0F0F0;
+}
+
+h1.title {
+    font-size: 45px;
+}
+
+@media screen and (max-width: 520px) {
+    h1.title {
+        font-size: 20px;
+    }
 }
