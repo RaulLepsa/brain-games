@@ -21,11 +21,15 @@ app.post('/secure/game-score', function (req, res) {
 	GameController.saveScore(req, res);
 });
 
-// Get top score for a Game
+// Get top score for a user for a Game
 app.get('/secure/game-score/top', function (req, res) {
 	GameController.getTopScore(req, res);
 });
 
+// Get high scores for a game
+app.get('/secure/highscores/:link', function (req, res) {
+    GameController.getHighScores(req, res);
+});
 
 /** Specific games **/
 

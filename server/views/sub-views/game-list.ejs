@@ -6,6 +6,7 @@
       <h2><%= games[i].name %></h2>
       <p><%= games[i].description %></p>
       <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-default" href="/secure/game/<%= games[i].link %>" role="button">
+      <input type="button" value="High scores »" class="btn btn-default" href="/secure/highscores/<%= games[i].link %>" role="button">
     </div>
 
     <div class="col-sm-5">

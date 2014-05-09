@@ -50,7 +50,7 @@ Game.getList = function (category, callback) {
 /* Get a list of categories, ordered by name */
 Game.getCategories = function(callback) {
 
-    var query = client.query( 'SELECT DISTINCT category FROM games ORDER BY category ASC',
+    client.query( 'SELECT DISTINCT category FROM games ORDER BY category ASC',
         
         function (err, result) {
             if (err) {

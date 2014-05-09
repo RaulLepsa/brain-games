@@ -2,9 +2,16 @@ var client = require('../commons/db-connection');
 
 function Score() { }
 
+function ScoreInformation() { }
+
 /* Create a new Score object using parameters */
-Score.new = function(id, userId, userFullname, gameId, gameName, date, score) {
-    return { 'id': id, 'userId': userId, 'userFullname': userFullname, 'gameId': gameId, 'gameName': gameName, 'date': date, 'score': score };
+Score.new = function(id, userId, userFullname, gameId, gameName, date, scoreInfo) {
+    return { 'id': id, 'userId': userId, 'userFullname': userFullname, 'gameId': gameId, 'gameName': gameName, 'date': date, 'score': scoreInfo };
+};
+
+/* Create a new Score Information object using parameters */
+Score.scoreInfo = function(points, correct, wrong, combos, consecutive) {
+    return { 'points': points, 'correct': correct, 'wrong': wrong, 'combos': combos, 'consecutive': consecutive };
 };
 
 /* Save a Score for a Game. If successful, the function returns the Score object containing the just-inserted id */
@@ -46,7 +53,44 @@ Score.getTopScore = function (userId, gameId, callback) {
             }
         }
     );
-}
+};
+
+// Get high scores for a specific game
+Score.getHighScores = function (link, callback) {
+    client.query("SELECT user_fullname, game_name, date, score->>'points' AS points " +
+            "FROM scores " +
+            "JOIN games ON scores.game_id = games.id " +
+            "WHERE games.link = $1",
+        [link], function (err, result) {
+
+            if (err) {
+                console.error('Error retrieving top scores for game: ' + gameId, err);
+                callback(err, null);
+            } else {
+                if (result.rowCount === 0) {
+                    callback(null, null);
+                } else {
+                    var scores = [];
+                    var score, scoreInfo;
+
+                    for (var i = 0; i < result.rows.length; i++) {
+                        score = Score.new();
+                        scoreInfo = Score.scoreInfo();
+
+                        score.userFullname = result.rows[i].user_fullname;
+                        score.gameName = result.rows[i].game_name;
+                        score.date = result.rows[i].date;
+                        scoreInfo.points = result.rows[i].points;
+                        score.score = scoreInfo;
+
+                        scores.push(score);
+                    }
+
+                    callback(null, scores);
+                }
+            }
+        });
+};
 
 
 module.exports = Score;

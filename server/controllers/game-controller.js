@@ -49,14 +49,16 @@ var GameController = {
 		var gameName = req.param('gameName');
 		var points = req.param('points');
 
-		var score = {};
-		score.points = parseInt(req.param('points'));
-		score.correct = parseInt(req.param('correct'));
-		score.wrong = parseInt(req.param('wrong'));
-		score.combos = parseInt(req.param('combos'));
-		score.consecutive = parseInt(req.param('consecutive'));
+		var scoreInfo = Score.scoreInfo(
+            parseInt(req.param('points')),
+            parseInt(req.param('correct')),
+            parseInt(req.param('wrong')),
+            parseInt(req.param('combos')),
+            parseInt(req.param('consecutive'))
+        );
 
-		Score.save(Score.new(null, userId, userFullname, gameId, gameName, new Date(), score), function (err, score) {
+
+		Score.save(Score.new(null, userId, userFullname, gameId, gameName, new Date(), scoreInfo), function (err, score) {
 			if (err) {
 				res.statusCode = 500;
 			} else {
@@ -79,7 +81,26 @@ var GameController = {
 				res.json(200, {score: score});
 			}
 		});
-	}
+	},
+
+    /* Get high scores for a game */
+    getHighScores: function(req, res) {
+
+        Score.getHighScores(req.params.link, function (err, scores) {
+            if (err) {
+                res.statusCode = 500;
+                res.end();
+            } else {
+                var title = '';
+
+                if (scores != null) {
+                    title = scores[0].gameName;
+                }
+
+                res.render('highscores', {title: title, scores: scores});
+            }
+        });
+    }
 };
 
 module.exports = GameController;
