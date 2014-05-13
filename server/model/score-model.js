@@ -57,35 +57,38 @@ Score.getTopScore = function (userId, gameId, callback) {
 };
 
 /*
-    Get high scores for a specific game.
-    'link' is the game link (a.k.a friendly name);
+    Get high scores for a specific game. If the current user is not included in the retrieved ones, check for his high score.
+    'gameLink' is the game link (a.k.a friendly name);
+    'userId' identifies the current user
     'limit' is the max number of records to be retrieved
  */
-Score.getHighScores = function (link, limit, callback) {
+Score.getHighScores = function (gameLink, userId, limit, callback) {
     client.query("SELECT user_id, user_fullname, game_id, game_name, date, (score->>'points')::BIGINT AS points " +
             "FROM scores " +
             "JOIN games ON scores.game_id = games.id " +
             "WHERE games.link = $1 " +
             "ORDER BY points DESC " +
             "LIMIT $2",
-        [link, limit], function (err, result) {
+        [gameLink, limit], function (err, result) {
 
             if (err) {
                 console.error('Error retrieving top scores for game: ' + gameId, err);
-                callback(err, null);
+                callback(err, null, null);
             } else {
                 if (result.rowCount === 0) {
-                    callback(null, null);
+                    callback(null, null, null);
                 } else {
                     var scores = [];
                     var score, scoreInfo;
 
+                    var currentUserFound = false;
                     for (var i = 0; i < result.rows.length; i++) {
                         score = Score.new();
                         scoreInfo = Score.scoreInfo();
 
                         score.userFullname = result.rows[i].user_fullname;
                         score.userId = result.rows[i].user_id;
+                        if (score.userId === userId) { currentUserFound = true; }
                         score.gameId = result.rows[i].game_id;
                         score.gameName = result.rows[i].game_name;
                         score.date = utils.formatDate(result.rows[i].date);
@@ -95,7 +98,36 @@ Score.getHighScores = function (link, limit, callback) {
                         scores.push(score);
                     }
 
-                    callback(null, scores);
+                    if (!currentUserFound) {
+                        client.query(
+                                "SELECT row_num, user_fullname, date, (score->>'points') AS points FROM ( " +
+                                    "SELECT row_number() OVER (ORDER BY (score->>'points')::BIGINT desc) AS row_num, scores.* FROM scores " +
+                                ") AS results " +
+                                "WHERE results.user_id = $1 AND results.game_id = $2",
+                            [userId, scores[0].gameId], function(err, result) {
+                                if (err) {
+                                    callback(err, null, null);
+                                } else if (result.rowCount === 0) {
+                                    callback(null, scores, null);
+                                } else {
+                                    score = Score.new();
+                                    scoreInfo = Score.scoreInfo();
+
+                                    score.userFullname = result.rows[0].user_fullname;
+                                    score.date = utils.formatDate(result.rows[0].date);
+                                    scoreInfo.points = result.rows[0].points;
+                                    score.score = scoreInfo;
+
+                                    // Also include the position of the current user's score
+                                    score.order = result.rows[0].row_num;
+
+                                    callback(null, scores, score);
+                                }
+                            });
+
+                    } else {
+                        callback(null, scores, null);
+                    }
                 }
             }
         });

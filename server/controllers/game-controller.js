@@ -86,34 +86,19 @@ var GameController = {
     /* Get high scores for a game */
     getHighScores: function(req, res) {
 
-        Score.getHighScores(req.params.link, 10, function (err, scores) {
+        Score.getHighScores(req.params.link, req.user.id, 10, function (err, scores, currentUserScore) {
             if (err) {
                 res.statusCode = 500;
                 res.end();
             } else {
-                var currentPlayerHighScore = null;
-                var currentUser = req.user.id;
-
                 // If we have scores for this game
                 if (scores != null) {
                     // Set title
                     var title = scores[0].gameName;
 
-                    // Get current player top score
-                    var gameId = scores[0].gameId;
-                    Score.getTopScore(currentUser, gameId, function (err, points) {
-                        if (err) {
-                            res.statusCode = 500;
-                            res.end();
-                        } else {
-                            currentPlayerHighScore = points;
-
-                            // Render page
-                            res.render('highscores', {title: title, scores: scores, currentPlayerHighScore: currentPlayerHighScore, currentUser: currentUser});
-                        }
-                    });
+                    res.render('highscores', {title: title, scores: scores, currentUserScore: currentUserScore, currentUser: req.user.id});
                 } else {
-                    res.render('highscores', {title: '', scores: null, currentPlayerHighScore: null, currentUser: currentUser});
+                    res.render('highscores', {title: '', scores: null, currentPlayerHighScore: null, currentUser: null});
                 }
             }
         });

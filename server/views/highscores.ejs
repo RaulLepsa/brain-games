@@ -34,26 +34,48 @@
     <!-- Score list -->
     <div id="score-list">
         <% if (scores != null) {
+            var rowClass;
+
             for(var i = 0; i < scores.length; i++) {
-                if (scores[i].userId === currentUser ) { %>
-                    <div class="row red strong">
-                <% } else { %>
-                    <div class="row">
-                <% } %>
+                if (scores[i].userId === currentUser) {
+                    rowClass = 'row red strong';
+                } else {
+                    rowClass = 'row';
+                } %>
 
-                        <div class="col-lg-4">
-                            <strong><%= (i+1) %>. </strong> <%= scores[i].userFullname %>
-                        </div>
-                        <div class="col-lg-4">
-                            <%= scores[i].date %>
-                        </div>
-                        <div class="col-lg-4">
-                            <strong><%= scores[i].score.points %></strong>
-                        </div>
+                <div class="<%= rowClass %>">
+                    <div class="col-sm-4">
+                        <strong><%= (i+1) %>. </strong> <%= scores[i].userFullname %>
+                    </div>
+                    <div class="col-sm-4">
+                        <%= scores[i].date %>
+                    </div>
+                    <div class="col-sm-4">
+                        <strong><%= scores[i].score.points %></strong>
+                    </div>
 
-                    </div><!--/row-->
+                </div><!--/row-->
 
                 <hr>
+
+            <% } %>
+            <% if (currentUserScore) { %>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">.............</div>
+                    <div class="col-sm-4"></div>
+                </div> <hr>
+                <div class="row red strong">
+                    <div class="col-sm-4">
+                        <strong><%= currentUserScore.order %>. </strong> <%= currentUserScore.userFullname %>
+                    </div>
+                    <div class="col-sm-4">
+                        <%= currentUserScore.date %>
+                    </div>
+                    <div class="col-sm-4">
+                        <strong><%= currentUserScore.score.points %></strong>
+                    </div>
+                </div>
             <% } %>
         <% } else { %>
             <p class="center"><strong>There are no scores for this game.</strong></p>
