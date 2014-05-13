@@ -11,5 +11,6 @@
     , "passport-local": "x.x"
     , "habitat": "1.x"
     , "connect-flash": "x"
+    , "dateformat": "x"
   }
 }
