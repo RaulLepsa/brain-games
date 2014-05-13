@@ -1,4 +1,5 @@
-var client = require('../commons/db-connection');
+var client = require('../commons/db-connection'),
+    utils = require('../commons/utils');
 
 function Score() { }
 
@@ -55,13 +56,19 @@ Score.getTopScore = function (userId, gameId, callback) {
     );
 };
 
-// Get high scores for a specific game
-Score.getHighScores = function (link, callback) {
-    client.query("SELECT user_fullname, game_name, date, score->>'points' AS points " +
+/*
+    Get high scores for a specific game.
+    'link' is the game link (a.k.a friendly name);
+    'limit' is the max number of records to be retrieved
+ */
+Score.getHighScores = function (link, limit, callback) {
+    client.query("SELECT user_id, user_fullname, game_id, game_name, date, (score->>'points')::BIGINT AS points " +
             "FROM scores " +
             "JOIN games ON scores.game_id = games.id " +
-            "WHERE games.link = $1",
-        [link], function (err, result) {
+            "WHERE games.link = $1 " +
+            "ORDER BY points DESC " +
+            "LIMIT $2",
+        [link, limit], function (err, result) {
 
             if (err) {
                 console.error('Error retrieving top scores for game: ' + gameId, err);
@@ -78,8 +85,10 @@ Score.getHighScores = function (link, callback) {
                         scoreInfo = Score.scoreInfo();
 
                         score.userFullname = result.rows[i].user_fullname;
+                        score.userId = result.rows[i].user_id;
+                        score.gameId = result.rows[i].game_id;
                         score.gameName = result.rows[i].game_name;
-                        score.date = result.rows[i].date;
+                        score.date = utils.formatDate(result.rows[i].date);
                         scoreInfo.points = result.rows[i].points;
                         score.score = scoreInfo;
 

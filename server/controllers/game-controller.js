@@ -73,12 +73,12 @@ var GameController = {
 		var userId = req.user.id;
 		var gameId = req.param('gameId');
 
-		Score.getTopScore(userId, gameId, function (err, score) {
+		Score.getTopScore(userId, gameId, function (err, points) {
 			if (err) {
 				res.statusCode = 500;
 				res.end();
 			} else {
-				res.json(200, {score: score});
+				res.json(200, {score: points});
 			}
 		});
 	},
@@ -86,18 +86,35 @@ var GameController = {
     /* Get high scores for a game */
     getHighScores: function(req, res) {
 
-        Score.getHighScores(req.params.link, function (err, scores) {
+        Score.getHighScores(req.params.link, 10, function (err, scores) {
             if (err) {
                 res.statusCode = 500;
                 res.end();
             } else {
-                var title = '';
+                var currentPlayerHighScore = null;
+                var currentUser = req.user.id;
 
+                // If we have scores for this game
                 if (scores != null) {
-                    title = scores[0].gameName;
-                }
+                    // Set title
+                    var title = scores[0].gameName;
 
-                res.render('highscores', {title: title, scores: scores});
+                    // Get current player top score
+                    var gameId = scores[0].gameId;
+                    Score.getTopScore(currentUser, gameId, function (err, points) {
+                        if (err) {
+                            res.statusCode = 500;
+                            res.end();
+                        } else {
+                            currentPlayerHighScore = points;
+
+                            // Render page
+                            res.render('highscores', {title: title, scores: scores, currentPlayerHighScore: currentPlayerHighScore, currentUser: currentUser});
+                        }
+                    });
+                } else {
+                    res.render('highscores', {title: '', scores: null, currentPlayerHighScore: null, currentUser: currentUser});
+                }
             }
         });
     }

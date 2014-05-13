@@ -40,6 +40,11 @@ footer {
     color: #f0ad4e;
 }
 
+/* Fonts */
+.strong {
+    font-weight: 700;
+}
+
 /* Positioning styles */
 .display-none {
     display: none;

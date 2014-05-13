@@ -34,16 +34,24 @@
     <!-- Score list -->
     <div id="score-list">
         <% if (scores != null) {
-            for(var i = 0; i < scores.length; i++) { %>
+            for(var i = 0; i < scores.length; i++) {
+                if (scores[i].userId === currentUser ) { %>
+                    <div class="row red strong">
+                <% } else { %>
+                    <div class="row">
+                <% } %>
 
-                <div class="row">
+                        <div class="col-lg-4">
+                            <strong><%= (i+1) %>. </strong> <%= scores[i].userFullname %>
+                        </div>
+                        <div class="col-lg-4">
+                            <%= scores[i].date %>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong><%= scores[i].score.points %></strong>
+                        </div>
 
-                    <div class="col-sm-7">
-                        <h2><%= scores[i].userFullname %></h2>
-                        <p><%= scores[i].date %></p>
-                        <p><%= scores[i].score.points %></p>
-                    </div>
-                </div><!--/row-->
+                    </div><!--/row-->
 
                 <hr>
             <% } %>
@@ -64,9 +72,5 @@
 <script src="/js/brain-games.js"></script>
 <script src="/js/docs.min.js"></script>
 
-<script type="text/javascript">
-//    games.pageReady();
-//    games.gameListReady();
-</script>
 </body>
 </html>

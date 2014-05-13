@@ -5,12 +5,12 @@ function User() { }
 /** Create a new User object **/
 User.new = function() {
     return { 'id': null, 'email': null, 'password': null, 'firstname': null, 'lastname': null };
-}
+};
 
 /** Create a new User instance using parameters **/
 User.new = function(email, password, firstname, lastname) {
 	return { 'id': null, 'email': email, 'password': password, 'firstname': firstname, 'lastname': lastname };	
-}
+};
 
 /** Get a User by his email. Returns the User entity if found, or null if it does not exist. **/
 User.getByEmail = function (email, callback) {
@@ -53,6 +53,6 @@ User.save = function(user, callback) {
             }
         }
     );
-}
+};
 
 module.exports = User;
