@@ -80,18 +80,18 @@ var games = {
 		if (!gameId) {
 			window.location = '/secure/games';
 			return;
-		}
-
-        // Get previous best score for current user
-        $.ajax({
-            type: 'GET',
-            url: '/secure/game-score/top',
-            data: {gameId: gameId},
-            success: function(response) {
-                localStorage.setItem('previous-best', response.score);
-            },
-            error: handlers.errorHandler
-        });
+		} else {
+            // Get previous best score for current user
+            $.ajax({
+                type: 'GET',
+                url: '/secure/game-score/top',
+                data: {gameId: gameId},
+                success: function(response) {
+                    localStorage.setItem('previous-best', response.score);
+                },
+                error: handlers.errorHandler
+            });
+        }
 
 		// Game finished event listener
 		$(document).on('game-finished', function() {
