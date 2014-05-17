@@ -31,7 +31,10 @@
 <!-- Wrap the rest of the page in another container to center all the content. -->
 <div class="container">
 
-    <h1>High scores for <%= title %></h1>
+    <% if (scores != null) { %>
+        <h1>High scores for <%= title %></h1>
+    <% } %>
+
     <br>
 
     <!-- Score list -->
