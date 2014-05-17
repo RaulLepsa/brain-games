@@ -41,7 +41,7 @@ var games = {
 			// Get all the games by category
 			$.ajax({
 				type: 'GET',
-				url: '/secure/games/category/' + category,
+				url: utils.getSecureContext() + '/games/category/' + category,
 				success: function(response) {
 					$('#category-list a').removeClass('active');
 					$('#game-list').html(response);
@@ -78,13 +78,13 @@ var games = {
 		var gameId = localStorage.getItem('game-id');
 		var gameName = localStorage.getItem('game-name');
 		if (!gameId) {
-			window.location = '/secure/games';
+			window.location = utils.getSecureContext() + '/games';
 			return;
 		} else {
             // Get previous best score for current user
             $.ajax({
                 type: 'GET',
-                url: '/secure/game-score/top',
+                url: utils.getSecureContext() + '/game-score/top',
                 data: {gameId: gameId},
                 success: function(response) {
                     localStorage.setItem('previous-best', response.score);
@@ -100,14 +100,14 @@ var games = {
 			// Detect invalid score
 			if (colorMatch._score != $('#game-score').html()) {
 				alert('Invalid score');
-				window.location = '/secure/games';
+				window.location = utils.getSecureContext() + '/games';
 				return;
 			}
 
 			// Save game score
 			$.ajax({
 				type: 'POST',
-				url: '/secure/game-score',
+				url: utils.getSecureContext() + '/game-score',
 				data: { gameId: gameId, gameName: gameName, points: colorMatch._score, correct: colorMatch._correct,
 					wrong: colorMatch._wrong, combos: colorMatch._comboCount, consecutive: colorMatch._consecutive },
 				success: function() {
@@ -174,14 +174,14 @@ var games = {
         var gameId = localStorage.getItem('game-id');
         var gameName = localStorage.getItem('game-name');
         if (!gameId) {
-            window.location = '/secure/games';
+            window.location = utils.getSecureContext() + '/games';
             return;
         }
 
         // Get previous best score for current user
         $.ajax({
             type: 'GET',
-            url: '/secure/game-score/top',
+            url: utils.getSecureContext() + '/game-score/top',
             data: {gameId: gameId},
             success: function(response) {
                 localStorage.setItem(new LocalStorageManager().bestScoreKey, response.score);
@@ -195,10 +195,10 @@ var games = {
             // Save game score
             $.ajax({
                 type: 'POST',
-                url: '/secure/game-score',
+                url: utils.getSecureContext() + '/game-score',
                 data: { gameId: gameId, gameName: gameName, points: gameManager.score},
                 success: function () {
-                    alert('ok');
+                    //TODO: Display high score for game
                 }
             });
         });
@@ -219,10 +219,40 @@ var utils = {
 		elem.hide().html('');
 	},
 
-	/* Removes all alers from a page */
-	removeAlertsFromPage: function() {
-		$('.alert').hide().html('');
-	}
+    /* Get secure application context */
+    getSecureContext: function() {
+        return '/secure';    
+    },
+    
+    /* Retrieve current user information */
+    getUserInformation: function() {
+        var userInformation = {};
+        var userId = localStorage.getItem('bg-userid');
+        var username = localStorage.getItem('bg-username');
+
+        if (userId && userId !== 'undefined' && username && username !== 'undefined') {
+            userInformation.id = userId;
+            userInformation.username = username;
+            return userInformation;
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: utils.getSecureContext() + '/user',
+                async: false,
+                success: function(userInformation) {
+                    utils.setUserInformation(userInformation);
+                    return userInformation;
+                },
+                error: handlers.errorHandler
+            });
+        }
+    },
+
+    /* Set current user information */
+    setUserInformation: function(userInformation) {
+        localStorage.setItem('bg-userid', userInformation.id);
+        localStorage.setItem('bg-username', userInformation.username);
+    }
 };
 
 /** Different handlers **/

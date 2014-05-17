@@ -12,10 +12,30 @@ User.new = function(email, password, firstname, lastname) {
 	return { 'id': null, 'email': email, 'password': password, 'firstname': firstname, 'lastname': lastname };	
 };
 
+/** Get a User by his ID. Returns the User entity if found, or null if it does not exist. **/
+User.getById = function (id, callback) {
+
+    client.query(
+
+        'SELECT * FROM users WHERE id = $1', [id],
+
+        function (err, result) {
+            if (err) {
+                console.error('Error retrieving User by id: ' + id);
+                callback(err);
+            } else if (result.rowCount === 0) {
+                callback(null, null);
+            } else {
+                callback(null, userMapper(result.rows[0]));
+            }
+        }
+    );
+};
+
 /** Get a User by his email. Returns the User entity if found, or null if it does not exist. **/
 User.getByEmail = function (email, callback) {
    
-    var query = client.query(
+    client.query(
         
         'SELECT * FROM users WHERE email = $1', [email],
         
@@ -26,14 +46,7 @@ User.getByEmail = function (email, callback) {
             } else if (result.rowCount === 0) {
                 callback(null, null);
             } else {
-                var user = User.new();
-                user.id = result.rows[0].id;
-                user.email = result.rows[0].email;
-                user.password = result.rows[0].password;
-                user.firstname = result.rows[0].firstname;
-                user.lastname = result.rows[0].lastname;
-
-                callback(null, user);   
+                callback(null, userMapper(result.rows[0]));
             }
         }
     );     
@@ -54,5 +67,17 @@ User.save = function(user, callback) {
         }
     );
 };
+
+/** Create a user instance out of a DB-retrieved row **/
+function userMapper(row) {
+    var user = User.new();
+    user.id = row.id;
+    user.email = row.email;
+    user.password = row.password;
+    user.firstname = row.firstname;
+    user.lastname = row.lastname;
+    
+    return user;
+}
 
 module.exports = User;

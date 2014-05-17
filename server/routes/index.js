@@ -21,6 +21,12 @@ require('./authentication');
 // Include home-related routes
 require('./home');
 
+// Include game-related routes
+require('./games');
+
+// Include chat-related routs
+require('./chats');
+
 /* Checks if user is authenticated. If not, it redirects to the login page */
 function checkAuthentication(req, res, next) {
     if (req.isAuthenticated()) {
@@ -28,4 +34,4 @@ function checkAuthentication(req, res, next) {
     } else { 
     	res.render('signin', { error: '' , nextUrl: req.url });
 	}
-};
+}

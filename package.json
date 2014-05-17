@@ -12,5 +12,6 @@
     , "habitat": "1.x"
     , "connect-flash": "x"
     , "dateformat": "x"
+    , "socket.io": "0.9.x"
   }
 }

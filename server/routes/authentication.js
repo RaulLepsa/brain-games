@@ -3,7 +3,7 @@
 **/
 
 var config = require('../commons/config'),
-    RegistrationController = require('../controllers/registration-controller'),
+    UserController = require('../controllers/user-controller'),
     User = require('../model/user-model');
 
 // Login page
@@ -17,7 +17,7 @@ app.get('/signout', function (req, res){
   res.redirect('/');
 });
 
-// Resgister page
+// Register page
 app.get('/signup', function (req, res) {
     res.render('signup', { error: req.flash('error') });
 });
@@ -48,7 +48,7 @@ app.post('/auth/local',
 
 // Register request
 app.post('/register', function (req, res) {
-    RegistrationController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function (err, response) {
+    UserController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, function (err, response) {
         
         // If registered successfully, login. Else, display error message
         if (response.status === 200) {
@@ -62,4 +62,9 @@ app.post('/register', function (req, res) {
             res.redirect('/signup');
         }
     });
+});
+
+// Get user information
+app.get('/secure/user', function (req, res) {
+    UserController.getUserInformation(req, res);
 });

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Chat</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- Offcanvas CSS -->
+    <link href="/stylesheets/offcanvas.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<!-- NAVBAR ================================================== -->
+<body>
+
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container">
+
+
+</div><!--/container -->
+
+<!-- FOOTER -->
+<% include /sub-views/footer %>
+
+<!-- SCRIPTS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/brain-games.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+    var socket = io.connect();
+
+    // On connection to server, add the current user to the list of users in the chat room
+    socket.on('connect', function () {
+
+        // Call the server-side function 'adduser' and send the user information
+        var userInfo = utils.getUserInformation();
+        socket.emit('adduser', userInfo.id, userInfo.username);
+    });
+
+    // listener, whenever the server emits 'updatechat', this updates the chat body
+    socket.on('updatechat', function (username, data) {
+        $('#conversation').append('<b>' + username + ':</b> ' + data + '<br>');
+    });
+
+    // listener, whenever the server emits 'updateusers', this updates the username list
+    socket.on('updateusers', function (data) {
+        $('#users').empty();
+        $.each(data, function (key, value) {
+            $('#users').append('<div>' + key + '</div>');
+        });
+    });
+
+    // on load of page
+    $(function () {
+        // when the client clicks SEND
+        $('#datasend').click(function () {
+            var message = $('#data').val();
+            $('#data').val('');
+            // tell server to execute 'sendchat' and send along one parameter
+            socket.emit('sendchat', message);
+        });
+
+        // when the client hits ENTER on their keyboard
+        $('#data').keypress(function (e) {
+            if (e.which == 13) {
+                $(this).blur();
+                $('#datasend').focus().click();
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

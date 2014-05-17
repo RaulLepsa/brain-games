@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Chat with others</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- Offcanvas CSS -->
+    <link href="/stylesheets/offcanvas.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<!-- NAVBAR ================================================== -->
+<body>
+<!-- NAVBAR -->
+<% include /sub-views/navbar %>
+
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container">
+
+    <!-- Wrap everything in a row-offcanvas class to resize content by hiding the secondary navigation -->
+    <div class="row row-offcanvas row-offcanvas-left">
+
+        <!-- Chat categories -->
+        <% include /sub-views/chat-categories.ejs %>
+
+        <!-- Chat list -->
+        <div id="chat-list" class="row col-xs-12 col-sm-9 padding-left35">
+            <% include /sub-views/chat-list.ejs %>
+        </div><!--/row game list-->
+
+    </div><!--/row-offcanvas-->
+
+</div><!--/container -->
+
+<!-- FOOTER -->
+<% include /sub-views/footer %>
+
+<!-- SCRIPTS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/brain-games.js"></script>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
