@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,59 +20,47 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
 <!-- NAVBAR
 ================================================== -->
-  <body>
-    <!-- NAVBAR -->
-    <% include /sub-views/navbar %>
+<body>
+<!-- NAVBAR -->
+<% include /sub-views/navbar %>
 
-    <!-- Wrap the rest of the page in another container to center all the content. -->
-    <div class="container">
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container">
 
-      <!-- Wrap everything in a row-offcanvas class to resize content by hiding the secondary navigation -->
-      <div class="row row-offcanvas row-offcanvas-left">
-        
-        <!-- Game categories -->
-        <p class="pull-left visible-xs">
-          <button type="button" class="btn btn-primary" data-toggle="offcanvas">See categories</button>
-        </p>
+    <!-- Wrap everything in a row-offcanvas class to resize content by hiding the secondary navigation -->
+    <div class="row row-offcanvas row-offcanvas-left">
 
-        <!-- Secondary navigation -->
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div id="category-list" class="list-group">
-            <a href="#" class="list-group-item active">All Games</a>
-            <% for(var i = 0; i < categories.length; i++) { %>
-              <a href='#<%= categories[i] %>' class="list-group-item"> <%= categories[i] %></a>
-            <% } %>
-          </div>
-        </div><!--/secondary navigation-->
-        
+        <!-- Game Categories-->
+        <% include /sub-views/game-categories.ejs %>
+
         <!-- Game list -->
         <div id="game-list" class="row col-xs-12 col-sm-9 padding-left35">
-          <% include /sub-views/game-list.ejs %>
-        </div><!--/row game list-->
+            <% include /sub-views/game-list.ejs %>
+        </div> <!--/row game list-->
 
-      </div><!--/row-offcanvas-->
+    </div> <!--/row-offcanvas-->
 
-    </div><!--/container -->
+</div> <!--/container -->
 
-    <!-- FOOTER -->
-    <% include /sub-views/footer %>
+<!-- FOOTER -->
+<% include /sub-views/footer %>
 
-    <!-- SCRIPTS -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/brain-games.js"></script>
-    <script src="/js/docs.min.js"></script>
+<!-- SCRIPTS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/brain-games.js"></script>
+<script src="/js/docs.min.js"></script>
 
-    <script type="text/javascript">
-      games.pageReady();
-      games.gameListReady();
-    </script> 
-  </body>
+<script type="text/javascript">
+    games.pageReady();
+    games.gameListReady();
+</script>
+</body>
 </html>
