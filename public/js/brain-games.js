@@ -5,6 +5,10 @@ var authentication = {
 
 	/* On Signin/Signup page ready - displays an error (if any); 'element' is a jQuery element that contains the error */
 	pageReady: function(element) {
+
+        // Clear locally-stored user information
+        utils.clearUserInformation();
+
 		var error = element.html();
 		if (error && error !== '') {
 			utils.displayAlert(element, error);
@@ -205,6 +209,83 @@ var games = {
     }
 };
 
+/** Chat-related functions **/
+var chat = {
+
+    /* When the chat page is loaded, connect to socket-io and initialize chatting w/ the server */
+    chatPageReady: function() {
+
+        $('#nav-chat').addClass('active');
+
+        // Connect socket-io
+        var socket = io.connect();
+
+        // Store some elements
+        var dataElement = $('#data');
+        var sendDataBtn = $('#datasend');
+        var usersElement = $('#users');
+        var conversationElement = $('#conversation');
+
+        /* On connection to server, add the current user to the list of users in the chat room */
+        socket.on('connect', function () {
+
+            // Call the server-side function 'adduser' and send the user information
+            utils.getUserInformation(function(userInfo) {
+                socket.emit('adduser', userInfo.id, userInfo.username);
+            });
+        });
+
+        /* Listener that updates the chat when the server emits 'updatechat' */
+        socket.on('updatechat', function (username, data) {
+            var messageClass = '';
+
+            if (username === 'SERVER') {
+                messageClass = 'blue';
+            } else {
+                utils.getUserInformation(function(userInfo) {
+                    if (username === userInfo.username) {
+                        messageClass = 'red';
+                    }
+                });
+            }
+
+            // Append text
+            conversationElement.append('<p class="' + messageClass + '"><strong>' + username + ':</strong> ' + data + '</p>');
+
+            // Scroll to bottom
+            conversationElement.animate({ scrollTop: conversationElement[0].scrollHeight}, 10);
+        });
+
+        /* Listener that updates the list of users when the server emits 'updateusers' */
+        socket.on('updateusers', function (data) {
+            usersElement.empty();
+            $.each(data, function (id, username) {
+                usersElement.append('<div id="' + id + '">' + username + '</div>');
+            });
+        });
+
+        // when the client clicks SEND
+        sendDataBtn.click(function () {
+            var message = dataElement.val();
+            if (message.trim() !== '') {
+                dataElement.val('');
+
+                // Trigger server's 'sendchat' function
+                socket.emit('sendchat', message);
+            }
+            dataElement.focus();
+        });
+
+        // when the client hits ENTER on their keyboard
+        dataElement.keypress(function (e) {
+            if (e.which == 13) {
+                $(this).blur();
+                sendDataBtn.focus().click();
+            }
+        });
+    }
+};
+
 /** Name says it all: util functions **/
 var utils = {
 
@@ -223,9 +304,15 @@ var utils = {
     getSecureContext: function() {
         return '/secure';    
     },
-    
-    /* Retrieve current user information */
-    getUserInformation: function() {
+
+    /* Clear user information */
+    clearUserInformation: function() {
+        localStorage.removeItem('bg-userid');
+        localStorage.removeItem('bg-username');
+    },
+
+    /* Retrieve current user information in a callback function with 1 parameter */
+    getUserInformation: function(callback) {
         var userInformation = {};
         var userId = localStorage.getItem('bg-userid');
         var username = localStorage.getItem('bg-username');
@@ -233,7 +320,7 @@ var utils = {
         if (userId && userId !== 'undefined' && username && username !== 'undefined') {
             userInformation.id = userId;
             userInformation.username = username;
-            return userInformation;
+            callback(userInformation);
         } else {
             $.ajax({
                 type: 'GET',
@@ -241,7 +328,7 @@ var utils = {
                 async: false,
                 success: function(userInformation) {
                     utils.setUserInformation(userInformation);
-                    return userInformation;
+                    callback(userInformation);
                 },
                 error: handlers.errorHandler
             });

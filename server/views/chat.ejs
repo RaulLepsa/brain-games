@@ -26,11 +26,35 @@
 </head>
 
 <!-- NAVBAR ================================================== -->
+<% include /sub-views/navbar %>
+
 <body>
 
 <!-- Wrap the rest of the page in another container to center all the content. -->
 <div class="container">
 
+    <!-- Title -->
+    <h2 class="center">General Chat</h2>
+    <br>
+
+    <!-- Conversation container -->
+    <div class="col-sm-8 border chat-container">
+        <div id="conversation" class="chat"></div>
+
+        <div class="send-message-container">
+            <label for="data"></label>
+            <input id="data" type="text" class="border" placeholder="Type a message"/>
+            <input id="datasend" type="button" class="btn btn-primary" value="Send">
+        </div>
+    </div>
+
+    <div class="col-lg-1"></div>
+
+    <!-- User List container -->
+    <div class="col-sm-3">
+        <p><strong>USERS:</strong></p>
+        <div id="users"></div>
+    </div>
 
 </div><!--/container -->
 
@@ -44,48 +68,7 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
-    var socket = io.connect();
-
-    // On connection to server, add the current user to the list of users in the chat room
-    socket.on('connect', function () {
-
-        // Call the server-side function 'adduser' and send the user information
-        var userInfo = utils.getUserInformation();
-        socket.emit('adduser', userInfo.id, userInfo.username);
-    });
-
-    // listener, whenever the server emits 'updatechat', this updates the chat body
-    socket.on('updatechat', function (username, data) {
-        $('#conversation').append('<b>' + username + ':</b> ' + data + '<br>');
-    });
-
-    // listener, whenever the server emits 'updateusers', this updates the username list
-    socket.on('updateusers', function (data) {
-        $('#users').empty();
-        $.each(data, function (key, value) {
-            $('#users').append('<div>' + key + '</div>');
-        });
-    });
-
-    // on load of page
-    $(function () {
-        // when the client clicks SEND
-        $('#datasend').click(function () {
-            var message = $('#data').val();
-            $('#data').val('');
-            // tell server to execute 'sendchat' and send along one parameter
-            socket.emit('sendchat', message);
-        });
-
-        // when the client hits ENTER on their keyboard
-        $('#data').keypress(function (e) {
-            if (e.which == 13) {
-                $(this).blur();
-                $('#datasend').focus().click();
-            }
-        });
-    });
-
+    chat.chatPageReady();
 </script>
 </body>
 </html>

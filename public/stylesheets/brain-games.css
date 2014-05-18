@@ -90,6 +90,11 @@ footer {
     text-align: center;
 }
 
+.border {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
@@ -414,6 +419,32 @@ h1.title {
 .hint-indicator p {
     margin-bottom: 0;
     font-size: 14px;
+}
+
+/* CHAT
+-------------------------------------------------- */
+.chat-container {
+    min-height: 300px;
+    background-color: #fff;
+}
+
+.chat {
+    min-height: inherit;
+    max-height: 460px;
+    overflow: auto;
+}
+
+.send-message-container {
+    margin-bottom: 10px;
+}
+
+.send-message-container input[type="text"] {
+    width: 80%;
+    padding: 6px 12px;
+}
+
+.send-message-container input[type="button"] {
+    float: right;
 }
 
 /* RESPONSIVE CSS
