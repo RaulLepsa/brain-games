@@ -31,30 +31,35 @@
 <body>
 
 <!-- Wrap the rest of the page in another container to center all the content. -->
-<div class="container">
+<div class="container chat-container">
 
-    <!-- Title -->
-    <h2 class="center">General Chat</h2>
-    <br>
+    <!-- Wrap everything in a row-offcanvas class to resize content by hiding the secondary navigation -->
+    <div class="row row-offcanvas row-offcanvas-left">
 
-    <!-- Conversation container -->
-    <div class="col-sm-8 border chat-container">
-        <div id="conversation" class="chat"></div>
+        <!-- Title -->
+        <h2 id="chat-title" class="center">General Room</h2>
 
-        <div class="send-message-container">
-            <label for="data"></label>
-            <input id="data" type="text" class="border" placeholder="Type a message"/>
-            <input id="datasend" type="button" class="btn btn-primary" value="Send">
+        <!-- Chat categories -->
+        <% include /sub-views/chat-categories %>
+
+        <!-- Conversation container -->
+        <div class="col-xs-12 col-sm-6 col-lg-7 border conversation-container">
+            <div id="conversation" class="chat"></div>
+
+            <div class="send-message-container">
+                <label for="data"></label>
+                <input id="data" type="text" class="border" placeholder="Type a message"/>
+                <input id="datasend" type="button" class="btn btn-primary" value="Send">
+            </div>
         </div>
-    </div>
 
-    <div class="col-lg-1"></div>
+        <!-- User List container -->
+        <div class="col-xs-12 col-sm-3 col-lg-3">
+            <p><strong>USERS IN CHAT:</strong></p>
+            <div id="users"></div>
+        </div>
 
-    <!-- User List container -->
-    <div class="col-sm-3">
-        <p><strong>USERS:</strong></p>
-        <div id="users"></div>
-    </div>
+    </div> <!--/row-offcanvas-->
 
 </div><!--/container -->
 

@@ -132,6 +132,7 @@ footer {
 .navbar-inverse .navbar-brand {
     color: #428BCA;
     font-weight: 500;
+    font-size: 26px;
 }
 
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
@@ -423,14 +424,14 @@ h1.title {
 
 /* CHAT
 -------------------------------------------------- */
-.chat-container {
-    min-height: 300px;
+.conversation-container {
+    min-height: 350px;
     background-color: #fff;
 }
 
 .chat {
     min-height: inherit;
-    max-height: 460px;
+    max-height: 350px;
     overflow: auto;
 }
 
@@ -488,5 +489,9 @@ h1.title {
 @media (min-width: 992px) {
     .featurette-heading {
         margin-top: 120px;
+    }
+
+    .chat-container {
+        min-width: 1200px;
     }
 }

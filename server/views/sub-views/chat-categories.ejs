@@ -1,14 +1,17 @@
-<!-- Chat categories -->
+<!-- Chat rooms -->
 <p class="pull-left visible-xs">
-    <button type="button" class="btn btn-primary" data-toggle="offcanvas">See categories</button>
+    <button type="button" class="btn btn-primary" data-toggle="offcanvas">See rooms</button>
 </p>
 
 <!-- Secondary navigation -->
-<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-    <div id="category-list" class="list-group">
-        <a href="#" class="list-group-item active">All Chats</a>
-        <% for(var i = 0; i < categories.length; i++) { %>
-            <a href='#<%= categories[i] %>' class="list-group-item"> <%= categories[i] %></a>
+<div class="col-xs-6 col-sm-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+    <div id="room-list" class="list-group">
+        <% for(var i = 0; i < rooms.length; i++) {
+            if (i == 0) { %>
+                <a href='#<%= rooms[i].split(' ')[0] %>' class="list-group-item active"><%= rooms[i] %></a>
+            <% } else { %>
+                <a href='#<%= rooms[i].split(' ')[0] %>' class="list-group-item"><%= rooms[i] %></a>
+            <% } %>
         <% } %>
     </div>
 </div><!--/secondary navigation-->

@@ -225,46 +225,61 @@ var chat = {
         var sendDataBtn = $('#datasend');
         var usersElement = $('#users');
         var conversationElement = $('#conversation');
+        var roomList = $('#room-list').find('a');
+
+        // Bind the data-toggle for the Secondary Navigation
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas').toggleClass('active')
+        });
+
+        // Clear room information
+        localStorage.removeItem('bg-room');
 
         /* On connection to server, add the current user to the list of users in the chat room */
         socket.on('connect', function () {
-
             // Call the server-side function 'adduser' and send the user information
             utils.getUserInformation(function(userInfo) {
-                socket.emit('adduser', userInfo.id, userInfo.username);
+                var currentRoom = chat.getCurrentRoom();
+                socket.emit('adduser', userInfo.id, userInfo.username, currentRoom);
             });
         });
 
         /* Listener that updates the chat when the server emits 'updatechat' */
-        socket.on('updatechat', function (username, data) {
-            var messageClass = '';
+        socket.on('updatechat', function (room, username, data) {
+            if (room === chat.getCurrentRoom()) {
+                var messageClass = '';
 
-            if (username === 'SERVER') {
-                messageClass = 'blue';
-            } else {
-                utils.getUserInformation(function(userInfo) {
-                    if (username === userInfo.username) {
-                        messageClass = 'red';
-                    }
-                });
+                if (username === 'SERVER') {
+                    messageClass = 'blue';
+                } else {
+                    utils.getUserInformation(function (userInfo) {
+                        if (username === userInfo.username) {
+                            messageClass = 'red';
+                        }
+                    });
+                }
+
+                // Append text
+                conversationElement.append('<p class="' + messageClass + '"><strong>' + username + ':</strong> ' + data + '</p>');
+
+                // Scroll to bottom
+                conversationElement.animate({ scrollTop: conversationElement[0].scrollHeight}, 10);
             }
-
-            // Append text
-            conversationElement.append('<p class="' + messageClass + '"><strong>' + username + ':</strong> ' + data + '</p>');
-
-            // Scroll to bottom
-            conversationElement.animate({ scrollTop: conversationElement[0].scrollHeight}, 10);
         });
 
         /* Listener that updates the list of users when the server emits 'updateusers' */
-        socket.on('updateusers', function (data) {
-            usersElement.empty();
-            $.each(data, function (id, username) {
-                usersElement.append('<div id="' + id + '">' + username + '</div>');
-            });
+        socket.on('updateusers', function (room, data) {
+            if (room === chat.getCurrentRoom()) {
+                var usersHtml = '';
+                $.each(data, function (id, username) {
+                    usersHtml += '<div id="' + id + '">' + username + '</div>';
+                    console.log(id + username);
+                });
+                usersElement.html(usersHtml);
+            }
         });
 
-        // when the client clicks SEND
+        /* Send a message */
         sendDataBtn.click(function () {
             var message = dataElement.val();
             if (message.trim() !== '') {
@@ -276,13 +291,43 @@ var chat = {
             dataElement.focus();
         });
 
-        // when the client hits ENTER on their keyboard
+        /* Listen to the ENTER key in order to send the message */
         dataElement.keypress(function (e) {
             if (e.which == 13) {
                 $(this).blur();
                 sendDataBtn.focus().click();
             }
         });
+
+        /* Change a room */
+        roomList.click(function () {
+            roomList.removeClass('active');
+
+            // Get selected room
+            var nextRoom = $(this).html();
+            $(this).addClass('active');
+
+            // Change room if necessary
+            var currentRoom = chat.getCurrentRoom();
+            if (nextRoom !== currentRoom) {
+
+                // Change room locally and erase chat
+                localStorage.setItem('bg-room', nextRoom);
+                conversationElement.html('');
+                $('#chat-title').html(nextRoom);
+
+                // Emit to the server that the room was changed
+                socket.emit('changeroom', currentRoom, nextRoom);
+            }
+        });
+    },
+
+    getCurrentRoom: function() {
+        var currentRoom = localStorage.getItem('bg-room');
+        if (!currentRoom || currentRoom === '') {
+            currentRoom = 'General Room';
+        }
+        return currentRoom;
     }
 };
 

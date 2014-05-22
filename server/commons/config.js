@@ -1,7 +1,7 @@
 /**
 	Holds application configurations
 **/
-var config = {}
+var config = {};
 
 // Web and DB configurations
 config.web = {};

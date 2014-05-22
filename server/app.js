@@ -31,7 +31,7 @@ app.configure(function () {
     app.use(passport.initialize());                                   // Initialize passport.js
     app.use(passport.session());                                      // Passport Session
     app.use(app.router);                                              // Serve routes
-    app.use(express.static(path.resolve(__dirname, '../public')));     // Set path to static public files such as scripts and stylesheets
+    app.use(express.static(path.resolve(__dirname, '../public')));    // Set path to static public files such as scripts and stylesheets
     app.use(express.csrf());                                          // Ensure that page requests are coming from own site
     app.set('views', __dirname + '/views');                           // Set views directory
     app.set('view engine', 'ejs');                                    // View engine
