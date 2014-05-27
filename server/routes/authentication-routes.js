@@ -53,12 +53,13 @@ app.post('/register', function (req, res) {
         // If registered successfully, login. Else, display error message
         if (response.status === 200) {
             User.getByEmail(req.body.email, function (err, user) {
+
+                // Login User
                 req.login(user, function (err) {
                     if (err) {
                         req.flash('error', 'Server error on login. Please try again later.');
                         res.redirect('/signup');
                     } else {
-                        user.username = user.firstname + ' ' + user.lastname;
                         res.redirect('/');
                     }
                 });

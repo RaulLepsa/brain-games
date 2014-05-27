@@ -4,6 +4,5 @@
 
 // Home page
 app.get('/secure/home', function (req, res) {
-	var title = req.user.firstname + ' ' + req.user.lastname;
-    res.render('home', {title: title} );
+    res.render('home', {title: req.user.username} );
 });

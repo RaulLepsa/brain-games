@@ -10,7 +10,7 @@ var GameController = {
 
 	/* Get the Games page - retrieves the categories and the games and populates the page with them */
 	getGamesView: function(req, res) {
-		var title = req.user.firstname + ' ' + req.user.lastname;
+		var title = req.user.username;
 		
 		Games.getCategories(function (err, categories) {
 			if (categories) {
@@ -45,7 +45,7 @@ var GameController = {
 	saveScore: function(req, res) {
 
 		var userId = req.user.id;
-		var fullname = req.user.firstname + ' ' + req.user.lastname;
+		var fullname = req.user.username;
 		var gameId = req.param('gameId');
 		var gameName = req.param('gameName');
 		var points = req.param('points');
@@ -110,7 +110,7 @@ var GameController = {
         var gameId = req.param('gameId');
         var gameName = req.param('gameName');
         var userId = req.user.id;
-        var fullname = req.user.firstname + ' ' + req.user.lastname;
+        var fullname = req.user.username;
 
         if (gameId && gameName) {
             GameAccess.save(GameAccess.new(null, userId, fullname, gameId, gameName, null), function(){});

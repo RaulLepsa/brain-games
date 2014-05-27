@@ -6,7 +6,7 @@ var UserController = {
     getUserInformation: function (req, res) {
 
         var userInformation = {};
-        userInformation.username = req.user.firstname + ' ' + req.user.lastname;
+        userInformation.username = req.user.username;
         userInformation.id = req.user.id;
 
         res.json(200, userInformation);

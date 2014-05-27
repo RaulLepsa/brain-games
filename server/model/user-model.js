@@ -4,7 +4,7 @@ function User() { }
 
 /** Create a new User object **/
 User.new = function() {
-    return { 'id': null, 'email': null, 'password': null, 'firstname': null, 'lastname': null };
+    return { 'id': null, 'email': null, 'password': null, 'firstname': null, 'lastname': null, username: null };
 };
 
 /** Create a new User instance using parameters **/
@@ -76,6 +76,7 @@ function userMapper(row) {
     user.password = row.password;
     user.firstname = row.firstname;
     user.lastname = row.lastname;
+    user.username = user.firstname + ' ' + user.lastname;
     
     return user;
 }
