@@ -1,4 +1,5 @@
-var User = require('../model/user-model');
+var User = require('../model/user-model'),
+    utils = require('../commons/utils');
 
 var UserController = {
 
@@ -22,15 +23,27 @@ var UserController = {
             // Check if the email is not already registered
             User.getByEmail(email, function (err, existingUser) {
                 if (!existingUser) {
-                    //TODO: crypt password
-                    User.save(User.new(email, password, firstname, lastname), function (err, id) {
+
+                    // Crypt password
+                    utils.cryptPassword(password, function(err, encryptedPassword) {
+
                         if (err) {
+                            console.error('Error encrypting password');
                             response.status = 400;
-                            response.errors.push('Registration has failed: ' + err);
-                            callback(err, response);
-                        } else {
-                            console.log('User registered: [ID = ' + id + ', email = ' + email + ']');
                             callback(null, response);
+                        } else {
+
+                            // Save the user
+                            User.save(User.new(email, encryptedPassword, firstname, lastname), function (err, id) {
+                                if (err) {
+                                    response.status = 400;
+                                    response.errors.push('Registration has failed: ' + err);
+                                    callback(err, response);
+                                } else {
+                                    console.log('User registered: [ID = ' + id + ', email = ' + email + ']');
+                                    callback(null, response);
+                                }
+                            });
                         }
                     });
 
