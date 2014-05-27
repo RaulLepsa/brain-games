@@ -6,6 +6,8 @@ CREATE TABLE users (
 	password VARCHAR,
 	firstname VARCHAR,
 	lastname VARCHAR
+
+    CONSTRAINT pk_users PRIMARY KEY (id)
 );
 
 CREATE TABLE games (
@@ -14,6 +16,8 @@ CREATE TABLE games (
 	category VARCHAR,
 	description TEXT,
 	link VARCHAR(20)
+
+    CONSTRAINT pk_games PRIMARY KEY (id)
 );
 
 CREATE TABLE scores (
@@ -24,4 +28,18 @@ CREATE TABLE scores (
 	game_name VARCHAR,
 	date DATE,
 	score JSON 
+
+    CONSTRAINT pk_scores PRIMARY KEY (id)
 );
+
+CREATE TABLE game_access (
+    id BIGSERIAL,
+    game_id BIGINT,
+    game_name VARCHAR,
+    user_id BIGINT,
+    user_fullname VARCHAR,
+    access_date timestamp DEFAULT now(),
+
+    CONSTRAINT pk_game_access PRIMARY KEY (id)
+);
+CREATE INDEX idx_game_access ON game_access USING btree (access_date);
