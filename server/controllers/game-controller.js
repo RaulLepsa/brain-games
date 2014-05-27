@@ -3,7 +3,8 @@
 **/
 
 var Games = require('../model/game-model'),
-	Score = require('../model/score-model');
+	Score = require('../model/score-model'),
+    GameAccess = require('../model/game-access-model');
 
 var GameController = {
 
@@ -44,7 +45,7 @@ var GameController = {
 	saveScore: function(req, res) {
 
 		var userId = req.user.id;
-		var userFullname = req.user.firstname + ' ' + req.user.lastname;
+		var fullname = req.user.firstname + ' ' + req.user.lastname;
 		var gameId = req.param('gameId');
 		var gameName = req.param('gameName');
 		var points = req.param('points');
@@ -58,7 +59,7 @@ var GameController = {
         );
 
 
-		Score.save(Score.new(null, userId, userFullname, gameId, gameName, new Date(), scoreInfo), function (err, score) {
+		Score.save(Score.new(null, userId, fullname, gameId, gameName, new Date(), scoreInfo), function (err, score) {
 			if (err) {
 				res.statusCode = 500;
 			} else {
@@ -102,6 +103,18 @@ var GameController = {
                 }
             }
         });
+    },
+
+    /* Save a Game Access Entry */
+    saveGameAccessEntry: function(req) {
+        var gameId = req.param('gameId');
+        var gameName = req.param('gameName');
+        var userId = req.user.id;
+        var fullname = req.user.firstname + ' ' + req.user.lastname;
+
+        if (gameId && gameName) {
+            GameAccess.save(GameAccess.new(null, userId, fullname, gameId, gameName, null), function(){});
+        }
     }
 };
 

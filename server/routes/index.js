@@ -16,16 +16,16 @@ app.get('/', function (req, res) {
 });
 
 // Include authentication-related routes
-require('./authentication');
+require('./authentication-routes');
 
 // Include home-related routes
-require('./home');
+require('./home-routes');
 
 // Include game-related routes
-require('./games');
+require('./game-routes');
 
 // Include chat-related routs
-require('./chat');
+require('./chat-routes');
 
 /* Checks if user is authenticated. If not, it redirects to the login page */
 function checkAuthentication(req, res, next) {

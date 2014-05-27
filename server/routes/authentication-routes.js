@@ -54,7 +54,13 @@ app.post('/register', function (req, res) {
         if (response.status === 200) {
             User.getByEmail(req.body.email, function (err, user) {
                 req.login(user, function (err) {
-                    res.redirect('/');
+                    if (err) {
+                        req.flash('error', 'Server error on login. Please try again later.');
+                        res.redirect('/signup');
+                    } else {
+                        user.username = user.firstname + ' ' + user.lastname;
+                        res.redirect('/');
+                    }
                 });
             });
         } else {

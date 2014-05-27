@@ -64,18 +64,29 @@ var games = {
 
 	/* When the List of Games on the Game page is (re)populated, (re)bind the click function on the elements */
 	gameListReady: function() {
-
-		$('#game-list').find('input[type="button"]').click(function() {
-			var button = $(this);
-
-			// Store game id
-			localStorage.setItem('game-id', button.attr('id'));
-			localStorage.setItem('game-name', $(this).parent().find('h2').html());
-
-			// Go to game
-			window.location = button.attr('href');
-		});
+		$('#game-list').find('input[type="button"]').click(games.gameSelected);
 	},
+
+    /* Triggered when a game is selected to be played */
+    gameSelected: function() {
+        var button = $(this);
+        var gameId = button.attr('id');
+        var gameName = $(this).parent().find('h2').html();
+
+        // Store game id
+        localStorage.setItem('game-id', gameId);
+        localStorage.setItem('game-name', gameName);
+
+        // Save Game Access Entry
+        $.ajax({
+            type: 'POST',
+            url: utils.getSecureContext() + '/gameAccess',
+            data: {gameId: gameId, gameName: gameName}
+        });
+
+        // Go to game
+        window.location = button.attr('href');
+    },
 
 	/* When the Color Match page is ready, listen for the game-finished event. When triggered, handle it accordingly */
 	pageReadyColorMatch: function() {

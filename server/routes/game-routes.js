@@ -31,6 +31,12 @@ app.get('/secure/highscores/:link', function (req, res) {
     GameController.getHighScores(req, res);
 });
 
+// Save game access entry
+app.post('/secure/gameAccess', function(req, res) {
+    GameController.saveGameAccessEntry(req);
+    res.end();
+});
+
 /** Specific games **/
 
 // Color Match Game page
