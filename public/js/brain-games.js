@@ -28,39 +28,126 @@ var home = {
 /** Functions for page that lists games **/
 var games = {
 
+    _storageKey_filter: 'bg-filter',
+
 	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
 	pageReady: function() {
 
-		$('#nav-games').addClass('active');
-
 		// Clicking on a Category
-		$('#category-list a').click(function() {
-			// Get category and set it on the window location href
-			var selected = $(this);
-			var category = selected.attr('href').split('#')[1];
-			if (category === '') {
-				category = null;
-			}
-
-			// Get all the games by category
-			$.ajax({
-				type: 'GET',
-				url: utils.getSecureContext() + '/games/category/' + category,
-				success: function(response) {
-					$('#category-list a').removeClass('active');
-					$('#game-list').html(response);
-					selected.addClass('active');
-					games.gameListReady();
-				},
-				error: handlers.errorHandler
-			});
-		});
+		$('#category-list').find('a').click(games.categoryClicked);
 
 		// Bind the data-toggle for the Secondary Navigation
 		$('[data-toggle=offcanvas]').click(function () {
 		  $('.row-offcanvas').toggleClass('active')
 		});
+
+        // Clicking on the search icon
+        $('#search-button').click(games.searchPerformed);
+        // Bind enter listener for the search box
+        $('#search-term').keyup(function (e) {
+            if (e.which == 13) {
+                games.searchPerformed();
+            }
+        });
+
+        // Clicking on the x icon resets the search term
+        $('.input-group').find('.x').click(games.clearSearchTerm);
+
+        $('#nav-games').addClass('active');
+        localStorage.removeItem(games._storageKey_filter);
+        games.gameListReady();
 	},
+
+    clearSearchTerm: function() {
+        $('#search-term').val('');
+        games.fetchGames(games.updateFilter(undefined, null));
+    },
+
+    /* Triggered when a game category is selected - filters */
+    categoryClicked: function(e) {
+        e.preventDefault();
+
+        // Get category and set it on the window location href
+        var selected = $(this);
+        var category = selected.attr('href').split('#')[1];
+        if (category !== undefined && category !== '') {
+            selected.toggleClass('active');
+            var updatedFilter = games.updateFilter(category);
+            games.fetchGames(updatedFilter);
+        }
+    },
+
+    /* Update the filter */
+    updateFilter: function(category, searchTerm) {
+        // Get the filter
+        var filter = JSON.parse(localStorage.getItem(games._storageKey_filter));
+
+        // Check if the filter object exists
+        if (!filter) { filter = {}; }
+
+        // Check if the array of categories exists on the filter
+        if (!filter.categories) { filter.categories = []; }
+        if (!filter.searchTerm) { filter.searchTerm = null; }
+
+        if (category) {
+            // Check if the current category exists
+            var indexOfFilter = filter.categories.indexOf(category);
+            if (indexOfFilter > -1) {
+                // If it does, remove it and shift the rest of the items
+                delete filter.categories[indexOfFilter];
+                for (var i = indexOfFilter; i < filter.categories.length; i++) {
+                    filter.categories[i] = filter.categories[i + 1];
+                }
+                filter.categories.length--;
+
+            } else {
+                // Set the filter
+                filter.categories.push(category);
+            }
+        }
+
+        if (searchTerm !== undefined) {
+            filter.searchTerm = searchTerm;
+        }
+
+        // Set the filter
+        localStorage.setItem(games._storageKey_filter, JSON.stringify(filter));
+
+        return filter;
+    },
+
+    /* When the user wants to search, update the filter with the searchTerm and fetch the items */
+    searchPerformed: function() {
+        var searchTerm = $('#search-term').val();
+        var updatedFilter;
+
+        if (searchTerm) {
+            updatedFilter = games.updateFilter(undefined, searchTerm);
+        } else {
+            updatedFilter = games.updateFilter(undefined, null);
+        }
+
+        games.fetchGames(updatedFilter);
+    },
+
+    /* Fetch the games based on a filter (optional) */
+    fetchGames: function(filter) {
+
+        var data = {};
+        if (filter) { data.filter = filter; }
+
+        // Get all the games by category
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/gamesList',
+            data: data,
+            success: function(response) {
+                $('#game-list').html(response);
+                games.gameListReady();
+            },
+            error: handlers.errorHandler
+        });
+    },
 
 	/* When the List of Games on the Game page is (re)populated, (re)bind the click function on the elements */
 	gameListReady: function() {

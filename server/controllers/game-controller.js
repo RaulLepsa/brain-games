@@ -14,7 +14,7 @@ var GameController = {
 		
 		Games.getCategories(function (err, categories) {
 			if (categories) {
-				Games.getList(null, function (err, games) {
+				Games.getList(null, null, function (err, games) {
 					if (games) {
 			    		res.render('games', {title: title, categories: categories, games: games} );
 					} else {
@@ -29,10 +29,16 @@ var GameController = {
 
 	/* Retrieves a list of games and populates the Game List view with them */
 	getGamesSubview: function(req, res) {
-		var category = req.params.category;
-		if (category === 'null') { category = null; }
+		var filter = req.param('filter');
+        var categories = null;
+        var searchTerm = null;
+
+		if (filter && filter !== 'null') {
+            categories = filter.categories;
+            searchTerm = filter.searchTerm;
+        }
 		
-		Games.getList(category, function (err, games) {
+		Games.getList(categories, searchTerm, function (err, games) {
 			if (games) {
 				res.render('sub-views/game-list', {games: games});
 			} else {

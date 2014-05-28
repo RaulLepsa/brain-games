@@ -11,8 +11,8 @@ app.get('/secure/games', function (req, res) {
 	GameController.getGamesView(req, res);
 });
 
-// Get list of games by their category
-app.get('/secure/games/category/:category', function (req, res) {
+// Get list of games by an optional filter
+app.get('/secure/gamesList', function (req, res) {
 	GameController.getGamesSubview(req, res);
 });
 
