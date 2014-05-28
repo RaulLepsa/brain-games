@@ -158,6 +158,27 @@ footer {
     background-color: #3276b1;
 }
 
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {
+    background-color: #3276b1;
+    border-radius: 6px;
+}
+
+.navbar-nav>li>.dropdown-menu {
+    border-radius: 6px;
+    padding: 6px;
+    margin-top: 0;
+}
+
+.navbar-nav>li>.dropdown-menu li {
+    cursor: pointer;
+    color: #5bc0de;
+    padding: 1px;
+}
+
+.navbar-nav>li>.dropdown-menu li:hover {
+    color: #428bca;
+}
+
 /* LIST
 -------------------------------------------------- */
 

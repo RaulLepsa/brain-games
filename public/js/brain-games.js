@@ -13,7 +13,12 @@ var authentication = {
 		if (error && error !== '') {
 			utils.displayAlert(element, error);
 		}
-	}
+	},
+
+    /* Sign out */
+    signOut: function() {
+        window.location = '/signout';
+    }
 };
 
 /** Functions for the Home page **/
@@ -30,7 +35,7 @@ var games = {
 
     _storageKey_filter: 'bg-filter',
 
-	/* When the page is ready, bind a click event to the Game categories list in order to retrieve Games by category */
+	/* When the page is ready, bind events for the page */
 	pageReady: function() {
 
 		// Clicking on a Category
@@ -43,6 +48,7 @@ var games = {
 
         // Clicking on the search icon
         $('#search-button').click(games.searchPerformed);
+
         // Bind enter listener for the search box
         $('#search-term').keyup(function (e) {
             if (e.which == 13) {
@@ -52,6 +58,9 @@ var games = {
 
         // Clicking on the x icon resets the search term
         $('.input-group').find('.x').click(games.clearSearchTerm);
+
+        // Clicking on the sign out
+        $('.signout').click(authentication.signOut);
 
         $('#nav-games').addClass('active');
         localStorage.removeItem(games._storageKey_filter);
