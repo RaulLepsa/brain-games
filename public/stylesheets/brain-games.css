@@ -167,16 +167,15 @@ footer {
     cursor: default;
 }
 
-.input-group-item, .x{
+.input-group-btn .x{
     left: -54px;
     position: relative;
     z-index: 10;
     font-size: 14px;
     cursor: pointer;
-    width: 14px
 }
 
-.input-group-item, .x:hover {
+.input-group-btn .x:hover {
     background-color: #ddd;
 }
 /* CUSTOMIZE THE CAROUSEL
