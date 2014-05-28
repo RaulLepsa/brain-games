@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <title>Sign up</title>
 
@@ -21,35 +22,37 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div class="container">
+<div class="container">
 
-      <form class="form-signin" role="form" action="/register" method="POST">
+    <form class="form-signin" role="form" action="/register" method="POST">
         <h2 class="form-signin-heading">Create account</h2>
         <input name="firstname" type="text" class="form-control" placeholder="First name" required autofocus>
         <input name="lastname" type="text" class="form-control" placeholder="Last name" required>
         <input name="email" type="email" class="form-control" placeholder="Email address" required>
         <input name="password" type="password" class="form-control" placeholder="Password" required>
+
         <div id="signup-error" class="alert alert-danger display-none"><%= error %></div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-      </form>
+    </form>
 
-      <!-- FOOTER -->
-      <% include /sub-views/footer %>
+    <!-- FOOTER -->
+    <% include /sub-views/footer %>
 
-    </div><!-- /.container -->
+</div>
+<!-- /.container -->
 
-    <!-- Scripts -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/brain-games.js"></script>
-    <script type="text/javascript">
-      authentication.pageReady($('#signup-error'));  
-    </script>
-  </body>
+<!-- Scripts -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/brain-games.js"></script>
+<script type="text/javascript">
+    authentication.pageReady($('#signup-error'));
+</script>
+</body>
 </html>
