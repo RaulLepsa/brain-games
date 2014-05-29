@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
 });
 
 // Include authentication-related routes
-require('./authentication-routes');
+require('./user-routes');
 
 // Include home-related routes
 require('./home-routes');

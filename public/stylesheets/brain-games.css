@@ -169,13 +169,11 @@ footer {
     margin-top: 0;
 }
 
-.navbar-nav>li>.dropdown-menu li {
-    cursor: pointer;
+.navbar-nav>li>.dropdown-menu li a {
     color: #5bc0de;
-    padding: 1px;
 }
 
-.navbar-nav>li>.dropdown-menu li:hover {
+.navbar-nav>li>.dropdown-menu li a:hover {
     color: #428bca;
 }
 
@@ -198,6 +196,24 @@ footer {
 
 .input-group-btn .x:hover {
     background-color: #ddd;
+}
+
+/* FORM
+-------------------------------------------------- */
+.form-row {
+    padding: 5px;
+}
+.form-row label {
+    width: 20%;
+    display: inline-block;
+}
+
+.form-row input {
+    width: 70%;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    display: inline-block;
 }
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */

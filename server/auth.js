@@ -1,4 +1,5 @@
-var User = require('./model/user-model');
+var User = require('./model/user-model'),
+    utils = require('./commons/utils');
 
 module.exports = function (app, passport) {
 
@@ -28,12 +29,14 @@ module.exports = function (app, passport) {
                 if (!user) {
                     return done(null, false);
                 }
-                if (user.password !== password) {
-                    return done(null, false);
-                }
 
-                // If everything is ok, return the user
-                return done(null, user);
+                utils.comparePassword(password, user.password, function(err, isMatch) {
+                    if (err || !isMatch) {
+                        return done(null, false);
+                    } else {
+                        return done(null, user);
+                    }
+                });
             });
         }
     ));

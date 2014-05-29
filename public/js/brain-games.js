@@ -13,12 +13,7 @@ var authentication = {
 		if (error && error !== '') {
 			utils.displayAlert(element, error);
 		}
-	},
-
-    /* Sign out */
-    signOut: function() {
-        window.location = '/signout';
-    }
+	}
 };
 
 /** Functions for the Home page **/
@@ -58,9 +53,6 @@ var games = {
 
         // Clicking on the x icon resets the search term
         $('.input-group').find('.x').click(games.clearSearchTerm);
-
-        // Clicking on the sign out
-        $('.signout').click(authentication.signOut);
 
         $('#nav-games').addClass('active');
         localStorage.removeItem(games._storageKey_filter);
@@ -491,6 +483,76 @@ var utils = {
     setUserInformation: function(userInformation) {
         localStorage.setItem('bg-userid', userInformation.id);
         localStorage.setItem('bg-username', userInformation.username);
+    }
+};
+
+var profile = {
+
+    /* Triggered when Profile page is ready */
+    pageReady: function() {
+        $('#nav-profile').addClass('active');
+        profile.getProfileData();
+
+        // Cancel default form behavior
+        $('#user-form').submit(function() {
+            profile.updateUserInformation();
+            return false;
+        });
+
+        $('#old-password').val('');
+
+        $('#new-password').keyup(function() {
+            $('#old-password').attr('required', true);
+        });
+    },
+
+    updateUserInformation: function() {
+        var firstname = $('#firstname').val();
+        var lastname = $('#lastname').val();
+        var email = $('#email').val();
+        var oldPassword = $('#old-password').val();
+        var newPassword = $('#new-password').val();
+
+        var userData = {};
+        userData.firstname = firstname;
+        userData.email = email;
+
+        if (lastname) { userData.lastname = lastname; }
+        if (newPassword) {
+            userData.oldPassword = oldPassword;
+            userData.newPassword = newPassword;
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: utils.getSecureContext() + '/user',
+            data: userData,
+            success: function(response) {
+                if (response.error) {
+                    utils.displayAlert($('#form-error'), response.error);
+                } else {
+                    profile.getProfileData();
+                }
+            },
+            error: handlers.errorHandler
+        });
+    },
+
+    /* Retrieve data to populate Profile page */
+    getProfileData: function() {
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/user',
+            success: function(userInfo) {
+                $('#firstname').val(userInfo.firstname);
+                $('#lastname').val(userInfo.lastname);
+                $('#email').val(userInfo.email);
+                $('#old-password').val('');
+                $('#new-password').val('');
+                utils.setUserInformation(userInfo);
+            },
+            error: handlers.errorHandler
+        });
     }
 };
 

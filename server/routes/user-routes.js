@@ -75,3 +75,13 @@ app.post('/register', function (req, res) {
 app.get('/secure/user', function (req, res) {
     UserController.getUserInformation(req, res);
 });
+
+// Update user information
+app.put('/secure/user', function (req, res) {
+    UserController.updateUserInformationRequest(req, res);
+});
+
+// Get profile page
+app.get('/secure/profile', function (req, res) {
+    res.render('profile', {title: req.user.username});
+});

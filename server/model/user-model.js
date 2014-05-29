@@ -68,6 +68,41 @@ User.save = function(user, callback) {
     );
 };
 
+/** Update a User **/
+User.update = function(user, callback) {
+    var sql = 'UPDATE users SET email = $1, firstname = $2 ';
+    var args = [user.email, user.firstname];
+
+    var argIndex = 3;
+    if (user.lastname) {
+        sql += ',lastname = $' + argIndex + ' ';
+        args.push(user.lastname);
+        argIndex++;
+    }
+    if (user.password) {
+        sql += ',password = $' + argIndex + ' ';
+        args.push(user.password);
+        argIndex++;
+    }
+
+    sql += 'WHERE id = $' + argIndex  + ' RETURNING id, firstname, lastname, email';
+    args.push(user.id);
+
+    client.query(sql, args, function (err, result) {
+        if (err) {
+            console.error('Error updating User: ' + err);
+            callback(err);
+        } else {
+            if (result.rowCount === 0) {
+                console.error('Cannot find User with id: ' + user.id);
+                callback('No rows affected');
+            } else {
+                callback(null, userMapper(result.rows[0]));
+            }
+        }
+    });
+};
+
 /** Create a user instance out of a DB-retrieved row **/
 function userMapper(row) {
     var user = User.new();
