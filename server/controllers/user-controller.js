@@ -71,9 +71,10 @@ var UserController = {
                 res.statusCode = 400;
                 res.end();
             } else {
-                req.user.firstname = updatedUser.firstname;
-                req.user.lastname = updatedUser.lastname;
-                req.user.email = updatedUser.email;
+                req.session.passport.user.firstname = updatedUser.firstname;
+                req.session.passport.user.lastname = updatedUser.lastname;
+                req.session.passport.user.email = updatedUser.email;
+                req.session.passport.user.username = updatedUser.firstname + ' ' + updatedUser.lastname;
                 res.statusCode = 200;
                 res.end();
             }

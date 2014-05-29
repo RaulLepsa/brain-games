@@ -531,6 +531,7 @@ var profile = {
                 if (response.error) {
                     utils.displayAlert($('#form-error'), response.error);
                 } else {
+                    utils.displayAlert($('#form-success'), 'User information updated');
                     profile.getProfileData();
                 }
             },
