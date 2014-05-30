@@ -115,11 +115,12 @@ var GameController = {
     saveGameAccessEntry: function(req) {
         var gameId = req.param('gameId');
         var gameName = req.param('gameName');
+        var gameCategory = req.param('gameCategory');
         var userId = req.user.id;
         var fullname = req.user.username;
 
         if (gameId && gameName) {
-            GameAccess.save(GameAccess.new(null, userId, fullname, gameId, gameName, null), function(){});
+            GameAccess.save(GameAccess.new(null, userId, fullname, gameId, gameName, gameCategory), function(){});
         }
     }
 };

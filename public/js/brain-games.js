@@ -160,6 +160,7 @@ var games = {
         var button = $(this);
         var gameId = button.attr('id');
         var gameName = $(this).parent().find('h2').html();
+        var gameCategory = $(this).parent().find('input[type="hidden"]').val();
 
         // Store game id
         localStorage.setItem('game-id', gameId);
@@ -169,7 +170,7 @@ var games = {
         $.ajax({
             type: 'POST',
             url: utils.getSecureContext() + '/gameAccess',
-            data: {gameId: gameId, gameName: gameName}
+            data: {gameId: gameId, gameName: gameName, gameCategory: gameCategory}
         });
 
         // Go to game

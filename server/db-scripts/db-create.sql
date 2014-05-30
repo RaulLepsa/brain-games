@@ -36,6 +36,7 @@ CREATE TABLE game_access (
     id BIGSERIAL,
     game_id BIGINT,
     game_name VARCHAR,
+    game_category VARCHAR,
     user_id BIGINT,
     user_fullname VARCHAR,
     access_date timestamp DEFAULT now(),
@@ -43,3 +44,4 @@ CREATE TABLE game_access (
     CONSTRAINT pk_game_access PRIMARY KEY (id)
 );
 CREATE INDEX idx_game_access ON game_access USING btree (access_date);
+CREATE INDEX idx_game_category ON game_access USING btree (game_category);

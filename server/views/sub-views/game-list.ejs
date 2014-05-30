@@ -1,19 +1,20 @@
 <% for(var i = 0; i < games.length; i++) { %>
-  
-  <div class="row">
+
+<div class="row">
 
     <div class="col-sm-7">
-      <h2><%= games[i].name %></h2>
-      <p><%= games[i].description %></p>
-      <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-primary" href="/secure/game/<%= games[i].link %>" role="button">
-      <input type="button" value="High scores »" class="btn btn-info" href="/secure/highscores/<%= games[i].link %>" role="button">
+        <h2><%= games[i].name %></h2>
+        <p><%= games[i].description %></p>
+        <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-primary" href="/secure/game/<%= games[i].link %>" role="button">
+        <input type="button" value="High scores »" class="btn btn-info" href="/secure/highscores/<%= games[i].link %>" role="button">
+        <input type="hidden" value="<%=games[i].category%>"/>
     </div>
 
     <div class="col-sm-5">
-      <img src="/images/<%= games[i].link %>.png" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
+        <img src="/images/<%= games[i].link %>.png" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
     </div>
 
-  </div><!--/row-->
+</div><!--/row-->
 
-  <hr>
+<hr>
 <% } %>
