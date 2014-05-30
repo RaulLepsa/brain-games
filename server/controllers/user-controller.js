@@ -1,3 +1,7 @@
+/**
+ * User-related operations
+ **/
+
 var User = require('../model/user-model'),
     utils = require('../commons/utils');
 

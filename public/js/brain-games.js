@@ -22,7 +22,50 @@ var home = {
 	/* Home page ready function */
 	pageReady: function() {
 		$('#nav-home').addClass('active');
+
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/stats/self/game-categories',
+            success: function (response) {
+                charts.plotPieChart($('#chart-game-categories'), response.data);
+            },
+            error: handlers.errorHandler
+        });
 	}
+};
+
+/** Functions related to plotting Charts **/
+var charts = {
+
+    plotPieChart: function (element, data) {
+        element.highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: data.title
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: { enabled: false },
+                    showInLegend: true
+                }
+            },
+            series: [
+                {
+                    type: 'pie',
+                    data: data.elements
+                }
+            ]
+        });
+    }
 };
 
 /** Functions for page that lists games **/

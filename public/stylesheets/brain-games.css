@@ -203,6 +203,7 @@ footer {
 .form-row {
     padding: 5px;
 }
+
 .form-row label {
     width: 20%;
     display: inline-block;
@@ -215,6 +216,21 @@ footer {
     border: 1px solid #ccc;
     display: inline-block;
 }
+
+/* CUSTOMIZE CHARTS
+-------------------------------------------------- */
+.chart-container {
+    margin: 0 auto
+}
+
+.chart-container .highcharts-background {
+    fill: #faf8ef;
+}
+
+.chart-container .highcharts-button rect {
+    fill: #faf8ef;
+}
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 

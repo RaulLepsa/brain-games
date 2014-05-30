@@ -1,6 +1,7 @@
 /**
  * Chat-related operations
  **/
+
 var io = require('socket.io').listen(app.server);
 
 // Array of different rooms

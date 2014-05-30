@@ -24,8 +24,11 @@ require('./home-routes');
 // Include game-related routes
 require('./game-routes');
 
-// Include chat-related routs
+// Include chat-related routes
 require('./chat-routes');
+
+// Include statistics-related routes
+require('./stats-routes');
 
 /* Checks if user is authenticated. If not, it redirects to the login page */
 function checkAuthentication(req, res, next) {

@@ -26,4 +26,31 @@ GameAccess.save = function (gameAccess, callback) {
     );
 };
 
+/* Get statistics based on the share of categories played, for a user */
+GameAccess.gameCategoriesForUser = function(user_id, callback) {
+
+    client.query('SELECT game_category AS category, count(*) AS occurrences FROM game_access WHERE user_id = $1 GROUP BY game_category', [user_id],
+        function (err, result) {
+            if (err) {
+                console.error('Error retrieving Game ');
+                callback(err);
+            } else {
+                if (result.rowCount === 0) {
+                    callback(null, null);
+                } else {
+                    var data = {elements: []};
+                    var elem;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        elem = [];
+                        elem.push(result.rows[i].category);
+                        elem.push(parseInt(result.rows[i].occurrences));
+                        data.elements.push(elem);
+                    }
+
+                    callback(null, data);
+                }
+            }
+    });
+};
+
 module.exports = GameAccess;
