@@ -15,3 +15,14 @@ app.get('/secure/stats/self/game-categories', function (req, res) {
         }
     });
 });
+
+app.get('/secure/stats/collective/trending-games', function (req, res) {
+    StatsController.trendingGames(function (err, data) {
+        if (err) {
+            res.statusCode = 400;
+            res.end();
+        } else {
+            res.json(200, {data: data});
+        }
+    });
+});

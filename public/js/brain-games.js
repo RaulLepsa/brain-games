@@ -23,32 +23,37 @@ var home = {
 	pageReady: function() {
 		$('#nav-home').addClass('active');
 
+        // Get game categories for user
         $.ajax({
             type: 'GET',
             url: utils.getSecureContext() + '/stats/self/game-categories',
             success: function (response) {
-                charts.plotPieChart($('#chart-game-categories'), response.data);
+                charts.plotPieChart('#chart-game-categories', response.data);
             },
             error: handlers.errorHandler
         });
+
+        // Get Trending Games
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/stats/collective/trending-games',
+            success: function (response) {
+                charts.plotTrendingChart(('#chart-trending-games'), response.data);
+            },
+            error: handlers.errorHandler
+        })
 	}
 };
 
 /** Functions related to plotting Charts **/
 var charts = {
 
+    /* Plot a generic pie chart by providing the DOM element in which it should go into and the data */
     plotPieChart: function (element, data) {
-        element.highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: data.title
-            },
+        $(element).highcharts({
+            title: { text: data.title },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
             },
             plotOptions: {
                 pie: {
@@ -64,6 +69,56 @@ var charts = {
                     data: data.elements
                 }
             ]
+        });
+    },
+
+    /* Plot a bar chart by providing the DOM element in which it should go into and the data */
+    plotTrendingChart: function (element, data) {
+        $(element).highcharts({
+            title: { text: data.title },
+            xAxis: {
+                min: 0,
+                reversed: true,
+                allowDecimals: false,
+                labels: {
+                    formatter: function() {
+                        if (this.value == 0) {
+                            return 'Now';
+                        }
+                        return this.value + 'h ago' ;
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '# of times accessed'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b>: ',
+                pointFormat: 'Accessed <b>{point.y:,.0f}</b> times'
+            },
+            plotOptions: {
+                area: {
+                    pointStart: 1,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            select: { enabled: true },
+                            hover: { enabled: true }
+                        }
+                    }
+                }
+            },
+            series: data.elements
         });
     }
 };

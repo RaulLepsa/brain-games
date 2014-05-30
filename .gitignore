@@ -3,3 +3,4 @@
 *.sublime-project
 *.sublime-workspace
 /.idea
+/server/db-scripts/db-test-data.sql
