@@ -10,13 +10,12 @@ var GameController = {
 
 	/* Get the Games page - retrieves the categories and the games and populates the page with them */
 	getGamesView: function(req, res) {
-		var title = req.user.username;
-		
+
 		Games.getCategories(function (err, categories) {
 			if (categories) {
 				Games.getList(null, null, function (err, games) {
 					if (games) {
-			    		res.render('games', {title: title, categories: categories, games: games} );
+			    		res.render('games', {username: req.user.username, categories: categories, games: games} );
 					} else {
 						res.end();
 					}
@@ -103,9 +102,9 @@ var GameController = {
                     // Set title
                     var title = scores[0].gameName;
 
-                    res.render('highscores', {title: title, scores: scores, currentUserScore: currentUserScore, currentUser: req.user.id});
+                    res.render('highscores', {title: title, scores: scores, currentUserScore: currentUserScore, currentUser: req.user.id, username: req.user.username});
                 } else {
-                    res.render('highscores', {title: '', scores: null, currentPlayerHighScore: null, currentUser: null});
+                    res.render('highscores', {title: '', scores: null, currentPlayerHighScore: null, currentUser: null, username: req.user.username});
                 }
             }
         });

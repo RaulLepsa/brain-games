@@ -83,5 +83,5 @@ app.put('/secure/user', function (req, res) {
 
 // Get profile page
 app.get('/secure/profile', function (req, res) {
-    res.render('profile', {title: req.user.username});
+    res.render('profile', {username: req.user.username});
 });

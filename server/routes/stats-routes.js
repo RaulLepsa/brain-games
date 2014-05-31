@@ -6,7 +6,7 @@ var StatsController = require('../controllers/stats-controller');
 
 /* Get stats page */
 app.get('/secure/stats', function (req, res) {
-    res.render('stats', {title: req.user.username});
+    res.render('stats', {username: req.user.username});
 });
 
 /* Get statistics based on the share of categories played, for a user */

@@ -41,10 +41,10 @@ app.post('/secure/gameAccess', function(req, res) {
 
 // Color Match Game page
 app.get('/secure/game/color-match', function (req, res) {
-	res.render('color-match');
+	res.render('color-match', {username: req.user.username});
 });
 
 // 2048 Game page
 app.get('/secure/game/2048', function (req, res) {
-	res.render('2048');
+	res.render('2048', {username: req.user.username});
 });
