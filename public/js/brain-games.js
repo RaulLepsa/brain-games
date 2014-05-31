@@ -626,10 +626,9 @@ var charts = {
     /* Plot a generic pie chart by providing the DOM element in which it should go into and the data */
     plotPieChart: function (element, data) {
         $(element).highcharts({
+            chart: { type: 'pie' },
             title: { text: data.title },
-            tooltip: {
-                pointFormat: '<b>{point.percentage:.1f}%</b>'
-            },
+            tooltip: { pointFormat: '<b>{point.percentage:.1f}%</b>' },
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
@@ -638,12 +637,13 @@ var charts = {
                     showInLegend: true
                 }
             },
-            series: [
-                {
-                    type: 'pie',
-                    data: data.elements
-                }
-            ]
+            series: [{
+                name: 'Categories',
+                data: data.elements
+            }],
+            drilldown: {
+                series: data.drilldownElements
+            }
         });
     },
 

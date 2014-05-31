@@ -40,21 +40,51 @@ GameAccess.gameCategoriesRatio = function (user_id, callback) {
 
     client.query(sql + 'GROUP BY game_category', args, function (err, result) {
         if (err) {
-            console.error('Error retrieving Game', err);
+            console.error('Error retrieving Game Categories Ratio', err);
             callback(err);
         } else if (result.rowCount === 0) {
             callback(null, null);
         } else {
-            var elements = [];
-            var elem;
+            var categories = [], category;
             for (var i = 0; i < result.rows.length; i++) {
-                elem = [];
-                elem.push(result.rows[i].category);
-                elem.push(parseInt(result.rows[i].occurrences));
-                elements.push(elem);
+                category = {};
+                category.name = result.rows[i].category;
+                category.drilldown = result.rows[i].category;
+                category.y = parseInt(result.rows[i].occurrences);
+                categories.push(category);
             }
 
-            callback(null, elements);
+            callback(null, categories);
+        }
+    });
+};
+
+/* Get statistics based on the share of games played. If user_id is specified - for a user, else - collective. */
+GameAccess.gamesRatio = function (user_id, callback) {
+
+    var sql = 'SELECT game_name, count(*) AS occurrences, game_category FROM game_access ';
+    var args = [];
+
+    if (user_id) {
+        sql += 'WHERE user_id = $1 ';
+        args.push(user_id);
+    }
+
+    client.query(sql + 'GROUP BY game_name, game_category', args, function (err, result) {
+        if (err) {
+            console.error('Error retrieving Games Ratio', err);
+            callback(err);
+        } else {
+            var games = [], game;
+            for (var i = 0; i < result.rows.length; i++) {
+                game = {};
+                game.name = result.rows[i].game_name;
+                game.occurrences = parseInt(result.rows[i].occurrences);
+                game.category = result.rows[i].game_category;
+                games.push(game);
+            }
+
+            callback(null, games);
         }
     });
 };
@@ -125,13 +155,14 @@ GameAccess.trendingGames = function (hours, callback) {
                                         elements[game.game_id].name = game.game_name;
                                     }
                                     elements[game.game_id].data[currentCycle] += 1;
+
+                                    i++;
                                 } else {
                                     // Completed period of 1 hour, move to next 1 hour period
                                     minutes += 60;
                                     currentCycle++;
                                 }
 
-                                i++;
                             } while (i < result.rows.length);
 
                             callback(null, elements);
