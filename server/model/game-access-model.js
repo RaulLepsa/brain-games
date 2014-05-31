@@ -106,7 +106,7 @@ GameAccess.trendingGames = function(hours, callback) {
                             i = 0;
                             var currentCycle = 0;
 
-                            while (i < result.rows.length - 1) {
+                            do {
                                 game = result.rows[i];
 
                                 if (game.minutes_ago < minutes) {
@@ -122,7 +122,7 @@ GameAccess.trendingGames = function(hours, callback) {
                                 }
 
                                 i++;
-                            }
+                            } while (i < result.rows.length);
 
                             callback(null, elements);
                         }

@@ -9,13 +9,16 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <title>Home - <%= title %></title>
+    <title>Stats - <%= title %></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
     <!-- Global CSS for application -->
     <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- Offcanvas CSS -->
+    <link href="/stylesheets/offcanvas.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -24,40 +27,32 @@
     <![endif]-->
 </head>
 
-<!-- NAVBAR
-================================================== -->
 <body>
 <!-- NAVBAR -->
 <% include /sub-views/navbar %>
 
-<!-- Marketing messaging and featurettes
-================================================== -->
 <!-- Wrap the rest of the page in another container to center all the content. -->
-
-<div class="container marketing">
-
+<div class="container">
     <div class="row">
         <div id="chart-game-categories-self" class="chart-container col-lg-6 col-sm-6 col-xs-12"></div>
         <div id="chart-trending-games" class="chart-container col-lg-6 col-sm-6 col-xs-12"></div>
     </div>
-
-    <!-- FOOTER -->
-    <% include /sub-views/footer %>
-
 </div>
-<!-- /.container -->
+<!--/container -->
+
+<!-- FOOTER -->
+<% include /sub-views/footer %>
 
 <!-- SCRIPTS -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/docs.min.js"></script>
 <script src="/js/brain-games.js"></script>
+<script src="/js/docs.min.js"></script>
 <script src="/js/highcharts.js"></script>
 <script src="/js/highcharts-exporting.js"></script>
 
 <script type="text/javascript">
-    home.pageReady();
+    stats.pageReady();
 </script>
-
 </body>
 </html>

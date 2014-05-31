@@ -28,7 +28,11 @@ var home = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/self/game-categories',
             success: function (response) {
-                charts.plotPieChart('#chart-game-categories', response.data);
+                if (response.data.elements.length > 0) {
+                    charts.plotPieChart('#chart-game-categories-self', response.data);
+                } else {
+                    $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
+                }
             },
             error: handlers.errorHandler
         });
@@ -38,89 +42,13 @@ var home = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/collective/trending-games',
             success: function (response) {
-                charts.plotTrendingChart(('#chart-trending-games'), response.data);
+                if (response.data.elements.length > 0) {
+                    charts.plotTrendingChart(('#chart-trending-games'), response.data);
+                }
             },
             error: handlers.errorHandler
-        })
+        });
 	}
-};
-
-/** Functions related to plotting Charts **/
-var charts = {
-
-    /* Plot a generic pie chart by providing the DOM element in which it should go into and the data */
-    plotPieChart: function (element, data) {
-        $(element).highcharts({
-            title: { text: data.title },
-            tooltip: {
-                pointFormat: '<b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: { enabled: false },
-                    showInLegend: true
-                }
-            },
-            series: [
-                {
-                    type: 'pie',
-                    data: data.elements
-                }
-            ]
-        });
-    },
-
-    /* Plot a bar chart by providing the DOM element in which it should go into and the data */
-    plotTrendingChart: function (element, data) {
-        $(element).highcharts({
-            title: { text: data.title },
-            xAxis: {
-                min: 0,
-                reversed: true,
-                allowDecimals: false,
-                labels: {
-                    formatter: function() {
-                        if (this.value == 0) {
-                            return 'Now';
-                        }
-                        return this.value + 'h ago' ;
-                    }
-                }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: '# of times accessed'
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value;
-                    }
-                }
-            },
-            tooltip: {
-                headerFormat: '<b>{series.name}</b>: ',
-                pointFormat: 'Accessed <b>{point.y:,.0f}</b> times'
-            },
-            plotOptions: {
-                area: {
-                    pointStart: 1,
-                    marker: {
-                        enabled: false,
-                        symbol: 'circle',
-                        radius: 2,
-                        states: {
-                            select: { enabled: true },
-                            hover: { enabled: true }
-                        }
-                    }
-                }
-            },
-            series: data.elements
-        });
-    }
 };
 
 /** Functions for page that lists games **/
@@ -407,6 +335,47 @@ var games = {
     }
 };
 
+/** Stats related functions **/
+var stats = {
+
+    /* When the page is ready, render statistics for the current user */
+    pageReady: function() {
+        $('#nav-stats').addClass('active');
+        stats.gameCategoriesForUser();
+        stats.trendingGames();
+    },
+
+    gameCategoriesForUser: function() {
+        // Get game categories for user
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/stats/self/game-categories',
+            success: function (response) {
+                if (response.data.elements.length > 0) {
+                    charts.plotPieChart('#chart-game-categories-self', response.data);
+                } else {
+                    $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
+                }
+            },
+            error: handlers.errorHandler
+        });
+    },
+
+    trendingGames: function () {
+        // Get Trending Games
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/stats/collective/trending-games',
+            success: function (response) {
+                if (response.data.elements.length > 0) {
+                    charts.plotTrendingChart(('#chart-trending-games'), response.data);
+                }
+            },
+            error: handlers.errorHandler
+        })
+    }
+};
+
 /** Chat-related functions **/
 var chat = {
 
@@ -652,6 +621,84 @@ var profile = {
                 utils.setUserInformation(userInfo);
             },
             error: handlers.errorHandler
+        });
+    }
+};
+
+/** Functions related to plotting Charts **/
+var charts = {
+
+    /* Plot a generic pie chart by providing the DOM element in which it should go into and the data */
+    plotPieChart: function (element, data) {
+        $(element).highcharts({
+            title: { text: data.title },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: { enabled: false },
+                    showInLegend: true
+                }
+            },
+            series: [
+                {
+                    type: 'pie',
+                    data: data.elements
+                }
+            ]
+        });
+    },
+
+    /* Plot a bar chart by providing the DOM element in which it should go into and the data */
+    plotTrendingChart: function (element, data) {
+        $(element).highcharts({
+            title: { text: data.title },
+            xAxis: {
+                min: 0,
+                reversed: true,
+                allowDecimals: false,
+                labels: {
+                    formatter: function() {
+                        if (this.value == 0) {
+                            return 'Now';
+                        }
+                        return this.value + 'h ago' ;
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '# of times accessed'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b>: ',
+                pointFormat: 'Accessed <b>{point.y:,.0f}</b> times'
+            },
+            plotOptions: {
+                area: {
+                    pointStart: 1,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            select: { enabled: true },
+                            hover: { enabled: true }
+                        }
+                    }
+                }
+            },
+            series: data.elements
         });
     }
 };

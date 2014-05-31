@@ -4,6 +4,11 @@
 
 var StatsController = require('../controllers/stats-controller');
 
+/* Get stats page */
+app.get('/secure/stats', function (req, res) {
+    res.render('stats', {title: req.user.username});
+});
+
 /* Get statistics based on the share of categories played, for a user */
 app.get('/secure/stats/self/game-categories', function (req, res) {
     StatsController.gameCategoriesForUser(req.user.id, function (err, data) {
