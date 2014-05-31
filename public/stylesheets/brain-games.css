@@ -231,6 +231,39 @@ footer {
     fill: #faf8ef;
 }
 
+/* RATING STARS
+-------------------------------------------------- */
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    float: left;
+    width: 63%;
+}
+.rating-container {
+    display: inline-block;
+    min-width: 180px;
+}
+.rating-label {
+    width: 37%;
+    float: left;
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.rating > span {
+    display: inline-block;
+    position: relative;
+    font-size: 20px;
+    width: 1.1em;
+    cursor: pointer;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+    content: "\2605";
+    position: absolute;
+    color: #f0ad4e;
+}
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
@@ -566,5 +599,13 @@ h1.title {
 
     .chat-container {
         min-width: 1200px;
+    }
+}
+
+@media screen and (max-width: 988px) {
+
+    .img-thumbnail {
+        width: 160px !important;
+        height: 160px !important;
     }
 }

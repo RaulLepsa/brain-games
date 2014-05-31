@@ -2,15 +2,22 @@
 
 <div class="row">
 
-    <div class="col-sm-7">
+    <div class="col-sm-7 col-xs-6">
         <h2><%= games[i].name %></h2>
         <p><%= games[i].description %></p>
         <input id="<%= games[i].id %>" type="button" value="Go to game »" class="btn btn-primary" href="/secure/game/<%= games[i].link %>" role="button">
         <input type="button" value="High scores »" class="btn btn-info" href="/secure/highscores/<%= games[i].link %>" role="button">
         <input type="hidden" value="<%=games[i].category%>"/>
+        <div class="rating-container">
+            <label class="rating-label">Rate</label>
+            <div class="rating">
+                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+            </div>
+        </div>
+
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-5 col-xs-6">
         <img src="/images/<%= games[i].link %>.png" class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;">
     </div>
 
