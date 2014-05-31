@@ -9,9 +9,7 @@ var StatsController = {
     /* Get statistics based on the share of categories played, for a user */
     gameCategoriesForUser: function(id, callback) {
         GameAccess.gameCategoriesRatio(id, function (err, categories) {
-            var data = {};
-            data.title = 'Your training categories ratio';
-            data.elements = categories;
+            var data = {elements: categories};
 
             // After we have the categories, get drill-down data by Games
             gamesRatioForCategories(id, categories, data, callback);
@@ -21,9 +19,7 @@ var StatsController = {
     /* Get statistics based on the share of categories played, for all users */
     gameCategoriesCollective: function (callback) {
         GameAccess.gameCategoriesRatio(null, function (err, categories) {
-            var data = {};
-            data.title = 'Overall training categories ratio';
-            data.elements = categories;
+            var data = {elements: categories};
 
             // After we have the categories, get drill-down data by Games
             gamesRatioForCategories(null, categories, data, callback);

@@ -334,6 +334,10 @@ var stats = {
             url: utils.getSecureContext() + '/stats/self/game-categories',
             success: function (response) {
                 if (response.data.elements && response.data.elements.length > 0) {
+                    response.data.title = 'Your training categories ratio';
+                    response.data.subtitle = 'Click a slice to view game ratio';
+                    response.data.title_drilldown = 'Your training games ratio';
+
                     charts.plotPieChart('#chart-game-categories-self', response.data);
                 } else {
                     $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
@@ -350,6 +354,10 @@ var stats = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/collective/game-categories',
             success: function (response) {
+                response.data.title = 'Overall training categories ratio';
+                response.data.subtitle = 'Click a slice to view game ratio';
+                response.data.title_drilldown = 'Overall training games ratio';
+
                 charts.plotPieChart('#chart-game-categories-collective', response.data);
             },
             error: handlers.errorHandler
@@ -626,8 +634,19 @@ var charts = {
     /* Plot a generic pie chart by providing the DOM element in which it should go into and the data */
     plotPieChart: function (element, data) {
         $(element).highcharts({
-            chart: { type: 'pie' },
+            chart: {
+                type: 'pie',
+                events: {
+                    drilldown: function() {
+                        $(element).highcharts().setTitle({ text: data.title_drilldown }, { text: '' });
+                    },
+                    drillup: function() {
+                        $(element).highcharts().setTitle({ text: data.title }, { text: data.subtitle });
+                    }
+                }
+            },
             title: { text: data.title },
+            subtitle: {text: data.subtitle },
             tooltip: { pointFormat: '<b>{point.percentage:.1f}%</b>' },
             plotOptions: {
                 pie: {
