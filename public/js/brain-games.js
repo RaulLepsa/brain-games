@@ -333,7 +333,7 @@ var stats = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/self/game-categories',
             success: function (response) {
-                if (response.data.elements.length > 0) {
+                if (response.data.elements && response.data.elements.length > 0) {
                     charts.plotPieChart('#chart-game-categories-self', response.data);
                 } else {
                     $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
