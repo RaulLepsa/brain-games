@@ -17,7 +17,7 @@ _rooms.forEach(function (room) {
 
 /* Export the function that renders the Chat page */
 module.exports = function(req, res) {
-    res.render('chat.ejs', {rooms: _rooms});
+    res.render('chat.ejs', {title: req.user.username, rooms: _rooms});
 };
 
 io.sockets.on('connection', function (socket) {
