@@ -60,6 +60,9 @@ var games = {
         // Clicking on the x icon resets the search term
         $('.input-group').find('.x').click(games.clearSearchTerm);
 
+        // Clicking on the rating stars rates the game
+        $('.rating-star').click(games.rateGame);
+
         $('#nav-games').addClass('active');
         localStorage.removeItem(games._storageKey_filter);
         games.gameListReady();
@@ -312,6 +315,15 @@ var games = {
                 }
             });
         });
+    },
+
+    rateGame: function() {
+        $(this).html('★');
+        $(this).addClass('active');
+        $(this).find('~ .rating-star').addClass('active');
+        $(this).find('~ .rating-star').html('★');
+        $(this).prevAll().removeClass('active');
+        $(this).prevAll().html('☆');
     }
 };
 

@@ -231,13 +231,17 @@ footer {
     fill: #faf8ef;
 }
 
-/* RATING STARS
+/* RATING
 -------------------------------------------------- */
 .rating {
     unicode-bidi: bidi-override;
     direction: rtl;
     float: left;
     width: 63%;
+}
+.rating span.active {
+    color: #f0ad4e;
+    content: "\2605";
 }
 .rating-container {
     display: inline-block;
