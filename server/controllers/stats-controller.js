@@ -8,9 +8,19 @@ var StatsController = {
 
     /* Get statistics based on the share of categories played, for a user */
     gameCategoriesForUser: function(id, callback) {
-        GameAccess.gameCategoriesForUser(id, function (err, elements) {
+        GameAccess.gameCategoriesRatio(id, function (err, elements) {
             var data = {};
-            data.title = 'Your training categories';
+            data.title = 'Your training categories ratio';
+            data.elements = elements;
+            callback(err, data);
+        });
+    },
+
+    /* Get statistics based on the share of categories played, for all users */
+    gameCategoriesCollective: function (callback) {
+        GameAccess.gameCategoriesRatio(null, function (err, elements) {
+            var data = {};
+            data.title = 'Overall training categories ratio';
             data.elements = elements;
             callback(err, data);
         });

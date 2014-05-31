@@ -24,30 +24,10 @@ var home = {
 		$('#nav-home').addClass('active');
 
         // Get game categories for user
-        $.ajax({
-            type: 'GET',
-            url: utils.getSecureContext() + '/stats/self/game-categories',
-            success: function (response) {
-                if (response.data.elements.length > 0) {
-                    charts.plotPieChart('#chart-game-categories-self', response.data);
-                } else {
-                    $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
-                }
-            },
-            error: handlers.errorHandler
-        });
+        stats.gameCategoriesForUser();
 
         // Get Trending Games
-        $.ajax({
-            type: 'GET',
-            url: utils.getSecureContext() + '/stats/collective/trending-games',
-            success: function (response) {
-                if (response.data.elements.length > 0) {
-                    charts.plotTrendingChart(('#chart-trending-games'), response.data);
-                }
-            },
-            error: handlers.errorHandler
-        });
+        stats.trendingGames();
 	}
 };
 
@@ -342,9 +322,11 @@ var stats = {
     pageReady: function() {
         $('#nav-stats').addClass('active');
         stats.gameCategoriesForUser();
+        stats.gameCategoriesCollective();
         stats.trendingGames();
     },
 
+    /* Get Ratio of Game Categories Played statistics for the current player */
     gameCategoriesForUser: function() {
         // Get game categories for user
         $.ajax({
@@ -356,6 +338,19 @@ var stats = {
                 } else {
                     $('#chart-game-categories-self').html('You haven\'t played any games yet. You might want to start with our top rated games:');
                 }
+            },
+            error: handlers.errorHandler
+        });
+    },
+
+    /* Get Ratio of Game Categories Played statistics for the entire system */
+    gameCategoriesCollective: function() {
+        // Get game categories for user
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/stats/collective/game-categories',
+            success: function (response) {
+                charts.plotPieChart('#chart-game-categories-collective', response.data);
             },
             error: handlers.errorHandler
         });

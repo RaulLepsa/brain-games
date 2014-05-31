@@ -21,6 +21,19 @@ app.get('/secure/stats/self/game-categories', function (req, res) {
     });
 });
 
+/* Get statistics based on the share of categories played, for all users */
+app.get('/secure/stats/collective/game-categories', function (req, res) {
+    StatsController.gameCategoriesCollective(function (err, data) {
+        if (err) {
+            res.statusCode = 400;
+            res.end();
+        } else {
+            res.json(200, {data: data});
+        }
+    });
+});
+
+/* Get statistics for trending games */
 app.get('/secure/stats/collective/trending-games', function (req, res) {
     StatsController.trendingGames(function (err, data) {
         if (err) {

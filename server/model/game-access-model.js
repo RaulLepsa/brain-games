@@ -1,9 +1,10 @@
 var client = require('../commons/db-connection');
 
-function GameAccess() { }
+function GameAccess() {
+}
 
 /* Create a new GameAccess object using parameters */
-GameAccess.new = function(id, userId, userFullname, gameId, gameName, gameCategory) {
+GameAccess.new = function (id, userId, userFullname, gameId, gameName, gameCategory) {
     return { 'id': id, 'userId': userId, 'userFullname': userFullname, 'gameId': gameId, 'gameName': gameName, 'gameCategory': gameCategory};
 };
 
@@ -13,7 +14,7 @@ GameAccess.save = function (gameAccess, callback) {
     var sql = 'INSERT INTO game_access(user_id, user_fullname, game_id, game_name, game_category) VALUES ($1, $2, $3, $4, $5)';
     var params = [gameAccess.userId, gameAccess.userFullname, gameAccess.gameId, gameAccess.gameName, gameAccess.gameCategory];
 
-    client.query( sql, params,
+    client.query(sql, params,
 
         function (err) {
             if (err) {
@@ -26,32 +27,39 @@ GameAccess.save = function (gameAccess, callback) {
     );
 };
 
-/* Get statistics based on the share of categories played, for a user */
-GameAccess.gameCategoriesForUser = function(user_id, callback) {
+/* Get statistics based on the share of categories played. If user_id is specified - for a user, else - collective. */
+GameAccess.gameCategoriesRatio = function (user_id, callback) {
 
-    client.query('SELECT game_category AS category, count(*) AS occurrences FROM game_access WHERE user_id = $1 GROUP BY game_category', [user_id],
-        function (err, result) {
-            if (err) {
-                console.error('Error retrieving Game', err);
-                callback(err);
-            } else if (result.rowCount === 0) {
-                callback(null, null);
-            } else {
-                var elements = [];
-                var elem;
-                for (var i = 0; i < result.rows.length; i++) {
-                    elem = [];
-                    elem.push(result.rows[i].category);
-                    elem.push(parseInt(result.rows[i].occurrences));
-                    elements.push(elem);
-                }
+    var sql = 'SELECT game_category AS category, count(*) AS occurrences FROM game_access ';
+    var args = [];
 
-                callback(null, elements);
+    if (user_id) {
+        sql += 'WHERE user_id = $1 ';
+        args.push(user_id);
+    }
+
+    client.query(sql + 'GROUP BY game_category', args, function (err, result) {
+        if (err) {
+            console.error('Error retrieving Game', err);
+            callback(err);
+        } else if (result.rowCount === 0) {
+            callback(null, null);
+        } else {
+            var elements = [];
+            var elem;
+            for (var i = 0; i < result.rows.length; i++) {
+                elem = [];
+                elem.push(result.rows[i].category);
+                elem.push(parseInt(result.rows[i].occurrences));
+                elements.push(elem);
             }
+
+            callback(null, elements);
+        }
     });
 };
 
-GameAccess.trendingGames = function(hours, callback) {
+GameAccess.trendingGames = function (hours, callback) {
 
     // Get most accessed games in the last X hours
     var hoursString = hours + 'h';
@@ -70,7 +78,9 @@ GameAccess.trendingGames = function(hours, callback) {
                 var gameIds = [];
 
                 for (var i = 0; i < result.rows.length; i++) {
-                    if (i > 0) {gameIdsString += ','}
+                    if (i > 0) {
+                        gameIdsString += ','
+                    }
                     gameIdsString += result.rows[i].game;
                     gameIds.push(result.rows[i].game);
                 }
