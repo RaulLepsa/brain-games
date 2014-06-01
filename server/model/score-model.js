@@ -35,7 +35,7 @@ Score.save = function (score, callback) {
     );     
 };
 
-/* Get the top score for a user, in a certain game */
+/* Get the top score for a user, in a certain game. If no entry is found, returns null */
 Score.getTopScore = function (userId, gameId, callback) {
 
     client.query("SELECT score->>'points' AS points FROM scores WHERE user_id = $1 AND game_id = $2 ORDER BY (score->>'points')::BIGINT DESC LIMIT 1",

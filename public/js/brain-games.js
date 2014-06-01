@@ -317,6 +317,7 @@ var games = {
         });
     },
 
+    /* Rate a game */
     rateGame: function() {
         $(this).html('★');
         $(this).addClass('active');
@@ -324,6 +325,15 @@ var games = {
         $(this).find('~ .rating-star').html('★');
         $(this).prevAll().removeClass('active');
         $(this).prevAll().html('☆');
+
+        var gameId = $($(this).parents('.row')[0]).find('.btn-primary').attr('id');
+        var rating = $(this).attr('data-rating');
+
+        $.ajax({
+            type: 'POST',
+            url: utils.getSecureContext() + '/rateGame',
+            data: {gameId: gameId, rating: rating}
+        });
     }
 };
 

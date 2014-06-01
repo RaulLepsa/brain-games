@@ -1,9 +1,10 @@
 var client = require('../commons/db-connection');
 
-function Game() { }
+function Game() {
+}
 
 /* Create a new Game object */
-Game.new = function() {
+Game.new = function () {
     return { 'id': null, 'name': null, 'category': null, 'description': null, 'link': null };
 };
 
@@ -33,16 +34,14 @@ Game.getList = function (categories, name, callback) {
         if (name) {
             if (categories) { sql += 'AND '; }
             name = '%' + name + '%';
-            sql += 'UPPER(name) like UPPER($' + paramIndex + ')';
+            sql += 'UPPER(name) like UPPER($' + paramIndex + ') ';
             params.push(name);
         }
-    } 
+    }
 
-    client.query( sql, params,
-        
-        function (err, result) {
+    client.query(sql + 'ORDER BY games.name ASC', params, function (err, result) {
             if (err) {
-                console.error('Error retrieving Games, filtered: ' + err);
+                console.error('Error retrieving Games, filtered', err);
                 callback(err);
             } else if (result.rowCount === 0) {
                 callback(null, null);
@@ -61,20 +60,18 @@ Game.getList = function (categories, name, callback) {
                     list.push(game);
                 }
 
-                callback(null, list);   
+                callback(null, list);
             }
         }
-    );     
+    );
 };
 
 /* Get a list of categories, ordered by name */
-Game.getCategories = function(callback) {
+Game.getCategories = function (callback) {
 
-    client.query( 'SELECT DISTINCT category FROM games ORDER BY category ASC',
-        
-        function (err, result) {
+    client.query('SELECT DISTINCT category FROM games ORDER BY category ASC', function (err, result) {
             if (err) {
-                console.error('Error retrieving Categories for Games: ' + err);
+                console.error('Error retrieving Categories for Games', err);
                 callback(err);
             } else if (result.rowCount === 0) {
                 callback(null, null);
@@ -85,10 +82,56 @@ Game.getCategories = function(callback) {
                     list.push(result.rows[i].category);
                 }
 
-                callback(null, list);   
+                callback(null, list);
             }
         }
-    );     
+    );
+};
+
+/* Get games that a user has finished */
+Game.getGamesFinishedByUser = function (userId, gamesArray, callback) {
+    var args = [userId, '{' + gamesArray.toString() + '}'];
+
+    client.query('SELECT DISTINCT scores.game_id, gr.rating FROM scores ' +
+        'LEFT JOIN game_rating gr on gr.game_id = scores.game_id ' +
+        'WHERE scores.user_id = $1 AND array_append(\'{}\', scores.game_id) <@ $2', args, function (err, result) {
+        if (err) {
+            console.error('Error retrieving games for user: ' + userId, err);
+            callback(err);
+        } else {
+            var games = {}, rating;
+            if (result.rowCount > 0) {
+                for (var i = 0; i < result.rows.length; i++) {
+                    rating = result.rows[i].rating;
+                    games[result.rows[i].game_id] = rating != null ? rating : 0;
+                }
+            }
+            callback(err, games);
+        }
+    });
+};
+
+/* Rate a game */
+Game.rate = function (userId, gameId, rating, callback) {
+    client.query('SELECT * FROM game_rating WHERE game_id = $1 AND user_id = $2', [gameId, userId], function (err, result) {
+        var sql, args;
+        if (result.rowCount === 0 ) {
+            sql = 'INSERT INTO game_rating(game_id, user_id, rating) VALUES ($1, $2, $3)';
+            args = [gameId, userId, rating];
+        } else {
+            sql = 'UPDATE game_rating SET rating = $1 WHERE game_id = $2 and user_id = $3';
+            args = [rating, gameId, userId];
+        }
+
+        client.query(sql, args, function (err) {
+            if (err) {
+                console.error('Error inserting/updating rating for game: ' + gameId + 'for user: ' + userId, err);
+                callback(err);
+            } else {
+                callback(null, rating);
+            }
+        });
+    });
 };
 
 module.exports = Game;

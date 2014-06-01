@@ -45,3 +45,10 @@ CREATE TABLE game_access (
 );
 CREATE INDEX idx_game_access ON game_access USING btree (access_date);
 CREATE INDEX idx_game_category ON game_access USING btree (game_category);
+
+CREATE TABLE game_rating (
+    id BIGSERIAL,
+    game_id BIGINT,
+    user_id BIGINT,
+    rating INTEGER
+);
