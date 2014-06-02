@@ -12,7 +12,11 @@ var StatsController = {
             var data = {elements: categories};
 
             // After we have the categories, get drill-down data by Games
-            gamesRatioForCategories(id, categories, data, callback);
+            if (categories) {
+                gamesRatioForCategories(id, categories, data, callback);
+            } else {
+                callback(null);
+            }
         });
     },
 
@@ -22,7 +26,11 @@ var StatsController = {
             var data = {elements: categories};
 
             // After we have the categories, get drill-down data by Games
-            gamesRatioForCategories(null, categories, data, callback);
+            if (categories) {
+                gamesRatioForCategories(null, categories, data, callback);
+            } else {
+                callback(null);
+            }
         });
     },
 
