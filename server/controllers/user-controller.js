@@ -28,6 +28,7 @@ var UserController = {
         var oldPassword = req.param('oldPassword');
         var newPassword = req.param('newPassword');
 
+        // First name and email are mandatory
         if (firstname && email) {
             if (newPassword) {
                 // If the user wants the password changed, check if the old one is specified
@@ -38,12 +39,25 @@ var UserController = {
                     // Check if the old password matches the DB
                     User.getByField('id', req.user.id, function (err, user) {
                         utils.comparePassword(oldPassword, user.password, function (err, isMatch) {
-                            if (!isMatch) {
-                                res.json(200, {error: 'Incorrect value specified for Old password'});
-                            } else {
+                            if (isMatch) {
+
                                 // If everything is ok, crypt the new password and call the update function
                                 utils.cryptPassword(newPassword, function (err, encryptedPassword) {
                                     UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
+                                });
+                            } else {
+
+                                // If they do not match, check if the user has registered with Google and has the default password set (i.e. the google_id)
+                                utils.comparePassword(user.google_id, user.password, function (err, isMatch) {
+                                   if (isMatch) {
+                                       // If everything is ok, crypt the new password and call the update function
+                                       utils.cryptPassword(newPassword, function (err, encryptedPassword) {
+                                           UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
+                                       });
+                                   } else {
+                                       // If this does not match either, return an error
+                                       res.json(200, {error: 'Incorrect value specified for Old password'});
+                                   }
                                 });
                             }
                         });
@@ -156,14 +170,13 @@ var UserController = {
                 return done(err);
             }
 
-            // For the Google Authentication we use the Google Identifier as the password
-            var password = identifier;
-
             // If the user does not exist, register him and then log in
             if (user == null) {
                 var email = profile.emails[0].value;
                 var firstname = profile.name.givenName;
                 var lastname = profile.name.familyName;
+                // For the Google Authentication we use the Google Identifier as the password
+                var password = identifier;
 
                 UserController.register(email, password, firstname, lastname, identifier, function (err) {
                     if (err) {
@@ -180,8 +193,8 @@ var UserController = {
                     });
                 });
             } else {
-                // If he exists, just attempt to log in
-                UserController.login(user, password, done);
+                // If he exists, just log in
+                return done(null, user);
             }
         });
     },
