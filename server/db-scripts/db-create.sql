@@ -5,7 +5,8 @@ CREATE TABLE users (
 	email VARCHAR,
 	password VARCHAR,
 	firstname VARCHAR,
-	lastname VARCHAR
+	lastname VARCHAR,
+	google_id VARCHAR,
 
     CONSTRAINT pk_users PRIMARY KEY (id)
 );

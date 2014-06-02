@@ -9,6 +9,7 @@
     , "pg": "2.x"
     , "passport": "x.x"
     , "passport-local": "x.x"
+    , "passport-google": "x.x"
     , "habitat": "1.x"
     , "connect-flash": "x"
     , "dateformat": "x"

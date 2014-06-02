@@ -1,5 +1,6 @@
-var User = require('./model/user-model'),
-    utils = require('./commons/utils');
+var UserController = require('./controllers/user-controller'),
+    config = require('./commons/config'),
+    hostLocation = config.web.protocol + '://' + config.web.host + ':' + config.web.port;
 
 module.exports = function (app, passport) {
 
@@ -14,30 +15,18 @@ module.exports = function (app, passport) {
 
     // Use local strategy authentication
     var LocalStrategy = require('passport-local').Strategy;
-    passport.use(new LocalStrategy(
-        {
+    passport.use(new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password'
         }
-        , function (email, password, done) {
-            // Get user by email
-            User.getByEmail(email, function (err, user) {
-                // Validate the response
-                if (err) {
-                    return done(err);
-                }
-                if (!user) {
-                    return done(null, false);
-                }
+        , UserController.localAuthentication
+    ));
 
-                utils.comparePassword(password, user.password, function(err, isMatch) {
-                    if (err || !isMatch) {
-                        return done(null, false);
-                    } else {
-                        return done(null, user);
-                    }
-                });
-            });
+    // Google strategy authentication
+    var GoogleStrategy = require('passport-google').Strategy;
+    passport.use(new GoogleStrategy({
+            returnURL: hostLocation + '/auth/google/return'
         }
+        , UserController.googleAuthentication
     ));
 };

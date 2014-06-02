@@ -36,13 +36,13 @@ var UserController = {
                     res.end();
                 } else {
                     // Check if the old password matches the DB
-                    User.getById(req.user.id, function(err, user) {
+                    User.getByField('id', req.user.id, function (err, user) {
                         utils.comparePassword(oldPassword, user.password, function (err, isMatch) {
                             if (!isMatch) {
                                 res.json(200, {error: 'Incorrect value specified for Old password'});
                             } else {
                                 // If everything is ok, crypt the new password and call the update function
-                                utils.cryptPassword(newPassword, function(err, encryptedPassword) {
+                                utils.cryptPassword(newPassword, function (err, encryptedPassword) {
                                     UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
                                 });
                             }
@@ -86,18 +86,18 @@ var UserController = {
     },
 
     /** Register User **/
-    register: function (email, password, firstname, lastname, callback) {
+    register: function (email, password, firstname, lastname, google_id, callback) {
 
         // Validate
         var response = validate(email, password, firstname, lastname);
         if (response.status === 200) {
 
             // Check if the email is not already registered
-            User.getByEmail(email, function (err, existingUser) {
+            User.getByField('email', email, function (err, existingUser) {
                 if (!existingUser) {
 
                     // Crypt password
-                    utils.cryptPassword(password, function(err, encryptedPassword) {
+                    utils.cryptPassword(password, function (err, encryptedPassword) {
 
                         if (err) {
                             console.error('Error encrypting password');
@@ -106,7 +106,7 @@ var UserController = {
                         } else {
 
                             // Save the user
-                            User.save(User.new(email, encryptedPassword, firstname, lastname), function (err, id) {
+                            User.save(User.new(email, encryptedPassword, firstname, lastname, google_id), function (err, id) {
                                 if (err) {
                                     response.status = 400;
                                     response.errors.push('Registration has failed: ' + err);
@@ -130,6 +130,71 @@ var UserController = {
         } else {
             callback(null, response);
         }
+    },
+
+    /* Login a user by the provided 'email' and 'password' */
+    localAuthentication: function (email, password, done) {
+        // Get user by email and try to log in
+        User.getByField('email', email, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false);
+            }
+
+            UserController.login(user, password, done);
+        });
+    },
+
+    /* Used by the Google Authentication. Gets a user by his identifier if he exists, or registers him based on his profile information otherwise. */
+    googleAuthentication: function (identifier, profile, done) {
+        // Get user by his google identifier and try to log in
+
+        User.getByField('google_id', identifier, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+
+            // For the Google Authentication we use the Google Identifier as the password
+            var password = identifier;
+
+            // If the user does not exist, register him and then log in
+            if (user == null) {
+                var email = profile.emails[0].value;
+                var firstname = profile.name.givenName;
+                var lastname = profile.name.familyName;
+
+                UserController.register(email, password, firstname, lastname, identifier, function (err) {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    User.getByField('google_id', identifier, function (err, newUser) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        // Log in
+                        UserController.login(newUser, password, done);
+                    });
+                });
+            } else {
+                // If he exists, just attempt to log in
+                UserController.login(user, password, done);
+            }
+        });
+    },
+
+    /* Login request */
+    login: function (user, password, done) {
+        utils.comparePassword(password, user.password, function (err, isMatch) {
+            if (err || !isMatch) {
+                return done(null, false);
+            } else {
+                return done(null, user);
+            }
+        });
     }
 };
 
