@@ -20,6 +20,9 @@
     <!-- Custom styles for this template -->
     <link href="/stylesheets/signin.css" rel="stylesheet">
 
+    <!-- Font-awesome CSS used for the social buttons -->
+    <link href="/stylesheets/font-awesome.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -32,17 +35,22 @@
 <div class="container">
 
     <form class="form-signin" role="form" action="/auth/local" method="POST">
+        <!-- Form elements-->
         <h2 class="form-signin-heading">Please sign in</h2>
         <input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
         <input name="password" type="password" class="form-control" placeholder="Password" required>
-        <label class="checkbox">
+        <label class="checkbox remember-me">
             <input name="remember" type="checkbox" value="remember-me"> Remember me
         </label>
 
+        <!-- Error and next url -->
         <div id="signin-error" class="alert alert-danger display-none"><%= error %></div>
         <input id="next-url" name="next-url" type="hidden" value="<%= nextUrl %>">
 
+        <!-- Sign in buttons -->
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <a class="btn btn-lg btn-block btn-social btn-google-plus" href="/auth/google">Sign in with Google<i class="fa fa-google-plus"></i></a>
+        <a class="btn btn-lg btn-block btn-social btn-facebook" href="#">Sign in with Facebook<i class="fa fa-facebook"></i></a>
     </form>
 
     <!-- FOOTER -->
