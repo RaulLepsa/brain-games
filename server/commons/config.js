@@ -5,6 +5,7 @@ var config = {};
 
 // Web and DB configurations
 config.web = {};
+config.web.host = 'localhost';
 config.web.port = '3000';
 config.web.sessionMaxAge = 3 * 24 * 60 * 60 * 1000;		// Default session expiry time = 3 days
 

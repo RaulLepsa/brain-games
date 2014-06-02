@@ -45,6 +45,6 @@ require('./auth')(app, passport);
 require('./routes');
 
 // Start server
-server.listen(config.web.port, function () {
+server.listen(config.web.port, config.web.host, function () {
     console.info("Brain Games server listening on port %d in %s mode", config.web.port, app.settings.env);
 });
