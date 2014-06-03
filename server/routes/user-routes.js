@@ -49,7 +49,7 @@ app.post('/auth/local',
     passport.authenticate('local', 
         { failureRedirect: '/signin', failureFlash: 'Invalid username or password' }
     )
-    , authenticationSuccessfull
+    , authenticationSuccessful
 );
 
 // Google authentication requests
@@ -58,7 +58,7 @@ app.get('/auth/google/return',
     passport.authenticate('google',
         { failureRedirect: '/signin', failureFlash: 'Invalid username or password' }
     )
-    , authenticationSuccessfull
+    , authenticationSuccessful
 );
 
 // Facebook authentication requests
@@ -67,11 +67,11 @@ app.get('/auth/facebook/callback',
     passport.authenticate('facebook',
         { failureRedirect: '/signin', failureFlash: 'Invalid username or password' }
     )
-    , authenticationSuccessfull
+    , authenticationSuccessful
 );
 
 // Called if authentication is successful
-function authenticationSuccessfull(req, res) {
+function authenticationSuccessful(req, res) {
     if (req.body.remember) {
         // If remember-me was checked, set a max age for the session
         req.session.cookie.maxAge = config.web.sessionMaxAge;

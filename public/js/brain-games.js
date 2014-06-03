@@ -7,7 +7,7 @@ var authentication = {
 	pageReady: function(element) {
 
         // Clear locally-stored user information
-        utils.clearUserInformation();
+        utils.clearLocalInformation();
 
 		var error = element.html();
 		if (error && error !== '') {
@@ -541,10 +541,12 @@ var utils = {
         return '/secure';    
     },
 
-    /* Clear user information */
-    clearUserInformation: function() {
+    /* Clear local information related to the application */
+    clearLocalInformation: function() {
         localStorage.removeItem('bg-userid');
         localStorage.removeItem('bg-username');
+        localStorage.removeItem(games._storageKey_filter);
+        localStorage.removeItem('bg-room');
     },
 
     /* Retrieve current user information in a callback function with 1 parameter */
