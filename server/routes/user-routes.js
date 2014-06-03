@@ -61,6 +61,15 @@ app.get('/auth/google/return',
     , authenticationSuccessfull
 );
 
+// Facebook authentication requests
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook',
+        { failureRedirect: '/signin', failureFlash: 'Invalid username or password' }
+    )
+    , authenticationSuccessfull
+);
+
 // Called if authentication is successful
 function authenticationSuccessfull(req, res) {
     if (req.body.remember) {
@@ -82,7 +91,7 @@ function authenticationSuccessfull(req, res) {
 
 // Register request
 app.post('/register', function (req, res) {
-    UserController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, null, function (err, response) {
+    UserController.register(req.body.email, req.body.password, req.body.firstname, req.body.lastname, null, null, function (err, response) {
         
         // If registered successfully, login. Else, display error message
         if (response.status === 200) {

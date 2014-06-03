@@ -1,6 +1,8 @@
 var UserController = require('./controllers/user-controller'),
     config = require('./commons/config'),
-    hostLocation = config.web.protocol + '://' + config.web.host + ':' + config.web.port;
+    hostLocation = config.web.protocol + '://' + config.web.host + ':' + config.web.port,
+    path = require('path'),
+    env = require('habitat').load(path.resolve(__dirname, 'brain-games.env'));
 
 module.exports = function (app, passport) {
 
@@ -28,5 +30,16 @@ module.exports = function (app, passport) {
             returnURL: hostLocation + '/auth/google/return'
         }
         , UserController.googleAuthentication
+    ));
+
+    // Facebook strategy authentication
+    var FacebookStrategy = require('passport-facebook').Strategy;
+    passport.use(new FacebookStrategy({
+            clientID: env.get('FACEBOOK_ID'),
+            clientSecret: env.get('FACEBOOK_SECRET'),
+            callbackURL: hostLocation + '/auth/facebook/callback',
+            scope: 'email'      // Request email information
+        }
+        , UserController.facebookAuthentication
     ));
 };

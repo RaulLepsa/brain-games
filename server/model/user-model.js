@@ -5,12 +5,12 @@ function User() {
 
 /** Create a new User object **/
 User.new = function () {
-    return { 'id': null, 'email': null, 'password': null, 'firstname': null, 'lastname': null, username: null, 'google_id': null };
+    return { 'id': null, 'email': null, 'password': null, 'firstname': null, 'lastname': null, username: null, 'google_id': null, 'facebook_id': null };
 };
 
 /** Create a new User instance using parameters **/
-User.new = function (email, password, firstname, lastname, googleId) {
-    return { 'id': null, 'email': email, 'password': password, 'firstname': firstname, 'lastname': lastname, 'google_id': googleId };
+User.new = function (email, password, firstname, lastname, googleId, facebookId) {
+    return { 'id': null, 'email': email, 'password': password, 'firstname': firstname, 'lastname': lastname, 'google_id': googleId, 'facebook_id': facebookId};
 };
 
 /** Get a User by a User field. Returns the User entity if found, or null if it does not exist. **/
@@ -32,8 +32,8 @@ User.getByField = function (fieldName, fieldValue, callback) {
 /** Save a User. Returns the newly ID if the save is successful. **/
 User.save = function (user, callback) {
     client.query(
-        'INSERT INTO users(email, password, firstname, lastname, google_id) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-        [user.email, user.password, user.firstname, user.lastname, user.google_id],
+        'INSERT INTO users(email, password, firstname, lastname, google_id, facebook_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+        [user.email, user.password, user.firstname, user.lastname, user.google_id, user.facebook_id],
         function (err, result) {
             if (err) {
                 console.error('Error saving User: ' + err);
@@ -90,6 +90,7 @@ function userMapper(row) {
     user.lastname = row.lastname;
     user.username = user.firstname + ' ' + user.lastname;
     user.google_id = row.google_id;
+    user.facebook_id = row.facebook_id;
 
     return user;
 }

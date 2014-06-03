@@ -7,6 +7,7 @@ CREATE TABLE users (
 	firstname VARCHAR,
 	lastname VARCHAR,
 	google_id VARCHAR,
+	facebook_id VARCHAR,
 
     CONSTRAINT pk_users PRIMARY KEY (id)
 );

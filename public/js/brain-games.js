@@ -355,7 +355,7 @@ var stats = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/self/game-categories',
             success: function (response) {
-                if (response.data.elements && response.data.elements.length > 0) {
+                if (response.data && response.data.elements) {
                     response.data.title = 'Your training categories ratio';
                     response.data.subtitle = 'Click a slice to view game ratio';
                     response.data.title_drilldown = 'Your training games ratio';
@@ -465,7 +465,6 @@ var chat = {
                 var usersHtml = '';
                 $.each(data, function (id, username) {
                     usersHtml += '<div id="' + id + '">' + username + '</div>';
-                    console.log(id + username);
                 });
                 usersElement.html(usersHtml);
             }

@@ -48,17 +48,35 @@ var UserController = {
                             } else {
 
                                 // If they do not match, check if the user has registered with Google and has the default password set (i.e. the google_id)
-                                utils.comparePassword(user.google_id, user.password, function (err, isMatch) {
-                                   if (isMatch) {
-                                       // If everything is ok, crypt the new password and call the update function
-                                       utils.cryptPassword(newPassword, function (err, encryptedPassword) {
-                                           UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
-                                       });
-                                   } else {
-                                       // If this does not match either, return an error
-                                       res.json(200, {error: 'Incorrect value specified for Old password'});
-                                   }
-                                });
+                                if (user.google_id) {
+                                    utils.comparePassword(user.google_id, user.password, function (err, isMatch) {
+                                        if (isMatch) {
+                                            // If everything is ok, crypt the new password and call the update function
+                                            utils.cryptPassword(newPassword, function (err, encryptedPassword) {
+                                                UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
+                                            });
+                                        } else {
+                                            // If this does not match either, return an error
+                                            res.json(200, {error: 'Incorrect value specified for Old password'});
+                                        }
+                                    });
+
+                                // Check if the user has registered with facebook and has the default password set (i.e. the facebook_id)
+                                } else if (user.facebook_id) {
+                                    utils.comparePassword(user.facebook_id, user.password, function (err, isMatch) {
+                                        if (isMatch) {
+                                            // If everything is ok, crypt the new password and call the update function
+                                            utils.cryptPassword(newPassword, function (err, encryptedPassword) {
+                                                UserController.updateUserInformation(req, res, firstname, lastname, email, encryptedPassword);
+                                            });
+                                        } else {
+                                            // If this does not match either, return an error
+                                            res.json(200, {error: 'Incorrect value specified for Old password'});
+                                        }
+                                    });
+                                } else {
+                                    res.json(200, {error: 'Incorrect value specified for Old password'});
+                                }
                             }
                         });
                     });
@@ -100,7 +118,7 @@ var UserController = {
     },
 
     /** Register User **/
-    register: function (email, password, firstname, lastname, google_id, callback) {
+    register: function (email, password, firstname, lastname, google_id, facebook_id, callback) {
 
         // Validate
         var response = validate(email, password, firstname, lastname);
@@ -120,13 +138,13 @@ var UserController = {
                         } else {
 
                             // Save the user
-                            User.save(User.new(email, encryptedPassword, firstname, lastname, google_id), function (err, id) {
+                            User.save(User.new(email, encryptedPassword, firstname, lastname, google_id, facebook_id), function (err, id) {
                                 if (err) {
                                     response.status = 400;
                                     response.errors.push('Registration has failed: ' + err);
                                     callback(err, response);
                                 } else {
-                                    console.log('User registered: [ID = ' + id + ', email = ' + email + ']');
+                                    console.log('[Brain Games]\tUser registered: [ID = ' + id + ', email = ' + email + ']');
                                     callback(null, response);
                                 }
                             });
@@ -163,8 +181,8 @@ var UserController = {
 
     /* Used by the Google Authentication. Gets a user by his identifier if he exists, or registers him based on his profile information otherwise. */
     googleAuthentication: function (identifier, profile, done) {
-        // Get user by his google identifier and try to log in
 
+        // Get user by his google identifier and try to log in
         User.getByField('google_id', identifier, function (err, user) {
             if (err) {
                 return done(err);
@@ -175,10 +193,10 @@ var UserController = {
                 var email = profile.emails[0].value;
                 var firstname = profile.name.givenName;
                 var lastname = profile.name.familyName;
-                // For the Google Authentication we use the Google Identifier as the password
+                // For the Google Authentication we use the Google Identifier as the default password
                 var password = identifier;
 
-                UserController.register(email, password, firstname, lastname, identifier, function (err) {
+                UserController.register(email, password, firstname, lastname, identifier, null, function (err) {
                     if (err) {
                         return done(err);
                     }
@@ -197,6 +215,48 @@ var UserController = {
                 return done(null, user);
             }
         });
+    },
+
+    /* Used by the Facebook Authentication. Gets a user by his accessToken if he exists, or registers him based on his profile information otherwise. */
+    facebookAuthentication: function(accessToken, refreshToken, profile, done) {
+
+        if (accessToken) {
+            var facebookId = profile.id;
+
+            // Get user by his google identifier and try to log in
+            User.getByField('facebook_id', facebookId, function (err, user) {
+                if (err) {
+                    return done(err);
+                }
+
+                // If the user does not exist, register him and then log in
+                if (user == null) {
+                    var email = profile.emails[0].value;
+                    var firstname = profile.name.givenName;
+                    var lastname = profile.name.familyName;
+                    // For the Facebook Authentication we use the Facebook id as the password
+                    var password = facebookId;
+
+                    UserController.register(email, password, firstname, lastname, null, facebookId, function (err) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        User.getByField('facebook_id', facebookId, function (err, newUser) {
+                            if (err) {
+                                return done(err);
+                            }
+
+                            // Log in
+                            UserController.login(newUser, password, done);
+                        });
+                    });
+                } else {
+                    // If he exists, just log in
+                    return done(null, user);
+                }
+            });
+        }
     },
 
     /* Login request */
