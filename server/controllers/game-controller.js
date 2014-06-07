@@ -19,7 +19,7 @@ var GameController = {
                         for (i = 0; i < games.length; i++) {
                             gameIdsArray.push(games[i].id);
                         }
-                        Games.getGamesFinishedByUser(req.user.id, gameIdsArray, function (err, gameRatings) {
+                        Games.gameRatingsForUser(req.user.id, gameIdsArray, function (err, gameRatings) {
                             for (i = 0; i < games.length; i++) {
                                 if (gameRatings[games[i].id] >= 0) {
                                     games[i].rating = gameRatings[games[i].id];
@@ -159,6 +159,13 @@ var GameController = {
                     });
                 }
             }
+        });
+    },
+
+    /* Get a list of games for a user - the ones he has played */
+    getPlayedGamesForUser: function (req, callback) {
+        Games.getPlayedListForUser(req.user.id, function (err, games) {
+            callback (err, games);
         });
     }
 };

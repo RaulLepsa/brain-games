@@ -2,7 +2,8 @@
  * Statistics-related operations
  **/
 
-var GameAccess = require('../model/game-access-model');
+var GameAccess = require('../model/game-access-model'),
+    Scores = require('../model/score-model');
 
 var StatsController = {
 
@@ -35,7 +36,7 @@ var StatsController = {
     },
 
     /* Get trending games stats */
-    trendingGames: function(callback) {
+    trendingGames: function (callback) {
         var _hours = 5;
 
         GameAccess.trendingGames(_hours, function (err, elements) {
@@ -51,6 +52,13 @@ var StatsController = {
             data.title = 'Trending games';
             data.elements = processedElements;
             callback(err, data);
+        });
+    },
+
+    /* Get statistics based on game performance for a user for a specific game */
+    gamePerformance: function (userId, gameId, callback) {
+        Scores.gamePerformance(userId, gameId, function (err, gamePerformance) {
+            callback(err, gamePerformance);
         });
     }
 };

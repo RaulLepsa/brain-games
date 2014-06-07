@@ -343,9 +343,14 @@ var stats = {
     /* When the page is ready, render statistics for the current user */
     pageReady: function() {
         $('#nav-stats').addClass('active');
+
         stats.gameCategoriesForUser();
         stats.gameCategoriesCollective();
         stats.trendingGames();
+        stats.initializeGamePerformance();
+
+        // Bind the Click function for the Game Performance Select
+        $('#games-for-user').change(stats.gamePerformance);
     },
 
     /* Get Ratio of Game Categories Played statistics for the current player */
@@ -386,6 +391,7 @@ var stats = {
         });
     },
 
+    /* Get Trending Games information and plot the result */
     trendingGames: function () {
         // Get Trending Games
         $.ajax({
@@ -398,6 +404,41 @@ var stats = {
             },
             error: handlers.errorHandler
         })
+    },
+
+    /* Get Games finished by user in order to plot the Performance for each game */
+    initializeGamePerformance: function () {
+        // Get Games that user has finished
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/gamesForUser',
+            success: function (games) {
+                var gamesHtml = '<option value="">Select a game</option>';
+                for (var i = 0; i < games.length; i++) {
+                    gamesHtml += '<option value="' + games[i].id + '">' + games[i].name + '</option>';
+                }
+                $('#games-for-user').html(gamesHtml);
+            },
+            error: handlers.errorHandler
+        });
+    },
+
+    /* Get performance for a specific game (for a user) */
+    gamePerformance: function () {
+        var gameId = $('#games-for-user').val();
+        if (gameId != null && gameId !== '') {
+            $.ajax({
+                type: 'GET',
+                url: utils.getSecureContext() + '/stats/self/game-performance',
+                data: {gameId: gameId},
+                success: function (gamePerformance) {
+                    if (gamePerformance.data && gamePerformance.data.length > 0) {
+                        charts.plotPerformanceChart($('#chart-game-performance'), gamePerformance);
+                    }
+                },
+                error: handlers.errorHandler
+            });
+        }
     }
 };
 
@@ -736,6 +777,58 @@ var charts = {
                 }
             },
             series: data.elements
+        });
+    },
+
+    plotPerformanceChart: function (element, gamePerformance) {
+        $(element).highcharts({
+            title: {
+                text: 'Progress for game ' + gamePerformance.name
+            },
+
+            legend: {
+                enabled: false
+            },
+
+            xAxis: {
+                type: 'datetime',
+                tickInterval: 7 * 24 * 3600 * 1000,
+                labels: {
+                    formatter: function () {
+                        return Highcharts.dateFormat('%b %e, %Y', this.value);
+                    }
+                }
+
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Score'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    }
+                },
+                showFirstLabel: false
+            },
+
+            tooltip: {
+                shared: true,
+                crosshairs: true,
+                xDateFormat: '%A, %b %e, %Y',
+                headerFormat: '<strong>Score:</strong> {point.y}<br>{point.key}',
+                pointFormat: ''
+            },
+
+            series: [{
+                name: gamePerformance.name,
+                lineWidth: 4,
+                marker: {
+                    radius: 4
+                },
+                data: gamePerformance.data
+            }]
         });
     }
 };

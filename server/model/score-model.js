@@ -25,7 +25,7 @@ Score.save = function (score, callback) {
         
         function (err, result) {
             if (err) {
-                console.error('Error saving Game Score: ' + err);
+                console.error('Error saving Game Score', err);
                 callback(err, null);
             } else {
                 score.id = result.rows[0].id;
@@ -88,7 +88,9 @@ Score.getHighScores = function (gameLink, userId, limit, callback) {
 
                         score.userFullname = result.rows[i].user_fullname;
                         score.userId = result.rows[i].user_id;
-                        if (score.userId === userId) { currentUserFound = true; }
+                        if (score.userId === userId) {
+                            currentUserFound = true;
+                        }
                         score.gameId = result.rows[i].game_id;
                         score.gameName = result.rows[i].game_name;
                         score.date = utils.formatDate(result.rows[i].date);
@@ -101,10 +103,10 @@ Score.getHighScores = function (gameLink, userId, limit, callback) {
                     if (!currentUserFound) {
                         client.query(
                                 "SELECT row_num, user_fullname, date, (score->>'points') AS points FROM ( " +
-                                    "SELECT row_number() OVER (ORDER BY (score->>'points')::BIGINT desc) AS row_num, scores.* FROM scores " +
+                                "SELECT row_number() OVER (ORDER BY (score->>'points')::BIGINT desc) AS row_num, scores.* FROM scores " +
                                 ") AS results " +
                                 "WHERE results.user_id = $1 AND results.game_id = $2",
-                            [userId, scores[0].gameId], function(err, result) {
+                            [userId, scores[0].gameId], function (err, result) {
                                 if (err) {
                                     callback(err, null, null);
                                 } else if (result.rowCount === 0) {
@@ -131,6 +133,31 @@ Score.getHighScores = function (gameLink, userId, limit, callback) {
                 }
             }
         });
+};
+
+Score.gamePerformance = function (userId, gameId, callback) {
+    client.query('SELECT date, game_name, (score->>\'points\')::BIGINT AS points FROM scores WHERE user_id = $1 AND game_id = $2 ORDER BY date ASC', [userId, gameId], function (err, result) {
+        if (err) {
+            console.error('Error retrieving game performance for user: ' + userId, err);
+            callback(err);
+        } else if (result.rowCount === 0) {
+            callback(null, null);
+        } else {
+            var gamePerformance = {}, entry;
+            gamePerformance.data = [];
+            gamePerformance.name = result.rows[0].game_name;
+
+            for (var i = 0; i < result.rows.length; i++) {
+                // Each entry has to be a pair of date + value
+                entry = [];
+                entry.push(new Date(result.rows[i].date).getTime());
+                entry.push(parseInt(result.rows[i].points));
+                gamePerformance.data.push(entry);
+            }
+
+            callback(null, gamePerformance);
+        }
+    });
 };
 
 

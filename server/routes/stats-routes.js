@@ -44,3 +44,15 @@ app.get('/secure/stats/collective/trending-games', function (req, res) {
         }
     });
 });
+
+/* Get statistics based on game performance for a user for a specific game */
+app.get('/secure/stats/self/game-performance', function (req, res) {
+    StatsController.gamePerformance(req.user.id, req.param('gameId'), function (err, gamePerformance) {
+        if (err) {
+            res.statusCode = 400;
+            res.end();
+        } else {
+            res.json(200, gamePerformance);
+        }
+    });
+});

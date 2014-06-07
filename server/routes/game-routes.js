@@ -48,6 +48,19 @@ app.post('/secure/rateGame', function (req, res) {
        }
     });
 });
+
+// Get a list of games for a user - the ones he has played
+app.get('/secure/gamesForUser', function (req, res) {
+    GameController.getPlayedGamesForUser(req, function (err, games) {
+        if (err) {
+            res.statusCode = 400;
+            res.end();
+        } else {
+            res.json(200, games);
+        }
+    })
+});
+
 /** Specific games **/
 
 // Color Match Game page

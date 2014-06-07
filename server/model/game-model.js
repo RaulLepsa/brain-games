@@ -47,17 +47,9 @@ Game.getList = function (categories, name, callback) {
                 callback(null, null);
             } else {
                 var list = [];
-                var game;
 
                 for (var i = 0; i < result.rows.length; i++) {
-                    game = Game.new();
-                    game.id = result.rows[i].id;
-                    game.category = result.rows[i].category;
-                    game.name = result.rows[i].name;
-                    game.description = result.rows[i].description;
-                    game.link = result.rows[i].link;
-
-                    list.push(game);
+                    list.push(gameMapper(result.rows[i]));
                 }
 
                 callback(null, list);
@@ -88,8 +80,27 @@ Game.getCategories = function (callback) {
     );
 };
 
-/* Get games that a user has finished */
-Game.getGamesFinishedByUser = function (userId, gamesArray, callback) {
+/* Get a list of games for a user - the ones he has played */
+Game.getPlayedListForUser = function (userId, callback) {
+    client.query('SELECT DISTINCT game_id AS id, game_name AS name FROM game_access WHERE user_id = $1 ORDER BY game_name ASC', [userId], function (err, result) {
+        if (err) {
+            console.error('Error retrieving Games played for User ' + userId, err);
+            callback(err);
+        } else if (result.rowCount === 0) {
+            callback(null, null);
+        } else {
+            var list = [];
+            for (var i = 0; i < result.rows.length; i++) {
+                list.push(gameMapper(result.rows[i]));
+            }
+
+            callback(null, list);
+        }
+    });
+};
+
+/* Get games that a user has finished - he is allowed to rate them. Also bring the rating if it exists */
+Game.gameRatingsForUser = function (userId, gamesArray, callback) {
     var args = [userId, '{' + gamesArray.toString() + '}'];
 
     client.query('SELECT DISTINCT scores.game_id, gr.rating FROM scores ' +
@@ -133,5 +144,17 @@ Game.rate = function (userId, gameId, rating, callback) {
         });
     });
 };
+
+/* Map a Game object from a DB row */
+function gameMapper(row) {
+    var game = Game.new();
+    game.id = row.id;
+    game.category = row.category;
+    game.name = row.name;
+    game.description = row.description;
+    game.link = row.link;
+
+    return game;
+}
 
 module.exports = Game;
