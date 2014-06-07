@@ -348,6 +348,7 @@ var stats = {
         stats.gameCategoriesCollective();
         stats.trendingGames();
         stats.initializeGamePerformance();
+        charts.plotPerformanceChart($('#chart-game-performance'), null);
 
         // Bind the Click function for the Game Performance Select
         $('#games-for-user').change(stats.gamePerformance);
@@ -432,9 +433,7 @@ var stats = {
                 url: utils.getSecureContext() + '/stats/self/game-performance',
                 data: {gameId: gameId},
                 success: function (gamePerformance) {
-                    if (gamePerformance.data && gamePerformance.data.length > 0) {
-                        charts.plotPerformanceChart($('#chart-game-performance'), gamePerformance);
-                    }
+                    charts.plotPerformanceChart($('#chart-game-performance'), gamePerformance);
                 },
                 error: handlers.errorHandler
             });
@@ -781,9 +780,17 @@ var charts = {
     },
 
     plotPerformanceChart: function (element, gamePerformance) {
+        var title = '';
+        if (gamePerformance == null || gamePerformance.data == null) {
+            gamePerformance = {};
+            gamePerformance.data = [];
+        } else {
+            title = 'Progress for game ' + gamePerformance.name;
+        }
+
         $(element).highcharts({
             title: {
-                text: 'Progress for game ' + gamePerformance.name
+                text: title
             },
 
             legend: {
@@ -811,6 +818,10 @@ var charts = {
                     }
                 },
                 showFirstLabel: false
+            },
+
+            noData: {
+
             },
 
             tooltip: {

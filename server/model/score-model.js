@@ -141,7 +141,7 @@ Score.gamePerformance = function (userId, gameId, callback) {
             console.error('Error retrieving game performance for user: ' + userId, err);
             callback(err);
         } else if (result.rowCount === 0) {
-            callback(null, null);
+            callback(null, {});
         } else {
             var gamePerformance = {}, entry;
             gamePerformance.data = [];
