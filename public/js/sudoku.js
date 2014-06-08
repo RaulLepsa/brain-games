@@ -30,8 +30,18 @@
         "hard":         44,
         "very-hard":    35,
         "insane":       26,
-        "inhuman":      17,
+        "inhuman":      17
     };
+
+    var _INITIAL_BOARD;
+    var _BOARD;
+
+    var _STORAGE_INITIAL_BOARD = 'sudoku-initial-board';
+    var _STORAGE_BOARD = 'sudoku-board';
+    var _STORAGE_START_TIME = 'sudoku-start-time';
+
+    var _START_TIME;
+    var _SCORE = 0;
 
     // Blank character and board representation
     sudoku.BLANK_CHAR = '.';
@@ -798,7 +808,151 @@
             return max;
         }
         return nr
-    }
+    };
+
+    /* When the Sudoku game page is loaded, initialize the game */
+    sudoku.pageReady = function () {
+        // Generate a board
+        _INITIAL_BOARD = sudoku.generate("easy");
+        _BOARD = _INITIAL_BOARD;
+
+        // Populate cells
+        var cells = $('.grid-cell');
+        $.each(cells, function (i, el) {
+            if (_BOARD[i] !== '.') {
+                $(el).val(_BOARD[i]);
+                $(el).attr('disabled', true);
+            }
+        });
+
+        // Get start time in milliseconds
+        _START_TIME = new Date().getTime();
+
+        // Save the boards to local storage; save the start time
+        localStorage.setItem(_STORAGE_INITIAL_BOARD, _INITIAL_BOARD);
+        localStorage.setItem(_STORAGE_BOARD, _BOARD);
+        localStorage.setItem(_STORAGE_START_TIME, _START_TIME);
+
+        // Listen for user input
+        cells.keypress(sudoku.updateBoard);
+        cells.keyup(sudoku.userInput);
+
+        // Start timer
+        $('#game-time').runner({
+            autostart: true,
+            format: function(value) {
+                var seconds = parseInt(value / 1000);
+                var minutes = 0;
+                if (seconds >= 60) {
+                    minutes = parseInt(seconds / 60);
+                    seconds = seconds % 60;
+                }
+
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+                if (seconds < 10) {
+                    seconds = '0' + seconds;
+                }
+                return minutes + ':' + seconds;
+            }
+        });
+    };
+
+    /* Triggered when the user inputs a value in one of the cells */
+    sudoku.updateBoard = function (e) {
+
+        // Input only valid for 1,2,3, .. 9 AND for empty cells
+        if (e.which >= 49 && e.which <= 57 && $(this).val() == '') {
+            // Compute the score
+            var playtime = (new Date().getTime() - _START_TIME) / 1000;     // For how much time has the user been playing (seconds)
+            if (playtime < 40) {
+                _SCORE += 5;
+            } else if (playtime < 90) {
+                _SCORE += 4;
+            } else if (playtime < 150) {
+                _SCORE += 3;
+            } else if (playtime < 240) {
+                _SCORE += 2;
+            } else {
+                _SCORE += 1;
+            }
+
+            // Update the score
+            $('#game-score').html(_SCORE);
+
+        }  else {
+            e.preventDefault();
+        }
+    };
+
+    /* Triggered when the user inputted a value in the cells. Checks if the game is over or not */
+    sudoku.userInput = function (e) {
+        if (e.which == 8 || e.which == 46) {     // If backspace or delete
+            _SCORE -= 5;
+            // Update the score
+            $('#game-score').html(_SCORE);
+        }
+
+        // Iterate over the board and update it
+        // Find if there are any remaining empty cells
+        // Compute the score
+        var board_updated = '';
+        var emptyCells = 0;
+        $.each($('.grid-cell'), function (i, el) {
+            var value = $(el).val();
+            if (value) {
+                board_updated += value;
+            } else {
+                board_updated += sudoku.BLANK_CHAR;
+                emptyCells++;
+            }
+        });
+
+        // Assign the updated board to the _BOARD object
+        _BOARD = board_updated;
+        localStorage.setItem(_STORAGE_BOARD, _BOARD);
+
+        // If no more empty cells, the game was finished
+        if (emptyCells === 0) {
+            if (sudoku.validate_board(_BOARD)) {
+                if (sudoku.checkSolution()) {
+                    alert('Correct game');
+                    sudoku.clearLocalStorage();
+                }
+            } else {
+                alert('Invalid board!');
+                sudoku.clearLocalStorage();
+            }
+        }
+    };
+
+    /* Check if the completed board is a solution for the initial one */
+    sudoku.checkSolution = function () {
+
+        var candidates = sudoku.get_candidates(_INITIAL_BOARD);
+        var row = 0, col = -1;
+        for (var i = 0; i < _BOARD.length; i++) {
+            if (i != 0 && i % 9 === 0) {
+                row++;
+                col = -1;
+            }
+            col++;
+
+            if (_BOARD[i] !== sudoku.BLANK_CHAR && candidates[row][col].indexOf(_BOARD[i]) < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    /* Clear local storage items for game */
+    sudoku.clearLocalStorage = function () {
+        localStorage.removeItem(_STORAGE_INITIAL_BOARD);
+        localStorage.removeItem(_STORAGE_BOARD);
+        localStorage.removeItem(_STORAGE_START_TIME);
+    };
 
     // Initialize library after load
     initialize();

@@ -1,7 +1,8 @@
 .grid-container {
-    position: absolute;
     z-index: 1;
     background-color: #bbada0;
+    width: 630px;
+    margin: auto;
 }
 
 .grid-row {
@@ -46,10 +47,17 @@
     border-right: 4px solid #101010;
 }
 
+
+/* Responsive media for smaller screens */
 @media screen and (max-width: 768px) {
+
+    .grid-container {
+        width: 315px;
+    }
+
     .grid-cell {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         font-size: 20px;
     }
 

@@ -393,7 +393,7 @@ h1.title {
     text-align: right;
 }
 
-.score-container, .timeleft-container, .best-container {
+.score-container, .timeleft-container, .time-container, .best-container {
     position: relative;
     display: inline-block;
     background: #f0ad4e;
@@ -408,7 +408,7 @@ h1.title {
     text-align: center;
 }
 
-.score-container:after, .timeleft-container:after, .best-container:after {
+.score-container:after, .timeleft-container:after, .time-container:after, .best-container:after {
     position: absolute;
     width: 100%;
     top: 10px;
@@ -420,7 +420,7 @@ h1.title {
     color: #fff;
 }
 
-.score-container .score-addition, .timeleft-container.score-addition, .best-container.score-addition {
+.score-container .score-addition, .timeleft-container.score-addition, .time-container.score-addition, .best-container.score-addition {
     position: absolute;
     right: 30px;
     color: red;
@@ -443,6 +443,10 @@ h1.title {
 
 .timeleft-container:after {
     content: "Time left";
+}
+
+.time-container:after {
+    content: "Time Played";
 }
 
 .best-container:after {

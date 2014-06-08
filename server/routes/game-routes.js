@@ -72,3 +72,8 @@ app.get('/secure/game/color-match', function (req, res) {
 app.get('/secure/game/2048', function (req, res) {
     res.render('2048', {username: req.user.username});
 });
+
+// Sudoku Game page
+app.get('/secure/game/sudoku', function (req, res) {
+    res.render('sudoku', {username: req.user.username});
+});
