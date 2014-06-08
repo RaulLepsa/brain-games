@@ -348,7 +348,6 @@ var stats = {
         stats.gameCategoriesCollective();
         stats.trendingGames();
         stats.initializeGamePerformance();
-        charts.plotPerformanceChart($('#chart-game-performance'), null);
 
         // Bind the Click function for the Game Performance Select
         $('#games-for-user').change(stats.gamePerformance);
@@ -399,9 +398,7 @@ var stats = {
             type: 'GET',
             url: utils.getSecureContext() + '/stats/collective/trending-games',
             success: function (response) {
-                if (response.data.elements.length > 0) {
-                    charts.plotTrendingChart(('#chart-trending-games'), response.data);
-                }
+                charts.plotTrendingChart(('#chart-trending-games'), response.data);
             },
             error: handlers.errorHandler
         })
@@ -414,11 +411,21 @@ var stats = {
             type: 'GET',
             url: utils.getSecureContext() + '/gamesForUser',
             success: function (games) {
-                var gamesHtml = '<option value="">Select a game</option>';
-                for (var i = 0; i < games.length; i++) {
-                    gamesHtml += '<option value="' + games[i].id + '">' + games[i].name + '</option>';
+
+                // Display Game Performance Chart only if the user has played games
+                if (games && games.length > 0 ) {
+                    $('#container-chart-game-performance').show();
+
+                    // Set list of games
+                    var gamesHtml = '<option value="">Select a game</option>';
+                    for (var i = 0; i < games.length; i++) {
+                        gamesHtml += '<option value="' + games[i].id + '">' + games[i].name + '</option>';
+                    }
+                    $('#games-for-user').html(gamesHtml);
+
+                    // Initialize chart with no data
+                    charts.plotPerformanceChart($('#chart-game-performance'), null);
                 }
-                $('#games-for-user').html(gamesHtml);
             },
             error: handlers.errorHandler
         });
