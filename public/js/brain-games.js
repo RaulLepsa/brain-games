@@ -262,13 +262,13 @@ var games = {
 					}
 
 					// Display it
-					var gameoverDiv = $('#gameover');
-					gameoverDiv.addClass(calloutClass);
-					gameoverDiv.find('h4').html(calloutHeader);
-					gameoverDiv.find('p').html(calloutText);
-					gameoverDiv.fadeIn();
+                    var gameFinishedContainer = $('#game-finished-container');
+                    var gameFinishedMessage = gameFinishedContainer.find('.bs-callout');
+                    gameFinishedMessage.addClass(calloutClass);
+                    gameFinishedMessage.find('h4').html(calloutHeader);
+                    gameFinishedMessage.find('p').html(calloutText);
 
-					$('#game-finished-btn').show();
+                    gameFinishedContainer.fadeIn();
 
 					// Remove localStorage items
 					localStorage.removeItem('previous-best');

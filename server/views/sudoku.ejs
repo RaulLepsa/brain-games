@@ -23,6 +23,9 @@
     <!-- 2048 Game CSS -->
     <link href="/stylesheets/sudoku.css" rel="stylesheet" type="text/css">
 
+    <!-- CSS for bootstrap callouts -->
+    <link href="/stylesheets/bootstrap-callouts.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -39,13 +42,11 @@
         <div class="game-heading">
             <h1 class="title">Sudoku</h1>
 
-            <!-- Stats - score, time left, correct/incorrect, combo count -->
             <div class="scores-container">
                 <div class="time-container"><span id="game-time">00:00</span></div>
                 <div class="score-container"><span id="game-score">0</span></div>
-            </div><!--/stats -->
+            </div>
         </div>
-
 
         <div class="game-container">
             <div class="game-message">
@@ -152,9 +153,20 @@
                     <input type="text" class="grid-cell"/>
                 </div>
             </div>
+        </div><!--/game-container-->
+
+    </div><!--/game-->
+
+    <!-- Game finished DIV to be displayed on game end -->
+    <div id="game-finished-container" class="display-none">
+        <div class="bs-callout">
+            <h4></h4>
+            <p></p>
         </div>
 
-    </div>
+        <a href="/secure/games" class="btn btn-primary" role="button">Go to Games List »</a>
+    </div><!--/game finished -->
+
 </div>
 <!-- container -->
 

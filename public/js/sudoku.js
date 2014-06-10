@@ -39,6 +39,7 @@
     var _STORAGE_INITIAL_BOARD = 'sudoku-initial-board';
     var _STORAGE_BOARD = 'sudoku-board';
     var _STORAGE_START_TIME = 'sudoku-start-time';
+    var _STORAGE_BEST_SCORE = 'sudoku-best-score';
 
     var _START_TIME;
     var _SCORE = 0;
@@ -812,51 +813,68 @@
 
     /* When the Sudoku game page is loaded, initialize the game */
     sudoku.pageReady = function () {
-        // Generate a board
-        _INITIAL_BOARD = sudoku.generate("easy");
-        _BOARD = _INITIAL_BOARD;
+        // If no game ID is passed, return to the list of games
+        var gameId = localStorage.getItem('game-id');
+        if (!gameId) {
+            window.location = utils.getSecureContext() + '/games';
+        } else{
+            // Get previous best score for current user
+            $.ajax({
+                type: 'GET',
+                url: utils.getSecureContext() + '/game-score/top',
+                data: {gameId: gameId},
+                success: function(response) {
+                    localStorage.setItem(_STORAGE_BEST_SCORE, response.score);
+                },
+                error: handlers.errorHandler
+            });
 
-        // Populate cells
-        var cells = $('.grid-cell');
-        $.each(cells, function (i, el) {
-            if (_BOARD[i] !== '.') {
-                $(el).val(_BOARD[i]);
-                $(el).attr('disabled', true);
-            }
-        });
+            // Generate a board
+            _INITIAL_BOARD = sudoku.generate("easy");
+            _BOARD = _INITIAL_BOARD;
 
-        // Get start time in milliseconds
-        _START_TIME = new Date().getTime();
-
-        // Save the boards to local storage; save the start time
-        localStorage.setItem(_STORAGE_INITIAL_BOARD, _INITIAL_BOARD);
-        localStorage.setItem(_STORAGE_BOARD, _BOARD);
-        localStorage.setItem(_STORAGE_START_TIME, _START_TIME);
-
-        // Listen for user input
-        cells.keypress(sudoku.updateBoard);
-        cells.keyup(sudoku.userInput);
-
-        // Start timer
-        $('#game-time').runner({
-            autostart: true,
-            format: function(value) {
-                var seconds = parseInt(value / 1000);
-                var minutes = 0;
-                if (seconds >= 60) {
-                    minutes = parseInt(seconds / 60);
-                    seconds = seconds % 60;
+            // Populate cells
+            var cells = $('.grid-cell');
+            $.each(cells, function (i, el) {
+                if (_BOARD[i] !== '.') {
+                    $(el).val(_BOARD[i]);
+                    $(el).attr('disabled', true);
                 }
+            });
 
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
+            // Get start time in milliseconds
+            _START_TIME = new Date().getTime();
+
+            // Save the boards to local storage; save the start time
+            localStorage.setItem(_STORAGE_INITIAL_BOARD, _INITIAL_BOARD);
+            localStorage.setItem(_STORAGE_BOARD, _BOARD);
+            localStorage.setItem(_STORAGE_START_TIME, _START_TIME);
+
+            // Listen for user input
+            cells.keypress(sudoku.updateBoard);
+            cells.keyup(sudoku.userInput);
+
+            // Start timer
+            $('#game-time').runner({
+                autostart: true,
+                format: function(value) {
+                    var seconds = parseInt(value / 1000);
+                    var minutes = 0;
+                    if (seconds >= 60) {
+                        minutes = parseInt(seconds / 60);
+                        seconds = seconds % 60;
+                    }
+
+                    if (minutes < 10) {
+                        minutes = '0' + minutes;
+                    }
+                    if (seconds < 10) {
+                        seconds = '0' + seconds;
+                    }
+                    return minutes + ':' + seconds;
                 }
-                if (seconds < 10) {
-                    seconds = '0' + seconds;
-                }
-                return minutes + ':' + seconds;
-            }
-        });
+            });
+        }
     };
 
     /* Triggered when the user inputs a value in one of the cells */
@@ -917,8 +935,23 @@
         if (emptyCells === 0) {
             if (sudoku.validate_board(_BOARD)) {
                 if (sudoku.checkSolution()) {
-                    alert('Correct game');
+                    // Save the score!
+                    var gameId = localStorage.getItem('game-id');
+                    var gameName = localStorage.getItem('game-name');
                     sudoku.clearLocalStorage();
+
+                    if ($('#game-score').html() == _SCORE) {
+                        $.ajax({
+                            type: 'POST',
+                            url: utils.getSecureContext() + '/game-score',
+                            data: {gameId: gameId, gameName: gameName, points: _SCORE},
+                            success: sudoku.displayGameFinishedMessage,
+                            error: handlers.errorHandler
+                        });
+                    } else {
+                        alert('Invalid game!');
+                        window.location = utils.getSecureContext() + '/games';
+                    }
                 }
             } else {
                 alert('Invalid board!');
@@ -945,6 +978,54 @@
         }
 
         return true;
+    };
+
+    /* Display a success message at the end of the game depending on the outcome */
+    sudoku.displayGameFinishedMessage = function () {
+        var previousBest = parseInt(localStorage.getItem(_STORAGE_BEST_SCORE));
+        if (isNaN(previousBest)) { previousBest = null; }
+
+        var calloutClass, calloutHeader, calloutText;
+
+        $('.game-container').hide();
+
+        // Set the notification text depending on the score and previous best
+        if (previousBest == null) {
+            calloutClass = 'bs-callout-success';
+            calloutHeader = 'First one!';
+            calloutText = 'This is your first game and you set a score of <strong>' + _SCORE + '</strong>!';
+        } else if (_SCORE > previousBest) {
+            calloutClass = 'bs-callout-success';
+            calloutHeader = 'Congrats!';
+            calloutText = 'You\'ve set a new high score of <strong>' + _SCORE + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>.';
+        } else if (previousBest - _SCORE <= 20) {
+            calloutClass = 'bs-callout-info';
+            calloutHeader = 'So close!';
+
+            if (_SCORE === previousBest) {
+                calloutText = 'You\'ve just equalized your previous best score of <strong>' + _SCORE + '</strong>';
+            } else {
+                calloutText = 'You needed just <strong>' + (previousBest - _SCORE) + '</strong> more points to equalize your ' +
+                    'previous best of <strong>' + previousBest + '</strong>';
+            }
+        } else {
+            calloutClass = 'bs-callout-danger';
+            calloutHeader = 'Not enough!';
+            calloutText = 'Your score of <strong>' + _SCORE + '</strong> is pretty far away from your personal best of ' +
+                '<strong>' + previousBest + '</strong>. You can do better!';
+        }
+
+        // Display it
+        var gameFinishedContainer = $('#game-finished-container');
+        var gameFinishedMessage = gameFinishedContainer.find('.bs-callout');
+        gameFinishedMessage.addClass(calloutClass);
+        gameFinishedMessage.find('h4').html(calloutHeader);
+        gameFinishedMessage.find('p').html(calloutText);
+
+        gameFinishedContainer.fadeIn();
+
+        // Remove localStorage item
+        localStorage.removeItem(_STORAGE_BEST_SCORE);
     };
 
     /* Clear local storage items for game */
