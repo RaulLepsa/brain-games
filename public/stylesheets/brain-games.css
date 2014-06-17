@@ -95,6 +95,17 @@ footer {
     border-radius: 4px;
 }
 
+.img-circle {
+    width: 140px;
+    height: 140px;
+}
+
+.rotated {
+    transform:rotate(-12deg);
+    -ms-transform:rotate(-12deg);
+    -webkit-transform:rotate(-12deg);
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
@@ -273,7 +284,7 @@ footer {
 
 /* Carousel base class */
 .carousel {
-    height: 500px;
+    height: 400px;
     margin-bottom: 60px;
 }
 
@@ -282,10 +293,17 @@ footer {
     z-index: 10;
 }
 
+/* Bump up size of carousel content */
+.carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 1.4;
+}
+
 /* Declare heights because of positioning of img element */
 .carousel .item {
-    height: 500px;
-    background-color: #D0D0D0;
+    height: 400px;
+    background-image: url("/images/carousel-background.jpg");
 }
 
 .carousel-inner > .item > img {
@@ -293,7 +311,7 @@ footer {
     top: 0;
     left: 0;
     min-width: 100%;
-    height: 500px;
+    height: 400px;
 }
 
 /* MARKETING CONTENT
@@ -586,13 +604,6 @@ h1.title {
     /* The navbar becomes detached from the top, so we round the corners */
     .navbar-wrapper .navbar {
         border-radius: 4px;
-    }
-
-    /* Bump up size of carousel content */
-    .carousel-caption p {
-        margin-bottom: 20px;
-        font-size: 21px;
-        line-height: 1.4;
     }
 
     .featurette-heading {

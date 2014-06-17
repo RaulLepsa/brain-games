@@ -53,4 +53,14 @@ CREATE TABLE game_rating (
     game_id BIGINT,
     user_id BIGINT,
     rating INTEGER
+
+    CONSTRAINT pk_game_rating PRIMARY KEY (id)
+);
+
+CREATE TABLE suggestions (
+    id BIGSERIAL,
+    user_id BIGINT,
+    suggested JSON
+
+    CONSTRAINT pk_suggestions PRIMARY KEY (id)
 );

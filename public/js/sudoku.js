@@ -1033,10 +1033,12 @@
         localStorage.removeItem(_STORAGE_INITIAL_BOARD);
         localStorage.removeItem(_STORAGE_BOARD);
         localStorage.removeItem(_STORAGE_START_TIME);
+        localStorage.removeItem('game-id');
+        localStorage.removeItem('game-name');
     };
 
     // Initialize library after load
     initialize();
 
-// Pass whatever the root object is, lsike 'window' in browsers
+// Pass whatever the root object is, like 'window' in browsers
 })(this);
