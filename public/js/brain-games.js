@@ -28,7 +28,48 @@ var home = {
 
         // Get Trending Games
         stats.trendingGames();
-	}
+
+        // Get Suggestions
+        home.getSuggestions();
+	},
+
+    /* Get Suggestions for current user */
+    getSuggestions: function() {
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/suggestions',
+            success: function (suggestions) {
+                var container, categoryNotPlayedSuggestions = [];
+
+                suggestions.forEach( function(suggestion) {
+                    if (suggestion.type === 1) { // Category Not Played
+                        categoryNotPlayedSuggestions.push(suggestion);
+                    }
+                });
+
+                if (categoryNotPlayedSuggestions.length > 0) {
+                    // Select a random one to display message for
+                    var randomIndex = Math.floor(Math.random() * (suggestions.length + 1)) - 1;
+                    var selectedCategory = categoryNotPlayedSuggestions[randomIndex];
+
+                    var html = 'You haven\'t trained on the ' + selectedCategory.object + ' category yet. Here are some suggested games: ';
+                    selectedCategory.suggested.forEach(function(suggestion, i) {
+                        if (i > 0) {
+                            html += ', ';
+                        }
+                        html += '<b>' + suggestion.name + '</b>';
+                    });
+
+                    // Display it
+                    container = $('#categories-not-played');
+                    container.find('h4').html('Train your ' + selectedCategory.object + ' skills');
+                    container.find('p').html(html);
+                    container.fadeIn();
+                }
+            },
+            error: handlers.errorHandler
+        })
+    }
 };
 
 /** Functions for page that lists games **/

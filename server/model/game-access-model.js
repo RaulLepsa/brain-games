@@ -174,4 +174,33 @@ GameAccess.trendingGames = function (hours, callback) {
     );
 };
 
+/* Get Categories and the number of occurrences. If 'user_id' is specified, it's for a user, else it's global. */
+GameAccess.gameCategories = function (user_id, callback) {
+    var sql = 'SELECT game_category, COUNT(*) FROM game_access ';
+    var args = [];
+
+    if (user_id) {
+        sql += 'WHERE user_id = $1 ';
+        args.push(user_id);
+    }
+
+    sql += 'GROUP BY game_category';
+
+    client.query(sql, args, function (err, result) {
+        if (err) {
+            console.error('Error retrieving game categories', err);
+            callback(err);
+        } else if (result.rowCount === 0) {
+            callback(null, null);
+        } else {
+            var gameCategoriesMap = {};
+            for (var i = 0; i < result.rows.length; i++) {
+                gameCategoriesMap[result.rows[i].game_category] = result.rows[i].count;
+            }
+            callback(null, gameCategoriesMap);
+        }
+
+    });
+};
+
 module.exports = GameAccess;

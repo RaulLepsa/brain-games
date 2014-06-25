@@ -54,7 +54,9 @@ CREATE TABLE game_rating (
     user_id BIGINT,
     rating INTEGER
 
-    CONSTRAINT pk_game_rating PRIMARY KEY (id)
+    CONSTRAINT pk_game_rating PRIMARY KEY (id),
+    CONSTRAINT fk_rating_game FOREIGN KEY (game_id) REFERENCES games(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_rating_user FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE suggestions (
@@ -62,5 +64,8 @@ CREATE TABLE suggestions (
     user_id BIGINT,
     suggested JSON
 
-    CONSTRAINT pk_suggestions PRIMARY KEY (id)
+    CONSTRAINT pk_suggestions PRIMARY KEY (id),
+    CONSTRAINT fk_suggestions_user FOREIGN KEY (user_ID) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+ALTER TABLE suggestions ADD ;

@@ -2,7 +2,8 @@
  * Statistics-related Routes
  **/
 
-var StatsController = require('../controllers/stats-controller');
+var StatsController = require('../controllers/stats-controller'),
+    SuggestionsController = require('../controllers/suggestions-controller');
 
 /* Get stats page */
 app.get('/secure/stats', function (req, res) {
@@ -53,6 +54,18 @@ app.get('/secure/stats/self/game-performance', function (req, res) {
             res.end();
         } else {
             res.json(200, gamePerformance);
+        }
+    });
+});
+
+/* Get Suggestions for a User */
+app.get('/secure/suggestions', function (req, res) {
+    SuggestionsController.getForUser(req.user.id, function (err, suggestions) {
+        if (err) {
+            res.statusCode = 400;
+            res.end();
+        } else {
+            res.json(200, suggestions);
         }
     });
 });
