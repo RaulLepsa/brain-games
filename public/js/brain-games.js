@@ -39,20 +39,24 @@ var home = {
             type: 'GET',
             url: utils.getSecureContext() + '/suggestions',
             success: function (suggestions) {
-                var container, categoryNotPlayedSuggestions = [];
+                var container, randomIndex, selectedCategory, html,
+                    categoryNotPlayedSuggestions = [], categoryRatioBelowSuggestions = [];
 
                 suggestions.forEach( function(suggestion) {
                     if (suggestion.type === 1) { // Category Not Played
                         categoryNotPlayedSuggestions.push(suggestion);
+                    } else if (suggestion.type === 2) { // Category ratio below
+                        categoryRatioBelowSuggestions.push(suggestion);
                     }
                 });
 
+                // Display a random Category not Played Suggestion (if any)
                 if (categoryNotPlayedSuggestions.length > 0) {
                     // Select a random one to display message for
-                    var randomIndex = Math.floor(Math.random() * (suggestions.length + 1)) - 1;
-                    var selectedCategory = categoryNotPlayedSuggestions[randomIndex];
+                    randomIndex = Math.floor(Math.random() * (categoryNotPlayedSuggestions.length));
+                    selectedCategory = categoryNotPlayedSuggestions[randomIndex];
 
-                    var html = 'You haven\'t trained on the ' + selectedCategory.object + ' category yet. Here are some suggested games: ';
+                    html = 'You haven\'t trained on the ' + selectedCategory.object + ' category yet. Here are some suggested games: ';
                     selectedCategory.suggested.forEach(function(suggestion, i) {
                         if (i > 0) {
                             html += ', ';
@@ -63,6 +67,28 @@ var home = {
                     // Display it
                     container = $('#categories-not-played');
                     container.find('h4').html('Train your ' + selectedCategory.object + ' skills');
+                    container.find('p').html(html);
+                    container.fadeIn();
+                }
+
+                // Display a random Category Ratio Below suggestion (if any)
+                if (categoryRatioBelowSuggestions.length > 0) {
+                    // Select a random one
+                    randomIndex = Math.floor(Math.random() * (categoryRatioBelowSuggestions.length));
+                    selectedCategory = categoryRatioBelowSuggestions[randomIndex];
+
+                    html = 'Others seem to enjoy ' + selectedCategory.object + ' a lot more than you do. Maybe you are willing to give it a chance. ' +
+                        'Here are some game suggestions: ';
+                    selectedCategory.suggested.forEach(function(suggestion, i) {
+                        if (i > 0) {
+                            html += ', ';
+                        }
+                        html += '<b>' + suggestion.name + '</b>';
+                    });
+
+                    // Display it
+                    container = $('#categories-ratio-below');
+                    container.find('h4').html('You should train ' + selectedCategory.object + ' skills more');
                     container.find('p').html(html);
                     container.fadeIn();
                 }

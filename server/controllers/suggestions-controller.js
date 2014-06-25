@@ -58,7 +58,7 @@ var SuggestionsController = {
                             for (category in userCategoriesMap) {
                                 if (userCategoriesMap.hasOwnProperty(category)) {
                                     // CASE 2: If the ratio of the category overall and for the user has a difference of more than 20%
-                                    if ((categoriesMap[category] / total) - (userCategoriesMap[category] / totalForUser) > 0.15) {
+                                    if ((categoriesMap[category] / total) - (userCategoriesMap[category] / totalForUser) > 0.11) {
                                         suggestions.push({type: _suggestionTypes.CATEGORY_RATIO_BELOW, object: category, suggested: gameMap[category]});
                                     }
                                 }
