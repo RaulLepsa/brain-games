@@ -160,5 +160,66 @@ Score.gamePerformance = function (userId, gameId, callback) {
     });
 };
 
+/* Get user and global average for a specific game */
+Score.userAverageGlobalAverage = function (userId, callback) {
+
+    // Get game scores for a user
+    client.query('SELECT DISTINCT s.game_id, s.game_name, (score->>\'points\')::BIGINT AS points ' +
+        'FROM scores s INNER JOIN games g ON s.game_id = g.id ' +
+        'WHERE s.user_id = $1', [userId], function (err, result) {
+        if (err) {
+            console.error('Error retrieving user average for games', err);
+            callback(err);
+        } else if (result.rowCount === 0) {
+            callback(null, null);
+        } else {
+            var gamesForUser = [], games = {}, game_id, game_name, points;
+            for (var i = 0; i < result.rows.length; i++) {
+                game_id = result.rows[i].game_id;
+                game_name = result.rows[i].game_name;
+                points = result.rows[i].points;
+
+                if (!games[game_id]) {
+                    games[game_id] = {name: game_name, points: [parseInt(points)]};
+                } else {
+                    games[game_id].points.push(parseInt(points));
+                }
+
+                gamesForUser.push({id: game_id, name: game_name, points: points});
+            }
+
+            // Get only a random game
+            var randomGameIndex = Math.floor(Math.random() * (gamesForUser.length));
+            var randomGame = gamesForUser[randomGameIndex];
+
+            // Get full information about it
+            var id = randomGame.id;
+            randomGame = games[id];
+            randomGame.id = id;
+
+            // Get global results for the game
+            client.query('SELECT avg((s.score->>\'points\')::BIGINT) AS avg FROM scores s WHERE s.game_id = $1', [id], function (err, result) {
+                if (err) {
+                    console.error('Error retrieving global average for games', err);
+                    callback(err);
+                } else if (result.rowCount === 0) {
+                    callback(null, null);
+                } else {
+
+                    // Compute the user average for the game
+                    var userAverage = 0;
+                    randomGame.points.forEach(function (points) {
+                        userAverage += points;
+                    });
+                    userAverage = userAverage / randomGame.points.length;
+
+                    // Return the user average and global average for the game
+                    callback(null, {userAverage: userAverage, globalAverage: result.rows[0].avg, game: randomGame});
+                }
+            });
+        }
+    });
+};
+
 
 module.exports = Score;

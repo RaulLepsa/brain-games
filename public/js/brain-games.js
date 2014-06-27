@@ -40,13 +40,15 @@ var home = {
             url: utils.getSecureContext() + '/suggestions',
             success: function (suggestions) {
                 var container, randomIndex, selectedCategory, html,
-                    categoryNotPlayedSuggestions = [], categoryRatioBelowSuggestions = [];
+                    categoryNotPlayedSuggestions = [], categoryRatioBelowSuggestions = [], scoresBelow = [];
 
                 suggestions.forEach( function(suggestion) {
                     if (suggestion.type === 1) { // Category Not Played
                         categoryNotPlayedSuggestions.push(suggestion);
                     } else if (suggestion.type === 2) { // Category ratio below
                         categoryRatioBelowSuggestions.push(suggestion);
+                    } else if (suggestion.type === 3) { // Game score below
+                        scoresBelow.push(suggestion);
                     }
                 });
 
@@ -90,6 +92,16 @@ var home = {
                     container = $('#categories-ratio-below');
                     container.find('h4').html('You should train ' + selectedCategory.object + ' skills more');
                     container.find('p').html(html);
+                    container.fadeIn();
+                }
+
+                if (scoresBelow.length > 0) {
+                    // Display it
+                    var scoreInfo = scoresBelow[0];
+                    container = $('#game-score-below');
+                    container.find('h4').html('You are underperforming on ' + scoreInfo.object.name);
+                    container.find('p').html('Overall performance for <strong>' + scoreInfo.object.name + '</strong> is significantly ' +
+                        'above your performance for the game. You know you can do better!');
                     container.fadeIn();
                 }
             },
