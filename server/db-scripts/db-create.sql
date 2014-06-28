@@ -17,7 +17,7 @@ CREATE TABLE games (
 	name VARCHAR,
 	category VARCHAR,
 	description TEXT,
-	link VARCHAR(20)
+	link VARCHAR(20),
 
     CONSTRAINT pk_games PRIMARY KEY (id)
 );
@@ -29,7 +29,7 @@ CREATE TABLE scores (
 	game_id BIGINT,
 	game_name VARCHAR,
 	date DATE,
-	score JSON 
+	score JSON, 
 
     CONSTRAINT pk_scores PRIMARY KEY (id)
 );
@@ -52,7 +52,7 @@ CREATE TABLE game_rating (
     id BIGSERIAL,
     game_id BIGINT,
     user_id BIGINT,
-    rating INTEGER
+    rating INTEGER,
 
     CONSTRAINT pk_game_rating PRIMARY KEY (id),
     CONSTRAINT fk_rating_game FOREIGN KEY (game_id) REFERENCES games(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -62,10 +62,8 @@ CREATE TABLE game_rating (
 CREATE TABLE suggestions (
     id BIGSERIAL,
     user_id BIGINT,
-    suggested JSON
+    suggested JSON,
 
     CONSTRAINT pk_suggestions PRIMARY KEY (id),
     CONSTRAINT fk_suggestions_user FOREIGN KEY (user_ID) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-ALTER TABLE suggestions ADD ;
