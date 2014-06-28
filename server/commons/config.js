@@ -1,6 +1,9 @@
 /**
 	Holds application configurations
 **/
+var path = require('path')
+    , env = require('habitat').load(path.resolve(__dirname, '../brain-games.env'));
+
 var config = {};
 
 // Web and DB configurations
@@ -13,8 +16,8 @@ config.web.sessionMaxAge = 3 * 24 * 60 * 60 * 1000;		// Default session expiry t
 config.db = {};
 config.db.server = 'localhost';
 config.db.port = '5432';
-config.db.user = 'rlepsa';
-config.db.password = '';
+config.db.user = env.get('DB_USER');
+config.db.password = env.get('DB_PASSWORD');
 config.db.database = 'braingames';
 
 
