@@ -404,9 +404,6 @@ hr {
   -moz-animation-fill-mode: backwards;
   animation-fill-mode: backwards; }
 
-.game-intro {
-  clear: both
-}
 
 .restart-button {
   display: inline-block;

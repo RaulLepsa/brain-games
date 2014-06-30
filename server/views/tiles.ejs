@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>Tiles</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- CSS for bootstrap callouts -->
+    <link href="/stylesheets/bootstrap-callouts.css" rel="stylesheet">
+
+    <!-- Tiles Game CSS -->
+    <link href="/stylesheets/tiles.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- NAVBAR -->
+<% include /sub-views/navbar %>
+
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container">
+<div class="cover"></div>
+    <div class="game">
+
+        <div class="game-heading">
+            <h1 class="title">Tiles</h1>
+
+            <!-- Stats - score, time left, correct/incorrect, combo count -->
+            <div class="scores-container">
+                <div class="timeleft-container"><span id="game-timeleft">00:50</span></div>
+                <div class="score-container"><span id="game-score">0</span></div>
+            </div><!--/stats -->
+
+            <p class="game-intro">Memorize the position of the blue tiles</p>
+            <p class="answer-notification-container strong green"></p>
+        </div>
+
+        <div id="game-content">
+            <table class="margin-auto">
+                <tbody id="tiles-table"></tbody>
+            </table>
+        </div><!--/game-content -->
+
+    </div><!--/game -->
+
+    <!-- Game finished DIV to be displayed on game end -->
+    <div id="game-finished-container" class="display-none">
+        <div class="bs-callout">
+            <h4></h4>
+            <p></p>
+        </div>
+
+        <a href="/secure/games" class="btn btn-primary" role="button">Go to Games List »</a>
+    </div><!--/game finished -->
+
+</div><!--/container -->
+
+<!-- FOOTER -->
+<% include /sub-views/footer %>
+
+<!-- SCRIPTS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/brain-games.js"></script>
+<script src="/js/games/tiles.js"></script>
+
+<script type="text/javascript">
+    tiles.initialize();
+</script>
+</body>
+</html>
+
+

@@ -77,3 +77,8 @@ app.get('/secure/game/2048', function (req, res) {
 app.get('/secure/game/sudoku', function (req, res) {
     res.render('sudoku', {username: req.user.username});
 });
+
+// Tiles Game page
+app.get('/secure/game/tiles', function (req, res) {
+    res.render('tiles', {username: req.user.username});
+});

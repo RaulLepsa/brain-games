@@ -1,0 +1,32 @@
+.tile {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    float: left;
+    border: 1px solid #C0C0C0;
+    background-color: #faf8ef;
+    cursor: pointer;
+}
+
+.tile:hover {
+    background-color: #F0E68C;
+}
+
+.tile.selected {
+    background-color: #428bca;
+}
+
+.tile.correct {
+    background-color: #669999;
+}
+
+.tile.incorrect {
+    background-color: #FF3333;
+}
+
+@media screen and (max-width: 620px) {
+    .tile {
+        width: 35px;
+        height: 35px;
+    }
+}
