@@ -360,6 +360,7 @@ var games = {
         localStorage.removeItem('game-name');
 	},
 
+    /* When the 2048 game is ready, validate the game setup, get scores and handle game over event */
     pageReady2048: function() {
         var gameManager = new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
 
@@ -394,6 +395,97 @@ var games = {
                 }
             });
         });
+    },
+
+    pageReadyTiles: function() {
+        var gameId = localStorage.getItem('game-id');
+        var gameName = localStorage.getItem('game-name');
+        if (!gameId) {
+            window.location = utils.getSecureContext() + '/games';
+            return;
+        }
+
+        // Get previous best score for current user
+        $.ajax({
+            type: 'GET',
+            url: utils.getSecureContext() + '/game-score/top',
+            data: {gameId: gameId},
+            success: function(response) {
+                localStorage.setItem('tiles-previous-best', response.score);
+            },
+            error: handlers.errorHandler
+        });
+
+        // Game finished event listener
+        $(document).on('game-finished', function() {
+            $('#game-content').hide();
+
+            // Detect invalid score
+            if (tiles._score != $('#game-score').html()) {
+                alert('Invalid score');
+                window.location = utils.getSecureContext() + '/games';
+                return;
+            }
+
+            // Save game score
+            $.ajax({
+                type: 'POST',
+                url: utils.getSecureContext() + '/game-score',
+                data: { gameId: gameId, gameName: gameName, points: tiles._score},
+                success: function () {
+
+                    // At this moment the game is over
+                    var previousBest = parseInt(localStorage.getItem('tiles-previous-best'));
+                    if (isNaN(previousBest)) { previousBest = null; }
+
+                    var score = tiles._score;
+
+                    var calloutClass, calloutHeader, calloutText;
+
+                    // Set the notification text depending on the score and previous best
+                    if (previousBest == null) {
+                        calloutClass = 'bs-callout-success';
+                        calloutHeader = 'First one!';
+                        calloutText = 'This is your first game and you set a score of <strong>' + score + '</strong>!';
+                    } else if (score > previousBest) {
+                        calloutClass = 'bs-callout-success';
+                        calloutHeader = 'Congrats!';
+                        calloutText = 'You\'ve set a new high score of <strong>' + score + '</strong>! Your previous best was <strong>' + previousBest  + '</strong>.';
+                    } else if (previousBest - score < 150) {
+                        calloutClass = 'bs-callout-info';
+                        calloutHeader = 'So close!';
+
+                        if (score === previousBest) {
+                            calloutText = 'You\'ve just equalized your previous best score of <strong>' + score + '</strong>';
+                        } else {
+                            calloutText = 'You needed just <strong>' + (previousBest - score) + '</strong> more points to equalize your ' +
+                                'previous best of <strong>' + previousBest + '</strong>';
+                        }
+                    } else {
+                        calloutClass = 'bs-callout-danger';
+                        calloutHeader = 'Not enough!';
+                        calloutText = 'Your score of <strong>' + score + '</strong> is pretty far away from your personal best of ' +
+                            '<strong>' + previousBest + '</strong>. You can do better!';
+                    }
+
+                    // Display it
+                    var gameFinishedContainer = $('#game-finished-container');
+                    var gameFinishedMessage = gameFinishedContainer.find('.bs-callout');
+                    gameFinishedMessage.addClass(calloutClass);
+                    gameFinishedMessage.find('h4').html(calloutHeader);
+                    gameFinishedMessage.find('p').html(calloutText);
+
+                    gameFinishedContainer.fadeIn();
+
+                    // Remove localStorage items
+                    localStorage.removeItem('tiles-previous-best');
+                },
+                error: handlers.errorHandler
+            });
+        });
+
+        localStorage.removeItem('game-id');
+        localStorage.removeItem('game-name');
     },
 
     /* Rate a game */

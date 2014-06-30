@@ -10,9 +10,11 @@ var tiles = {
     _guessesLeft: null,
     _score: 0,
     _duration: 50,
+    _running: false,
 
     /* Initialize the game */
     initialize: function() {
+        this._running = true;
         this.startCountdown();
         this.initializeLevel();
     },
@@ -189,6 +191,12 @@ var tiles = {
 
     /* Triggered on Game Over */
     gameOver: function() {
+        if (tiles._running) {
+            // Trigger a game finished event, as dealing with data after the game has ended is no longer related to this particular game,
+            // but should be dealt with by the application incorporating the game
+            $(document).trigger('game-finished');
+        }
 
+        tiles._running = false;
     }
 };
