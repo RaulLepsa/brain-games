@@ -14,7 +14,7 @@ config.web.protocol = 'http';
 config.web.sessionMaxAge = 3 * 24 * 60 * 60 * 1000;		// Default session expiry time = 3 days
 
 config.db = {};
-config.db.server = 'localhost';
+config.db.server = '127.0.0.1';
 config.db.port = '5432';
 config.db.user = env.get('DB_USER');
 config.db.password = env.get('DB_PASSWORD');
