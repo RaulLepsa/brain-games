@@ -15,11 +15,18 @@ app.get('/', function (req, res) {
     }
 });
 
+// About page
+app.get('/about', function (req, res) {
+    res.render('about');
+});
+
+// Home page
+app.get('/secure/home', function (req, res) {
+    res.render('home', {username: req.user.username} );
+});
+
 // Include authentication-related routes
 require('./user-routes');
-
-// Include home-related routes
-require('./home-routes');
 
 // Include game-related routes
 require('./game-routes');

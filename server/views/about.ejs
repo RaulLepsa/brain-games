@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>About Brain Games</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Global CSS for application -->
+    <link href="/stylesheets/brain-games.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="navbar-wrapper ">
+    <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Brain Games</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><a href="/about">About</a></li>
+                        <li><a href="/signin" style="margin-right: 10px">Log in</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container">
+
+    <p>Online gaming is indisputably one of the favourite online activities nowadays, with over 700 million people playing them. There are arguably both positive and negative effects of such activities, but they are usually subjective and dependent on the type of the game and the time invested in them.</p>
+    <p>Brain Games is an open source platform designed to improve cognitive abilities through mind-training activities, while tracking the progress and generating suggestions. The platform is designed to be lightweight and layout-responsive, so that the general feedback is consistent independently of the device used. </p>
+    <p>It provides local, Google or Facebook authentication, individual and global statistics, insights and a library of games.</p>
+    <p>Suggestions are generated based on game feedback (rating) and on user performance.</p>
+    <p>A Chat is also included to allow players to interact and discuss based on the games and on the activities they are performing.</p>
+    <!-- FOOTER -->
+    <% include /sub-views/footer %>
+
+</div><!-- /.container -->
+
+<!-- SCRIPTS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/docs.min.js"></script>
+</body>
+</html>
